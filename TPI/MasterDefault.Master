@@ -23,16 +23,19 @@
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <a class="nav-link active" aria-current="page" href="Home.aspx">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="InicioSesion.aspx">Inicie Sesión</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Nuestros Servicios</a>
+                                <a class="nav-link" href="Especialidades.aspx">Especialidades</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Sobre Nosotros</a>
+                                <a class="nav-link" href="#">Sacar turno</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="SobreNosotros.aspx">Sobre Nosotros</a>
                             </li>
                         </ul>
                     </div>
@@ -40,10 +43,26 @@
             </nav>
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
-            <footer>
-                --------------------------
-                <br />
-                FOOTER
+           <footer class="mt-5">
+                       <hr class="border-dark mt-4" />
+                 <div class="container py-4">
+                     <div class="row text-center text-md-start align-items-start g-4">
+
+                        <div class="col-md-4">
+                            <h5 class="fw-bold">PROMEDIC</h5>
+                            <p class="mb-1">Tus médicos de confianza.</p>
+                            <p class="mb-0">Turnos online las 24hs.</p>
+                        </div>
+
+                        <div class="col-md-4 ms-auto text-md-end">
+                            <h5 class="fw-bold">Contacto</h5>
+                            <p class="mb-1">promedic@gmail.com</p>
+                            <p class="mb-1">(011) 1234-5678</p>
+                            <p class="mb-0">Buenos Aires, Argentina</p>
+                        </div>
+
+                    </div>
+                </div>
             </footer>
         </div>
     </form>

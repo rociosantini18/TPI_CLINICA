@@ -65,8 +65,19 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Especialidades.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Home.aspx" />
+    <Content Include="Imagenes\clinica medica.jpg" />
+    <Content Include="Imagenes\clinico medico.JPG" />
+    <Content Include="Imagenes\dermatologa.JPG" />
+    <Content Include="Imagenes\Flebologa.JPG" />
+    <Content Include="Imagenes\ginecologa.JPG" />
+    <Content Include="Imagenes\nutricionista.JPG" />
+    <Content Include="Imagenes\pediatra.JPG" />
+    <Content Include="Imagenes\Psicologa.png" />
     <Content Include="InicioSesion.aspx" />
+    <Content Include="SobreNosotros.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -77,8 +88,22 @@
     <Compile Include="Dominio\Usuario.cs" />
     <Compile Include="Dominio\TurnoTrabajo.cs" />
     <Compile Include="Dominio\Especialidad.cs" />
+    <Compile Include="Especialidades.aspx.cs">
+      <DependentUpon>Especialidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Especialidades.aspx.designer.cs">
+      <DependentUpon>Especialidades.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
     <Compile Include="InicioSesion.aspx.cs">
       <DependentUpon>InicioSesion.aspx</DependentUpon>
@@ -95,6 +120,13 @@
       <DependentUpon>MasterDefault.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SobreNosotros.aspx.cs">
+      <DependentUpon>SobreNosotros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SobreNosotros.aspx.designer.cs">
+      <DependentUpon>SobreNosotros.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterDefault.Master" />

@@ -17,7 +17,7 @@ namespace TPI.Dominio
         public string Diagnostico  { get; set; }
 
         public DateTime FechaCreacion { get; set; }
-        public DateTime FechaModificacion { get; set; } Nullable
+        public DateTime FechaModificacion { get; set; }
 
         public string Estado { get; set; }   //Nuevo, Reprogramado, Cancelado, No Asistió, Cerrado 
 

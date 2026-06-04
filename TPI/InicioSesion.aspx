@@ -2,33 +2,22 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="card shadow p-4" style="width: 100%; max-width: 420px;">
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold">PROMEDIC</h1>
+                <p class="text-muted">Ingresá tus credenciales para continuar</p>
             </div>
-            <div class="col">
-                <div>
-                    <asp:Label ID="lblTitulo" CssClass="display-3" runat="server" Text="INICIE SESION"></asp:Label>
-                </div>
-                <div>
-                    <asp:Label ID="lblUser" runat="server" Text="Ingrese su usuario"></asp:Label>
-                </div>
-                <div>  
-                    <asp:TextBox ID="txtbUser" runat="server"></asp:TextBox>
-                </div>
-                <div>
-                    <asp:Label ID="lblPassword" runat="server" Text="Ingrese su contraseña"></asp:Label>
-                </div>
-                <div>
-                    <asp:TextBox ID="txtPassword" runat="server"></asp:TextBox>
-                </div>
-                <div>
-                </div>
-                <div>
-                    <asp:Button ID="btnAceptarInicioSesion" runat="server" CssClass="btn btn-primary" BackColor="LightGreen" BorderColor="LightGreen" Text="Aceptar" />
-                </div>
+            <div class="mb-3">
+                <asp:Label ID="lblUser" runat="server" Text="Usuario" CssClass="form-label fw-semibold"></asp:Label>
+                <asp:TextBox ID="txtbUser" runat="server" CssClass="form-control" placeholder="Ingrese su usuario"></asp:TextBox>
             </div>
-            <div class="col">
+            <div class="mb-4">
+                <asp:Label ID="lblPassword" runat="server" Text="Contraseña" CssClass="form-label fw-semibold"></asp:Label>
+                <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Ingrese su contraseña"></asp:TextBox>
+            </div>
+            <div class="d-grid">
+                <asp:Button ID="btnAceptarInicioSesion" runat="server" CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" Text="Ingresar" />
             </div>
         </div>
     </div>
