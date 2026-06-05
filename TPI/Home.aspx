@@ -28,7 +28,7 @@
                     <h5 class="fw-bold">Para pacientes</h5>
                     <h6 class="text-muted">Turnos Online</h6>
                     <p class="mt-2">Reservá tu turno desde cualquier lugar, en cualquier momento, de manera fácil y rápida.</p>
-                    <a href="#" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" style="--bs-focus-ring-x: 10px; --bs-focus-ring-y: 10px; --bs-focus-ring-blur: 4px">
+                    <a href="SacarTurno.aspx" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" style="--bs-focus-ring-x: 10px; --bs-focus-ring-y: 10px; --bs-focus-ring-blur: 4px">
                      Sacar turno online</a>
                 </div>
             </div>
