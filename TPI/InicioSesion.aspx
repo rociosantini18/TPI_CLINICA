@@ -19,6 +19,8 @@
             <div class="d-grid">
                 <asp:Button ID="btnAceptarInicioSesion" runat="server" CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" Text="Ingresar" />
             </div>
+             <a href="PruebaBD.aspx" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" style="--bs-focus-ring-x: 10px; --bs-focus-ring-y: 10px; --bs-focus-ring-blur: 4px">
+                Soy Admin</a>
         </div>
     </div>
 </asp:Content>
