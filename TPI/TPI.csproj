@@ -77,9 +77,13 @@
     <Content Include="Imagenes\pediatra.JPG" />
     <Content Include="Imagenes\Psicologa.png" />
     <Content Include="InicioSesion.aspx" />
+    <Content Include="MisDatos.aspx" />
+    <Content Include="MisTurnos.aspx" />
     <Content Include="PruebaBD.aspx" />
+    <Content Include="Registrarse.aspx" />
     <Content Include="SacarTurno.aspx" />
     <Content Include="SobreNosotros.aspx" />
+    <Content Include="UsuarioLogeado.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +125,20 @@
     <Compile Include="MasterDefault.Master.designer.cs">
       <DependentUpon>MasterDefault.Master</DependentUpon>
     </Compile>
+    <Compile Include="MisDatos.aspx.cs">
+      <DependentUpon>MisDatos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MisDatos.aspx.designer.cs">
+      <DependentUpon>MisDatos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MisTurnos.aspx.cs">
+      <DependentUpon>MisTurnos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MisTurnos.aspx.designer.cs">
+      <DependentUpon>MisTurnos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Negocio\AccesoDatos.cs" />
     <Compile Include="Negocio\UsuarioNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,6 +148,13 @@
     </Compile>
     <Compile Include="PruebaBD.aspx.designer.cs">
       <DependentUpon>PruebaBD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Registrarse.aspx.cs">
+      <DependentUpon>Registrarse.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Registrarse.aspx.designer.cs">
+      <DependentUpon>Registrarse.aspx</DependentUpon>
     </Compile>
     <Compile Include="SacarTurno.aspx.cs">
       <DependentUpon>SacarTurno.aspx</DependentUpon>
@@ -145,10 +170,18 @@
     <Compile Include="SobreNosotros.aspx.designer.cs">
       <DependentUpon>SobreNosotros.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UsuarioLogeado.aspx.cs">
+      <DependentUpon>UsuarioLogeado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UsuarioLogeado.aspx.designer.cs">
+      <DependentUpon>UsuarioLogeado.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterDefault.Master" />
     <None Include="packages.config" />
+    <Content Include="README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -32,10 +32,10 @@
                                 <a class="nav-link" href="Especialidades.aspx">Especialidades</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="SacarTurno.aspx">Sacar turno</a>
+                                <a class="nav-link" href="SobreNosotros.aspx">Sobre Nosotros</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="SobreNosotros.aspx">Sobre Nosotros</a>
+                                <a class="nav-link" href="UsuarioLogeado.aspx">(UsuarioLogeado)</a>
                             </li>
                         </ul>
                     </div>
@@ -52,6 +52,7 @@
                             <h5 class="fw-bold">PROMEDIC</h5>
                             <p class="mb-1">Tus médicos de confianza.</p>
                             <p class="mb-0">Turnos online las 24hs.</p>
+                            <a href="PruebaBD.aspx" class="text-muted small text-decoration-none">Soy admin</a>
                         </div>
 
                         <div class="col-md-4 ms-auto text-md-end">
