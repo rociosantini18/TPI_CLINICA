@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-md-3">
-                <asp:Button ID="btnTomarTurno" runat="server" Text="Tomar Turno"
+                <asp:Button ID="btnTomarTurno" runat="server" Text="Pedir Turno"
                     CssClass="btn btn-primary w-100 py-3 fs-5"
                     PostBackUrl="~/SacarTurno.aspx" />
             </div>

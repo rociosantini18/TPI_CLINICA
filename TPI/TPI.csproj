@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Especialidades.aspx" />
+    <Content Include="GestionarTurnos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
     <Content Include="Imagenes\clinica medica.jpg" />
@@ -79,6 +80,8 @@
     <Content Include="InicioSesion.aspx" />
     <Content Include="MisDatos.aspx" />
     <Content Include="MisTurnos.aspx" />
+    <Content Include="NuevoTurnoRecepcionista.aspx" />
+    <Content Include="PanelRecepcionista.aspx" />
     <Content Include="PruebaBD.aspx" />
     <Content Include="Registrarse.aspx" />
     <Content Include="SacarTurno.aspx" />
@@ -100,6 +103,13 @@
     </Compile>
     <Compile Include="Especialidades.aspx.designer.cs">
       <DependentUpon>Especialidades.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionarTurnos.aspx.cs">
+      <DependentUpon>GestionarTurnos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionarTurnos.aspx.designer.cs">
+      <DependentUpon>GestionarTurnos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -141,6 +151,20 @@
     </Compile>
     <Compile Include="Negocio\AccesoDatos.cs" />
     <Compile Include="Negocio\UsuarioNegocio.cs" />
+    <Compile Include="NuevoTurnoRecepcionista.aspx.cs">
+      <DependentUpon>NuevoTurnoRecepcionista.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NuevoTurnoRecepcionista.aspx.designer.cs">
+      <DependentUpon>NuevoTurnoRecepcionista.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PanelRecepcionista.aspx.cs">
+      <DependentUpon>PanelRecepcionista.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PanelRecepcionista.aspx.designer.cs">
+      <DependentUpon>PanelRecepcionista.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PruebaBD.aspx.cs">
       <DependentUpon>PruebaBD.aspx</DependentUpon>
