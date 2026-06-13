@@ -2,7 +2,7 @@
 
 namespace TPI.Dominio
 {
-    public class Usuario
+    public class Persona
     {
         public int Id { get; set; }
         public string Dni { get; set; }
@@ -11,9 +11,6 @@ namespace TPI.Dominio
         public string Email { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
-        public string Contraseña { get; set; }
         public DateTime FechaNacimiento { get; set; }
-        public Perfil Perfil { get; set; }
-        public bool Activo { get; set; }
     }
 }

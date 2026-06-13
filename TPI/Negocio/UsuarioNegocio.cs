@@ -6,6 +6,9 @@ using System.Web;
 using TPI.Dominio;
 using TPI.Negocio;
 
+//MODIFICAR NEGOCIO 
+
+/*
 namespace TPI.NewFolder1
 {
     public class UsuarioNegocio
@@ -158,3 +161,4 @@ namespace TPI.NewFolder1
 
     }
 }
+*/
