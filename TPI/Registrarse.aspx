@@ -100,7 +100,7 @@
 
                     <div class="mb-3">
                         <asp:Label runat="server" Text="Obra social:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtObraSocial" runat="server" CssClass="form-control" placeholder="Ej: OSDE, Swiss Medical (opcional)"></asp:TextBox>
+                        <asp:DropDownList ID="ddlObraSocial" runat="server"> </asp:DropDownList>                   
                     </div>
 
                     <hr class="my-4" />

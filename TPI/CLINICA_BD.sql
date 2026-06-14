@@ -12,7 +12,7 @@ CREATE TABLE Persona (
     Email VARCHAR(150) NOT NULL UNIQUE,
     Telefono VARCHAR(30),
     Direccion VARCHAR(200),
-    FechaNacimiento DATE NOT NULL,
+    FechaNacimiento DATE NOT NULL
 );
 GO
 
@@ -21,7 +21,6 @@ CREATE TABLE Rol (
     NombreRol VARCHAR(100) NOT NULL
 );
 GO
-
 
 CREATE TABLE Perfil (
     Id_Perfil INT IDENTITY(1,1) PRIMARY KEY,
@@ -42,8 +41,9 @@ GO
 
 CREATE TABLE ObraSocial (
     Id_ObraSocial INT IDENTITY(1,1) PRIMARY KEY,
-    Nombre_ObraSocial VARCHAR(100) NOT NULL,
-);GO
+    Nombre_ObraSocial VARCHAR(100) NOT NULL
+);
+GO
 
 CREATE TABLE Medico (
     Id_Medico INT IDENTITY(1,1) PRIMARY KEY,
@@ -73,7 +73,8 @@ CREATE TABLE Empleado (
     Id_Perfil INT NOT NULL,
     FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona),
     FOREIGN KEY (Id_Perfil) REFERENCES Perfil(Id_Perfil)
-);GO
+);
+GO
 
 CREATE TABLE Turno (
     Id_Turno INT IDENTITY (1,1) PRIMARY KEY,
@@ -93,21 +94,12 @@ CREATE TABLE Turno (
 );
 GO
 
-SELECT * FROM Persona
-SELECT * FROM Rol
-SELECT * FROM Perfil
-
-
---INSERCION DE DATOS
-
---ROLES
 INSERT INTO Rol(NombreRol)
 VALUES
 ('Administrador'),
 ('Cliente'),
 ('Recepcionista');
 
---ESPECIALIDADES
 INSERT INTO Especialidad(Nombre_Especialidad)
 VALUES
 ('Nutrición'),
@@ -117,7 +109,6 @@ VALUES
 ('Dermatología'),
 ('Pediatría');
 
---OBRAS SOCIALES
 INSERT INTO ObraSocial(Nombre_ObraSocial)
 VALUES
 ('Swiss Medical'),
@@ -126,7 +117,6 @@ VALUES
 ('IOMA'),
 ('Galeno');
 
---PERSONA
 INSERT INTO Persona (Dni, Nombre, Apellido, Email, Telefono, Direccion, FechaNacimiento)
 VALUES
 ('30111222','Juan','Perez','juan.perez@gmail.com','1122334455','Av. Rivadavia 100','1985-05-10'),
@@ -135,7 +125,6 @@ VALUES
 ('35666777','Ana','Fernandez','ana.fernandez@gmail.com','1155667788','Corrientes 400','1995-12-01'),
 ('37777888','Pedro','Martinez','pedro.martinez@gmail.com','1166778899','Callao 500','1998-07-18');
 
---PERFIL
 INSERT INTO Perfil (Id_Rol, NombreUsuario, Contraseña, Activo)
 VALUES
 (1,'admin','Admin123',1),
@@ -143,27 +132,31 @@ VALUES
 (3,'juanp','Paciente123',1),
 (3,'anaf','Paciente456',1);
 
---PACIENTE
 INSERT INTO Paciente (Id_Persona, Id_ObraSocial, Id_Perfil)
 VALUES
 (1,1,3),
 (4,2,4);
 
---MEDICO
 INSERT INTO Medico (Id_Persona, Matricula, Id_Especialidad, Imagen_URL)
 VALUES
 (2,'MP1001',1,'doctor1.jpg'),
 (3,'MP1002',3,'doctor2.jpg');
 
---EMPLEADO
 INSERT INTO Empleado (Id_Persona, Id_Perfil)
 VALUES
 (5,1),
 (2,2);
 
---TURNO
 INSERT INTO Turno (NumeroTurno, Fecha, HoraInicio, HoraFin, Observaciones, Diagnostico, FechaCreacion, FechaModificación, Estado, Id_Paciente, Id_Medico)
 VALUES
 ('T0001','2026-06-20','09:00:00','09:30:00','Control anual','Paciente sano',GETDATE(),NULL,'Cerrado',1,1),
 ('T0002','2026-06-21','10:00:00','10:30:00','Dolor de pecho','Estudios complementarios',GETDATE(),NULL,'Nuevo',2,2),
 ('T0003','2026-06-22','11:00:00','11:30:00','Control pediátrico','Pendiente',GETDATE(),NULL,'Reprogramado',1,1);
+GO
+
+SELECT * FROM Persona;
+SELECT * FROM Rol;
+SELECT * FROM Perfil;
+SELECT * FROM ObraSocial;
+SELECT * FROM Paciente;
+

@@ -4,18 +4,18 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using TPI.NewFolder1;
-/*
+using TPI.Negocio;
+
+
 namespace TPI
 {
     public partial class PruebaBD : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            UsuarioNegocio negocio = new UsuarioNegocio();
+            PacienteNegocio negocio = new PacienteNegocio();
             dgvUsuarios.DataSource = negocio.listar();
             dgvUsuarios.DataBind();
         }
     }
 }
-*/

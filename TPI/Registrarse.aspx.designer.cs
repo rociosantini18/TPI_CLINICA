@@ -87,13 +87,13 @@ namespace TPI
         protected global::System.Web.UI.WebControls.TextBox txtDireccion;
 
         /// <summary>
-        /// Control txtObraSocial.
+        /// Control ddlObraSocial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtObraSocial;
+        protected global::System.Web.UI.WebControls.DropDownList ddlObraSocial;
 
         /// <summary>
         /// Control txtEmail.
