@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using TPI.Dominio;
 
 namespace TPI
 {
@@ -11,7 +12,18 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["perfil"] == null)
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
 
+            Perfil perfil = (Perfil)Session["perfil"];
+            if (perfil.Rol != "Recepcionista")
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
         }
     }
 }

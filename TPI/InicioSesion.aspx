@@ -29,8 +29,9 @@
             <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Ingresá tu contraseña"></asp:TextBox>
           </div>
 
+           <asp:Label ID="lblError" runat="server" Visible="false" CssClass="text-danger small"></asp:Label>
           <asp:Button ID="btnIngresar" runat="server" Text="Ingresar →"
-            CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen" />
+            CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen" onClick="btnIngresar_Click"/>
 
         </div>
       </div>

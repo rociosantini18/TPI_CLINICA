@@ -21,12 +21,10 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
+
+                        <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="Home.aspx">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="InicioSesion.aspx">Inicie Sesión</a>
+                                <a class="nav-link active" href="Home.aspx">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="Especialidades.aspx">Especialidades</a>
@@ -34,10 +32,23 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="SobreNosotros.aspx">Sobre Nosotros</a>
                             </li>
+                        </ul>
+
+                        <ul class="navbar-nav ms-auto align-items-center">
                             <li class="nav-item">
-                                <a class="nav-link" href="UsuarioLogeado.aspx">(UsuarioLogeado)</a>
+                                <asp:Label ID="lblUsuario" runat="server" 
+                                    CssClass="nav-link text-dark fw-semibold" Visible="false"></asp:Label>
+                            </li>
+                            <li class="nav-item">
+                                <asp:Button ID="btnLogin" runat="server" Text="Iniciar sesión"
+                                    OnClick="btnLogin_Click" CssClass="btn btn-outline-dark btn-sm me-2" />
+                            </li>
+                            <li class="nav-item">
+                                <asp:Button ID="btnLogout" runat="server" Text="Cerrar sesión"
+                                    OnClick="btnLogout_Click" CssClass="btn btn-outline-danger btn-sm" />
                             </li>
                         </ul>
+
                     </div>
                 </div>
             </nav>

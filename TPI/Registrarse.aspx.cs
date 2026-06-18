@@ -47,7 +47,7 @@ namespace TPI
                 pac.Perfil.NombreUsuario = txtEmail.Text.Trim();
                 pac.Perfil.Contraseña = txtPassword.Text;
                 pac.Perfil.Activo = true;
-                pac.Perfil.Id = 3;
+                pac.Perfil.Id = 2;
 
                 PacienteNegocio negocio = new PacienteNegocio();
                 negocio.agregar(pac); 

@@ -122,7 +122,7 @@ namespace TPI.Negocio
                 OUTPUT INSERTED.Id_Perfil
                 VALUES (@idRol, @usuario, @contrasena, @activo)");
 
-                datos.setearParametro("@idRol", 3);
+                datos.setearParametro("@idRol", 2);
                 datos.setearParametro("@usuario", pac.Perfil.NombreUsuario);
                 datos.setearParametro("@contrasena", pac.Perfil.Contraseña);
                 datos.setearParametro("@activo", true);
