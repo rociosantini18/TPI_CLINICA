@@ -150,8 +150,10 @@
       <DependentUpon>MisTurnos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Negocio\AccesoDatos.cs" />
+    <Compile Include="Negocio\EmpleadoNegocio.cs" />
     <Compile Include="Negocio\EspecialidadNegocio.cs" />
     <Compile Include="Negocio\LoginNegocio.cs" />
+    <Compile Include="Negocio\MedicoNegocio.cs" />
     <Compile Include="Negocio\PacienteNegocio.cs" />
     <Compile Include="Negocio\TurnoNegocio.cs" />
     <Compile Include="NuevoTurnoRecepcionista.aspx.cs">

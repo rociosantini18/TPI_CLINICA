@@ -8,7 +8,9 @@ namespace TPI.Dominio
 
         public string Matricula { get; set; }
 
-        public List<Especialidad> Especialidades { get; set; }
+        public Especialidad Especialidad { get; set; }
+
+        public string imagenURL { get; set;  }
 
     }
 }
