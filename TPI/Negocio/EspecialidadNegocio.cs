@@ -32,5 +32,53 @@ namespace TPI.Negocio
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
+
+        public void agregar(Especialidad esp)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    INSERT INTO Especialidad (Nombre_Especialidad, Descripcion)
+                    VALUES (@nombre, @descripcion)");
+                datos.setearParametro("@nombre", esp.Nombre);
+                datos.setearParametro("@descripcion", esp.Descripcion ?? (object)DBNull.Value);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void modificar(Especialidad esp)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    UPDATE Especialidad SET
+                        Nombre_Especialidad = @nombre,
+                        Descripcion = @descripcion
+                    WHERE Id_Especialidad = @id");
+                datos.setearParametro("@nombre", esp.Nombre);
+                datos.setearParametro("@descripcion", esp.Descripcion ?? (object)DBNull.Value);
+                datos.setearParametro("@id", esp.Id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void eliminar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("DELETE FROM Especialidad WHERE Id_Especialidad = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
     }
 }

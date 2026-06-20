@@ -10,6 +10,7 @@ namespace TPI.Dominio
 
         public Especialidad Especialidad { get; set; }
 
+        public List<HorarioMedico> Horarios { get; set; }
         public string imagenURL { get; set;  }
 
     }

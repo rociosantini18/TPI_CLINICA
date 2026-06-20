@@ -94,6 +94,18 @@ CREATE TABLE Turno (
 );
 GO
 
+CREATE TABLE HorarioMedico (
+    Id_Horario   INT IDENTITY(1,1) PRIMARY KEY,
+    Id_Medico    INT NOT NULL,
+    DiaSemana    int NOT NULL,
+    HoraInicio   TIME NOT NULL,
+    HoraFin      TIME NOT NULL,
+    FOREIGN KEY (Id_Medico) REFERENCES Medico(Id_Medico)
+);
+GO
+
+drop table HorarioMedico
+
 INSERT INTO Rol(NombreRol)
 VALUES
 ('Administrador'),
@@ -127,6 +139,8 @@ VALUES
 
 INSERT INTO Perfil (Id_Rol, NombreUsuario, Contraseña, Activo)
 VALUES
+(3,'olga','12345678',1);
+(2,'ana','12345678',1);
 (1,'admin','Admin123',1),
 (2,'recepcion','Recep123',1),
 (3,'juanp','Paciente123',1),
@@ -155,8 +169,15 @@ VALUES
 GO
 
 SELECT * FROM Persona;
+SELECT * FROM Medico;
 SELECT * FROM Rol;
 SELECT * FROM Perfil;
 SELECT * FROM ObraSocial;
 SELECT * FROM Paciente;
+SELECT * FROM HorarioMedico;
 
+select 
+(p.Apellido +' '+ p.Nombre) as 'Nombre completo',
+m.Id_Medico, m.Id_Persona
+from Persona p
+inner join Medico m on p.Id_Persona = m.Id_Persona

@@ -69,6 +69,7 @@
     <Content Include="GestionarTurnos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
+    <Content Include="HorariosMedicos.aspx" />
     <Content Include="Imagenes\clinica medica.jpg" />
     <Content Include="Imagenes\clinico medico.JPG" />
     <Content Include="Imagenes\dermatologa.JPG" />
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dominio\Empleado.cs" />
+    <Compile Include="Dominio\HorarioMedico.cs" />
     <Compile Include="Dominio\Perfil.cs" />
     <Compile Include="Dominio\Turno.cs" />
     <Compile Include="Dominio\Medico.cs" />
@@ -120,6 +122,13 @@
     </Compile>
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HorariosMedicos.aspx.cs">
+      <DependentUpon>HorariosMedicos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HorariosMedicos.aspx.designer.cs">
+      <DependentUpon>HorariosMedicos.aspx</DependentUpon>
     </Compile>
     <Compile Include="InicioSesion.aspx.cs">
       <DependentUpon>InicioSesion.aspx</DependentUpon>
@@ -152,6 +161,7 @@
     <Compile Include="Negocio\AccesoDatos.cs" />
     <Compile Include="Negocio\EmpleadoNegocio.cs" />
     <Compile Include="Negocio\EspecialidadNegocio.cs" />
+    <Compile Include="Negocio\HorarioMedicoNegocio.cs" />
     <Compile Include="Negocio\LoginNegocio.cs" />
     <Compile Include="Negocio\MedicoNegocio.cs" />
     <Compile Include="Negocio\PacienteNegocio.cs" />

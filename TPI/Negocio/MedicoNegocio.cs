@@ -20,10 +20,11 @@ namespace TPI.Negocio
                 datos.setearConsulta(@"
                     SELECT m.Id_Medico, per.Dni, per.Nombre, per.Apellido,
                            per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
-			               m.Matricula, m.Imagen_URL, esp.Id_Especialidad
+			               m.Matricula, m.Imagen_URL, esp.Id_Especialidad,
+                           esp.Id_Especialidad, esp.Nombre_Especialidad, esp.Descripcion
                     FROM Medico m
-                    INNER JOIN Persona per ON p.Id_Persona = per.Id_Persona
-		            LEFT JOIN Especialidad esp ON e.Id_Especialidad = esp.Id_Especialidad");
+                    INNER JOIN Persona per ON m.Id_Persona = per.Id_Persona
+		            LEFT JOIN Especialidad esp ON m.Id_Especialidad = esp.Id_Especialidad");
 
                 datos.ejecutarLectura();
 
@@ -31,7 +32,7 @@ namespace TPI.Negocio
                 {
                     Medico aux = new Medico();
 
-                    aux.Id = (int)datos.Lector["Id_Paciente"];
+                    aux.Id = (int)datos.Lector["Id_Medico"];
                     aux.Dni = (string)datos.Lector["Dni"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Apellido = (string)datos.Lector["Apellido"];
@@ -40,8 +41,10 @@ namespace TPI.Negocio
                     aux.Direccion = (string)datos.Lector["Direccion"];
                     aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
                     aux.Matricula = (string)datos.Lector["Matricula"];
-                    aux.Especialidad.Nombre = (string)datos.Lector["Nombre_Especialidad"];
-                    aux.Especialidad.Descripcion = (string)datos.Lector["Descripcion"];
+                    aux.Especialidad = new Especialidad();
+                    aux.Especialidad.Id = (int)datos.Lector["Id_Especialidad"];
+                    aux.Especialidad.Nombre = datos.Lector["Nombre_Especialidad"] as string;
+                    aux.Especialidad.Descripcion = datos.Lector["Descripcion"] as string;
 
                     lista.Add(aux);
                 }
@@ -83,7 +86,6 @@ namespace TPI.Negocio
         {
             AccesoDatos datos = new AccesoDatos();
             int idPersona = 0;
-            int idPerfil = 0;
 
             try
             {
