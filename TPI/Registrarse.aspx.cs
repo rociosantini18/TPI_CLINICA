@@ -50,7 +50,7 @@ namespace TPI
                 pac.Perfil.Id = 2;
 
                 PacienteNegocio negocio = new PacienteNegocio();
-                negocio.agregar(pac); 
+                negocio.agregar(pac);
 
                 lblError.Visible = true;
                 lblError.CssClass = "text-success mb-3 d-block";
@@ -63,7 +63,7 @@ namespace TPI
                 lblError.Text = "Error: " + ex.Message;
             }
         }
-    
+
         protected void cvFecha_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (string.IsNullOrWhiteSpace(args.Value))

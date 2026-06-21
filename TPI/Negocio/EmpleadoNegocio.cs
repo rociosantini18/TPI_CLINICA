@@ -8,7 +8,7 @@ namespace TPI.Negocio
 {
     public class EmpleadoNegocio
     {
-        public List<Empleado> listar()
+        public List<Empleado> listarEmpleados()
         {
             List<Empleado> lista = new List<Empleado>();
 
@@ -22,8 +22,8 @@ namespace TPI.Negocio
                            pf.Id_Perfil, pf.NombreUsuario, pf.Contraseña, pf.Activo,
                            r.NombreRol
                     FROM Empleado e
-                    INNER JOIN Persona per ON p.Id_Persona = per.Id_Persona
-                    INNER JOIN Perfil pf ON p.Id_Perfil = pf.Id_Perfil
+                    INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
+                    INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
                     INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol");
 
                 datos.ejecutarLectura();
@@ -185,5 +185,124 @@ namespace TPI.Negocio
                 datos.CerrarConexion();
             }
         }
+
+        public List<Empleado> listarRecepcionista()
+        {
+            List<Empleado> lista = new List<Empleado>();
+
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT e.Id_Empleado, per.Dni, per.Nombre, per.Apellido,
+                           per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
+                           pf.Id_Perfil, pf.NombreUsuario, pf.Contraseña, pf.Activo,
+                           r.NombreRol
+                    FROM Empleado e
+                    INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
+                    INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
+                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol");
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Empleado aux = new Empleado();
+
+                    aux.Id = (int)datos.Lector["Id_Empleado"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Email = (string)datos.Lector["Email"];
+                    aux.Telefono = (string)datos.Lector["Telefono"];
+                    aux.Direccion = (string)datos.Lector["Direccion"];
+                    aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+
+                    aux.Perfil = new Perfil();
+                    aux.Perfil.Id = (int)datos.Lector["Id_Perfil"];
+                    aux.Perfil.NombreUsuario = (string)datos.Lector["NombreUsuario"];
+                    aux.Perfil.Contraseña = (string)datos.Lector["Contraseña"];
+                    aux.Perfil.Activo = (bool)datos.Lector["Activo"];
+                    aux.Perfil.Rol = (string)datos.Lector["NombreRol"];
+
+                    if (aux.Perfil.Rol == "Recepcionista")
+                    {
+                        lista.Add(aux);
+                    }
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+
+
+        public List<Empleado> listarAdministradores()
+        {
+            List<Empleado> lista = new List<Empleado>();
+
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT e.Id_Empleado, per.Dni, per.Nombre, per.Apellido,
+                           per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
+                           pf.Id_Perfil, pf.NombreUsuario, pf.Contraseña, pf.Activo,
+                           r.NombreRol
+                    FROM Empleado e
+                    INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
+                    INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
+                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol");
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Empleado aux = new Empleado();
+
+                    aux.Id = (int)datos.Lector["Id_Empleado"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Email = (string)datos.Lector["Email"];
+                    aux.Telefono = (string)datos.Lector["Telefono"];
+                    aux.Direccion = (string)datos.Lector["Direccion"];
+                    aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+
+                    aux.Perfil = new Perfil();
+                    aux.Perfil.Id = (int)datos.Lector["Id_Perfil"];
+                    aux.Perfil.NombreUsuario = (string)datos.Lector["NombreUsuario"];
+                    aux.Perfil.Contraseña = (string)datos.Lector["Contraseña"];
+                    aux.Perfil.Activo = (bool)datos.Lector["Activo"];
+                    aux.Perfil.Rol = (string)datos.Lector["NombreRol"];
+
+                    if (aux.Perfil.Rol == "Administrador")
+                    {
+                        lista.Add(aux);
+                    }
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
     }
 }

@@ -110,7 +110,7 @@ namespace TPI.Negocio
                 datos = new AccesoDatos();
                 datos.setearConsulta(@"
                 INSERT INTO Medico (Id_Persona, Matricula, Id_Especialidad, Imagen_URL)
-                VALUES (@idPersona, @matricula, @idEspecialidad, @imgURL");
+                VALUES (@idPersona, @matricula, @idEspecialidad, @imgURL)");
 
                 datos.setearParametro("@idPersona", idPersona);
                 datos.setearParametro("@matricula", med.Matricula);

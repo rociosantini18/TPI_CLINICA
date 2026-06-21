@@ -65,7 +65,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminGestionAdministradores.aspx" />
+    <Content Include="AdminGestionMedicos.aspx" />
+    <Content Include="AdminGestionRecepcionistas.aspx" />
     <Content Include="Especialidades.aspx" />
+    <Content Include="AdminGestionPacientes.aspx" />
     <Content Include="GestionarTurnos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
@@ -84,6 +88,7 @@
     <Content Include="NuevoTurnoRecepcionista.aspx" />
     <Content Include="PanelRecepcionista.aspx" />
     <Content Include="PruebaBD.aspx" />
+    <Content Include="RegistrarMedico.aspx" />
     <Content Include="Registrarse.aspx" />
     <Content Include="SacarTurno.aspx" />
     <Content Include="SobreNosotros.aspx" />
@@ -91,6 +96,27 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminGestionAdministradores.aspx.cs">
+      <DependentUpon>AdminGestionAdministradores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGestionAdministradores.aspx.designer.cs">
+      <DependentUpon>AdminGestionAdministradores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGestionMedicos.aspx.cs">
+      <DependentUpon>AdminGestionMedicos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGestionMedicos.aspx.designer.cs">
+      <DependentUpon>AdminGestionMedicos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGestionRecepcionistas.aspx.cs">
+      <DependentUpon>AdminGestionRecepcionistas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGestionRecepcionistas.aspx.designer.cs">
+      <DependentUpon>AdminGestionRecepcionistas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Dominio\Empleado.cs" />
     <Compile Include="Dominio\HorarioMedico.cs" />
     <Compile Include="Dominio\Perfil.cs" />
@@ -105,6 +131,13 @@
     </Compile>
     <Compile Include="Especialidades.aspx.designer.cs">
       <DependentUpon>Especialidades.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGestionPacientes.aspx.cs">
+      <DependentUpon>AdminGestionPacientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGestionPacientes.aspx.designer.cs">
+      <DependentUpon>AdminGestionPacientes.aspx</DependentUpon>
     </Compile>
     <Compile Include="GestionarTurnos.aspx.cs">
       <DependentUpon>GestionarTurnos.aspx</DependentUpon>
@@ -187,6 +220,13 @@
     </Compile>
     <Compile Include="PruebaBD.aspx.designer.cs">
       <DependentUpon>PruebaBD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrarMedico.aspx.cs">
+      <DependentUpon>RegistrarMedico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegistrarMedico.aspx.designer.cs">
+      <DependentUpon>RegistrarMedico.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registrarse.aspx.cs">
       <DependentUpon>Registrarse.aspx</DependentUpon>
