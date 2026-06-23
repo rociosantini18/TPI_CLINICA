@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div class="container-fluid text-center py-5" style="background-color: #f8fff8;">
+<div class="container-fluid text-center py-5" style="background-color: #f8fff8;">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h1 class="display-4 fw-bold">Gestión de Turnos</h1>
@@ -16,32 +16,21 @@
 
         <div class="row g-3 mb-4 align-items-end">
             <div class="col-md-3">
-                <asp:Label runat="server" Text="Médico:" CssClass="form-label fw-semibold"></asp:Label>
-                <asp:DropDownList ID="ddlFiltroMedico" runat="server" CssClass="form-select">
-                    <asp:ListItem Text="Todos los médicos" Value="" />
-                </asp:DropDownList>
+                <asp:Label runat="server" Text="Médico:" CssClass="form-label fw-semibold" />
+                <asp:DropDownList ID="ddlFiltroMedico" runat="server" CssClass="form-select" />
             </div>
             <div class="col-md-3">
-                <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold"></asp:Label>
-                <asp:DropDownList ID="ddlFiltroEspecialidad" runat="server" CssClass="form-select">
-                    <asp:ListItem Text="Todas" Value="" />
-                    <asp:ListItem Text="Nutrición" Value="1" />
-                    <asp:ListItem Text="Psicología" Value="2" />
-                    <asp:ListItem Text="Clínica Médica" Value="3" />
-                    <asp:ListItem Text="Ginecología" Value="4" />
-                    <asp:ListItem Text="Dermatología" Value="5" />
-                    <asp:ListItem Text="Pediatría" Value="6" />
-                </asp:DropDownList>
+                <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold" />
+                <asp:DropDownList ID="ddlFiltroEspecialidad" runat="server" CssClass="form-select" />
             </div>
-            <div class="col-md-3">
-                <asp:Label runat="server" Text="Estado:" CssClass="form-label fw-semibold"></asp:Label>
+            <div class="col-md-2">
+                <asp:Label runat="server" Text="Estado:" CssClass="form-label fw-semibold" />
                 <asp:DropDownList ID="ddlFiltroEstado" runat="server" CssClass="form-select">
-                    <asp:ListItem Text="Todos" Value="" />
+                    <asp:ListItem Text="Todos los estados" Value="" />
                     <asp:ListItem Text="Nuevo" Value="Nuevo" />
                     <asp:ListItem Text="Reprogramado" Value="Reprogramado" />
                     <asp:ListItem Text="Cancelado" Value="Cancelado" />
-                    <asp:ListItem Text="No Asistió" Value="NoAsistio" />
-                    <asp:ListItem Text="Cerrado" Value="Cerrado" />
+                    <asp:ListItem Text="Atendido" Value="Atendido" />
                 </asp:DropDownList>
             </div>
             <div class="col-md-3">
@@ -50,9 +39,11 @@
             </div>
             <div class="col-md-auto">
                 <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar"
-                    CssClass="btn" BackColor="LightGreen" BorderColor="LightGreen" />
+                    OnClick="btnFiltrar_Click"
+                    CssClass="btn btn-success" />
                 <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar"
-                    CssClass="btn btn-outline-secondary ms-2" />
+                    OnClick="btnLimpiar_Click"
+                    CssClass="btn btn-outline-secondary" />
             </div>
         </div>
 
@@ -71,39 +62,55 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#0001</td>
-                        <td>Vicente, Melina</td>
-                        <td>Dr. García</td>
-                        <td>Clínica Médica</td>
-                        <td>10/06/2025</td>
-                        <td>10:00 - 11:00</td>
-                        <td><span class="badge text-bg-success">Nuevo</span></td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-outline-warning">Reprogramar</a>
-                            <a href="#" class="btn btn-sm btn-outline-danger">Cancelar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#0002</td>
-                        <td>Gomez, Juan</td>
-                        <td>Dra. López</td>
-                        <td>Dermatología</td>
-                        <td>11/06/2025</td>
-                        <td>15:00 - 16:00</td>
-                        <td><span class="badge text-bg-warning text-dark">Reprogramado</span></td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-outline-warning">Reprogramar</a>
-                            <a href="#" class="btn btn-sm btn-outline-danger">Cancelar</a>
-                        </td>
-                    </tr>
+                    <asp:Repeater ID="rptTurnos" runat="server" OnItemCommand="rptTurnos_ItemCommand">
+                        <ItemTemplate>
+                            <tr>
+                                <td><%# Eval("Numero") %></td>
+                                <td><%# Eval("Paciente.Apellido") %>, <%# Eval("Paciente.Nombre") %></td>
+                                <td>Dr. <%# Eval("Medico.Apellido") %></td>
+                                <td><%# Eval("Especialidad.Nombre") %></td>
+                                <td><%# ((DateTime)Eval("Fecha")).ToString("dd/MM/yyyy") %></td>
+                                <td>
+                                    <%# ((TimeSpan)Eval("HoraInicio")).ToString(@"hh\:mm") %> -
+                                    <%# ((TimeSpan)Eval("HoraFin")).ToString(@"hh\:mm") %>
+                                </td>
+                                <td>
+                                    <span class='<%# ObtenerCssBadge((string)Eval("Estado")) %>'>
+                                        <%# Eval("Estado") %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <asp:Button CommandName="Reprogramar"
+                                        CommandArgument='<%# Eval("Id") %>'
+                                        runat="server" Text="Reprogramar"
+                                        CssClass="btn btn-sm btn-outline-warning"
+                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Atendido" %>' />
+                                    <asp:Button CommandName="Cancelar"
+                                        CommandArgument='<%# Eval("Id") %>'
+                                        runat="server" Text="Cancelar"
+                                        CssClass="btn btn-sm btn-outline-danger"
+                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Atendido" %>' />
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            <asp:Panel ID="pnlSinResultados" runat="server"
+                                Visible='<%# rptTurnos.Items.Count == 0 %>'>
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted py-4">
+                                        No se encontraron turnos con los filtros aplicados.
+                                    </td>
+                                </tr>
+                            </asp:Panel>
+                        </FooterTemplate>
+                    </asp:Repeater>
                 </tbody>
             </table>
         </div>
 
         <div class="text-end mt-3">
             <asp:Button ID="btnNuevoTurno" runat="server" Text="+ Nuevo Turno"
-                CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen"
+                CssClass="btn btn-lg btn-success"
                 PostBackUrl="NuevoTurnoRecepcionista.aspx" />
         </div>
 

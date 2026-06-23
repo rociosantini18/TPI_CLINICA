@@ -146,7 +146,7 @@ namespace TPI.Negocio
                         Direccion = @direccion,
                         FechaNacimiento= @fechaNac
                     WHERE Id_Persona = (
-                        SELECT Id_Persona FROM Paciente WHERE Id_Medico = @id)");
+                        SELECT Id_Persona FROM Medico WHERE Id_Medico = @id)");
 
                 datos.setearParametro("@dni", med.Dni);
                 datos.setearParametro("@nombre", med.Nombre);
