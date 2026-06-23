@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using TPI.Negocio;
 
 namespace TPI
 {
@@ -11,7 +12,12 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                repEspecialidades.DataSource = negocio.listar();
+                repEspecialidades.DataBind();
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace TPI.Negocio
 
             try
             {
-                datos.setearConsulta("SELECT Id_Especialidad, Nombre_Especialidad, Descripcion FROM Especialidad");
+                datos.setearConsulta("SELECT Id_Especialidad, Nombre_Especialidad, Descripcion, Imagen_URL FROM Especialidad");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -24,6 +24,8 @@ namespace TPI.Negocio
                     esp.Id = (int)datos.Lector["Id_Especialidad"];
                     esp.Nombre = (string)datos.Lector["Nombre_Especialidad"];
                     esp.Descripcion = datos.Lector["Descripcion"] as string;
+                    if (!(datos.Lector["Imagen_URL"] is DBNull))
+                        esp.ImagenURL = (string)datos.Lector["Imagen_URL"];
                     lista.Add(esp);
                 }
 

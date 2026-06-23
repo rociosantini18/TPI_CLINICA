@@ -38,6 +38,7 @@ CREATE TABLE Especialidad (
     Descripcion VARCHAR(200)
 );
 GO
+ALTER TABLE Especialidad ADD Imagen_URL VARCHAR(255);
 
 CREATE TABLE ObraSocial (
     Id_ObraSocial INT IDENTITY(1,1) PRIMARY KEY,
@@ -122,6 +123,57 @@ VALUES
 ('Pediatría');
 GO
 
+UPDATE Especialidad 
+SET Imagen_URL = 'https://centromedicoabc.com/wp-content/uploads/2023/05/elegir-nutricionista-1.webp' 
+WHERE Id_Especialidad = 1; -- Nutrición
+
+UPDATE Especialidad 
+SET Imagen_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7AH8KsiMyBAZlm0T_VfORxLhNtFWvv8HtJc-MVAM6CpFb3oW7gvjc75O9&s=10' 
+WHERE Id_Especialidad = 2; -- Psicología
+
+UPDATE Especialidad 
+SET Imagen_URL = 'https://i.pinimg.com/236x/bc/98/6c/bc986c077f35ccad9bcd07a7062b11b7.jpg' 
+WHERE Id_Especialidad = 3; -- Médico Clínico
+
+UPDATE Especialidad 
+SET Imagen_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5dwEoEyzNQ9vs_YTVV4PqgDTB8E03K1Av--YswiGEnhc1iwf2y3fSDBI&s=10' 
+WHERE Id_Especialidad = 4; -- Ginecología
+
+UPDATE Especialidad 
+SET Imagen_URL = 'https://s3.sa-east-1.amazonaws.com/doctoraliar.com/doctor/041352/041352c0784a6db1267757a25f4370ee_large.jpg' 
+WHERE Id_Especialidad = 5; -- Dermatología
+
+UPDATE Especialidad 
+SET Imagen_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRMdF9mJKd4_A8TKvdhzr5rDgpAHzkkkTBkuw7vS3kske1FanQGBMbA319&s=10' 
+WHERE Id_Especialidad = 6; -- Pediatría
+GO
+
+UPDATE Especialidad 
+SET Descripcion = 'Asesoramiento en alimentación saludable, dietas y buena relacion con las comidas.' 
+WHERE Id_Especialidad = 1; -- Nutrición
+
+UPDATE Especialidad 
+SET Descripcion = 'Atención de la salud mental, tratamiento de ansiedad, depresión y acompañamiento terapéutico.' 
+WHERE Id_Especialidad = 2; -- Psicología
+
+UPDATE Especialidad 
+SET Descripcion = 'Diagnóstico y tratamiento de enfermedades generales, controles de salud y derivaciones a especialistas.' 
+WHERE Id_Especialidad = 3; -- Médico Clínico
+
+UPDATE Especialidad 
+SET Descripcion = 'Salud reproductiva femenina, controles ginecológicos, embarazo y seguimiento hormonal.' 
+WHERE Id_Especialidad = 4; -- Ginecología
+
+UPDATE Especialidad 
+SET Descripcion = 'Diagnóstico y tratamiento de enfermedades de la piel, cabello y uñas. Control de lunares y tratamientos estéticos.' 
+WHERE Id_Especialidad = 5; -- Dermatología
+
+UPDATE Especialidad 
+SET Descripcion = 'Atención médica integral para bebés, niños y adolescentes. Controles de crecimiento y vacunación.' 
+WHERE Id_Especialidad = 6; -- Pediatría
+GO
+
+
 INSERT INTO ObraSocial(Nombre_ObraSocial)
 VALUES
 ('Swiss Medical'),
@@ -183,6 +235,8 @@ SELECT * FROM Empleado;
 SELECT * FROM ObraSocial;
 SELECT * FROM Paciente;
 SELECT * FROM HorarioMedico;
+Select * from turno;
+select * from Especialidad;
 
 select 
 (p.Apellido +' '+ p.Nombre) as 'Nombre completo',
