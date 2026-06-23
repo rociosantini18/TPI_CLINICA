@@ -41,10 +41,11 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    INSERT INTO Especialidad (Nombre_Especialidad, Descripcion)
+                    INSERT INTO Especialidad (Nombre_Especialidad, Descripcion, Imagen_URL)
                     VALUES (@nombre, @descripcion)");
                 datos.setearParametro("@nombre", esp.Nombre);
                 datos.setearParametro("@descripcion", esp.Descripcion ?? (object)DBNull.Value);
+                datos.setearParametro("@imagenURL", esp.ImagenURL ?? (object)DBNull.Value);
                 datos.ejecutarAccion();
             }
             catch (Exception ex) { throw ex; }
