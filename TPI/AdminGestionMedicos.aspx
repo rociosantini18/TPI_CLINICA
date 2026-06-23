@@ -27,11 +27,64 @@
         </div>
         <div class="row g-3 justify-content-center">
             <div class="col-md-3">
-                <asp:Button ID="btnAgregarMedico" runat="server" Text="Agregar Medico Nuevo"
+                <asp:Button ID="btnAgregarMedico" runat="server" Text="+ Agregar Medico Nuevo"
                     CssClass="btn btn-primary w-100 py-3 fs-5"
                     PostBackUrl="~/RegistrarMedico.aspx" />
             </div>
+        <div class="col-md-3">
+                <asp:Button ID="btnMostrarFormEspecialidad" runat="server"
+                    Text="+ Agregar Especialidad"
+                    CssClass="btn btn-success w-100 py-3 fs-5"
+                    OnClick="btnMostrarFormEspecialidad_Click" />
+            </div>
         </div>
+    </div>
+     <%-- Tabla de especialidadesssss --%>
+            <asp:Panel ID="pnlNuevaEspecialidad" runat="server" Visible="false"
+            CssClass="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 p-4 text-start">
+                    <h5 class="fw-bold mb-3">Nueva Especialidad</h5>
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
+                        <asp:TextBox ID="txtNombreEsp" runat="server" CssClass="form-control"
+                            placeholder="Ej: Cardiología" />
+                        <asp:RequiredFieldValidator runat="server"
+                            ControlToValidate="txtNombreEsp"
+                            ValidationGroup="vgEspecialidad"
+                            ErrorMessage="El nombre es obligatorio."
+                            CssClass="text-danger small" Display="Dynamic" />
+                    </div>
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" Text="Descripción:" CssClass="form-label fw-semibold" />
+                        <asp:TextBox ID="txtDescripcionEsp" runat="server" CssClass="form-control"
+                            TextMode="MultiLine" Rows="3"
+                            placeholder="Descripción breve de la especialidad" />
+                    </div>
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" Text="URL de imagen:" CssClass="form-label fw-semibold" />
+                        <asp:TextBox ID="txtImagenEsp" runat="server" CssClass="form-control"
+                            placeholder="Ej: Imagenes/cardiologia.jpg" />
+                    </div>
+
+                    <asp:Label ID="lblMensajeEsp" runat="server" CssClass="text-success fw-semibold" />
+
+                    <div class="d-flex gap-2 mt-2">
+                        <asp:Button ID="btnGuardarEsp" runat="server" Text="Guardar"
+                            CssClass="btn btn-success"
+                            ValidationGroup="vgEspecialidad"
+                            OnClick="btnGuardarEsp_Click" />
+                        <asp:Button ID="btnCancelarEsp" runat="server" Text="Cancelar"
+                            CssClass="btn btn-outline-secondary"
+                            CausesValidation="false"
+                            OnClick="btnCancelarEsp_Click" />
+                    </div>
+                </div>
+            </div>
+        </asp:Panel>
     </div>
 
     <div class="container my-5">
