@@ -18,9 +18,11 @@
             <ItemTemplate>
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm border-0 text-center p-4">
-                        <img src='<%# Eval("ImagenUrl") %>' alt='<%# Eval("Nombre") %>' class="rounded-circle mx-auto mb-3" style="width: 120px; height: 120px; object-fit: cover;" />
-                        <h5 class="fw-bold"><%# Eval("Nombre") %></h5>
-                        <p class="text-muted"><%# Eval("Descripcion") %></p>
+                        <img src='<%# Eval("imagenURL") %>' alt='<%# Eval("Especialidad.Nombre") %>'
+                            class="rounded-circle mx-auto mb-3"
+                            style="width: 120px; height: 120px; object-fit: cover;" />
+                        <h5 class="fw-bold"><%# Eval("Especialidad.Nombre") %></h5>
+                        <p class="text-muted"><%# Eval("Especialidad.Descripcion") %></p>
                     </div>
                 </div>
             </ItemTemplate>

@@ -13,11 +13,24 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+                cargarMedicos();
+        }
+        private void cargarMedicos()
+        {
             MedicoNegocio negocio = new MedicoNegocio();
             dgvMedicos.DataSource = negocio.listar();
             dgvMedicos.DataBind();
         }
-
+        protected void dgvMedicos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Eliminar")
+            {
+                MedicoNegocio negocio = new MedicoNegocio();
+                negocio.eliminar(int.Parse(e.CommandArgument.ToString()));
+                cargarMedicos();
+            }
+        }
         protected void btnMostrarFormEspecialidad_Click(object sender, EventArgs e)
         {
             pnlNuevaEspecialidad.Visible = true;
@@ -31,13 +44,11 @@ namespace TPI
             Especialidad esp = new Especialidad();
             esp.Nombre = txtNombreEsp.Text.Trim();
             esp.Descripcion = string.IsNullOrWhiteSpace(txtDescripcionEsp.Text) ? null : txtDescripcionEsp.Text.Trim();
-            esp.ImagenURL = string.IsNullOrWhiteSpace(txtImagenEsp.Text) ? null : txtImagenEsp.Text.Trim();
 
             negocio.agregar(esp);
 
             txtNombreEsp.Text = "";
             txtDescripcionEsp.Text = "";
-            txtImagenEsp.Text = "";
             lblMensajeEsp.Text = "Especialidad guardada correctamente.";
 
             pnlNuevaEspecialidad.Visible = true;
@@ -47,7 +58,6 @@ namespace TPI
         {
             txtNombreEsp.Text = "";
             txtDescripcionEsp.Text = "";
-            txtImagenEsp.Text = "";
             lblMensajeEsp.Text = "";
             pnlNuevaEspecialidad.Visible = false;
         }

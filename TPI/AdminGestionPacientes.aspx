@@ -38,7 +38,7 @@
 
     <div class="container my-5">
         <div class="row g-4 justify-content-center">
-            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False">
+            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False"  OnRowCommand="dgvPacientes_RowCommand">
                 <Columns>
                     <asp:BoundField HeaderText="DNI" DataField="DNI" />
                     <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
@@ -48,6 +48,18 @@
                     <asp:BoundField HeaderText="Fecha de Nacimiento" DataField="FechaNacimiento" />
                     <asp:BoundField HeaderText="Usuario" DataField="Perfil.NombreUsuario" />
                     <asp:BoundField HeaderText="Contraseña" DataField="Perfil.Contraseña" />
+
+                    <asp:TemplateField HeaderText="">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server"
+                            CommandName="Eliminar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            CssClass="btn btn-sm btn-outline-danger"
+                            OnClientClick="return confirm('¿Seguro que querés eliminar este paciente?');">
+                            Eliminar
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 </Columns>
             </asp:GridView>
 

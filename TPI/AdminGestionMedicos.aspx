@@ -64,11 +64,6 @@
                             placeholder="Descripción breve de la especialidad" />
                     </div>
 
-                    <div class="mb-3">
-                        <asp:Label runat="server" Text="URL de imagen:" CssClass="form-label fw-semibold" />
-                        <asp:TextBox ID="txtImagenEsp" runat="server" CssClass="form-control"
-                            placeholder="Ej: Imagenes/cardiologia.jpg" />
-                    </div>
 
                     <asp:Label ID="lblMensajeEsp" runat="server" CssClass="text-success fw-semibold" />
 
@@ -89,7 +84,7 @@
 
     <div class="container my-5">
         <div class="row g-4 justify-content-center">
-            <asp:GridView runat="server" ID="dgvMedicos" CssClass="table table-hover table-responsive" AutoGenerateColumns="False">
+            <asp:GridView runat="server" ID="dgvMedicos" CssClass="table table-hover table-responsive" AutoGenerateColumns="False"  OnRowCommand="dgvMedicos_RowCommand">
                 <Columns>
                     <asp:BoundField HeaderText="DNI" DataField="DNI" />
                     <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
@@ -97,6 +92,18 @@
                     <asp:BoundField HeaderText="Matricula" DataField="Matricula" />
                     <asp:BoundField HeaderText="Especialidad" DataField="Especialidad.Nombre" />
                     <asp:BoundField HeaderText="Fecha de Nacimiento" DataField="FechaNacimiento" />
+
+                    <asp:TemplateField HeaderText="">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server"
+                            CommandName="Eliminar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            CssClass="btn btn-sm btn-outline-danger"
+                            OnClientClick="return confirm('¿Seguro que querés dar de baja este médico?');">
+                            Eliminar
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </div>

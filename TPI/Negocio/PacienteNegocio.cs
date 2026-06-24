@@ -29,7 +29,8 @@ namespace TPI.Negocio
                     INNER JOIN Persona per ON p.Id_Persona = per.Id_Persona
                     LEFT JOIN ObraSocial os ON p.Id_ObraSocial = os.Id_ObraSocial
                     INNER JOIN Perfil pf ON p.Id_Perfil = pf.Id_Perfil
-                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol");
+                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol
+                     WHERE pf.Activo = 1");
 
                 datos.ejecutarLectura();
 
@@ -72,21 +73,18 @@ namespace TPI.Negocio
         public void eliminar(int id)
         {
             AccesoDatos datos = new AccesoDatos();
-
             try
             {
-                datos.setearConsulta("DELETE FROM Paciente WHERE Id_Paciente = @id");
+                datos.setearConsulta(@"
+            UPDATE Perfil SET Activo = 0
+            WHERE Id_Perfil = (
+                SELECT Id_Perfil FROM Paciente WHERE Id_Paciente = @id
+            )");
                 datos.setearParametro("@id", id);
                 datos.ejecutarAccion();
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
         }
 
 

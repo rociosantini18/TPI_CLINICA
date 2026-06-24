@@ -15,7 +15,7 @@ namespace TPI
             if (!IsPostBack)
             {
                 EspecialidadNegocio negocio = new EspecialidadNegocio();
-                repEspecialidades.DataSource = negocio.listar();
+                repEspecialidades.DataSource = negocio.listarConMedicosActivos();
                 repEspecialidades.DataBind();
             }
         }

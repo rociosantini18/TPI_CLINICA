@@ -24,7 +24,8 @@ namespace TPI.Negocio
                            esp.Id_Especialidad, esp.Nombre_Especialidad, esp.Descripcion
                     FROM Medico m
                     INNER JOIN Persona per ON m.Id_Persona = per.Id_Persona
-		            LEFT JOIN Especialidad esp ON m.Id_Especialidad = esp.Id_Especialidad");
+		            LEFT JOIN Especialidad esp ON m.Id_Especialidad = esp.Id_Especialidad
+                    WHERE m.Activo = 1");
 
                 datos.ejecutarLectura();
 
@@ -67,7 +68,7 @@ namespace TPI.Negocio
 
             try
             {
-                datos.setearConsulta("DELETE FROM Medico WHERE Id_Medico = @id");
+                datos.setearConsulta("UPDATE Medico SET Activo = 0 WHERE Id_Medico = @id");
                 datos.setearParametro("@id", id);
                 datos.ejecutarAccion();
             }

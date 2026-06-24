@@ -13,9 +13,24 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+                cargarPacientes();
+        }
+
+        private void cargarPacientes()
+        {
             PacienteNegocio negocio = new PacienteNegocio();
             dgvPacientes.DataSource = negocio.listar();
             dgvPacientes.DataBind();
+        }
+        protected void dgvPacientes_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Eliminar")
+            {
+                PacienteNegocio negocio = new PacienteNegocio();
+                negocio.eliminar(int.Parse(e.CommandArgument.ToString()));
+                cargarPacientes(); 
+            }
         }
     }
 }
