@@ -25,12 +25,57 @@ namespace TPI
         }
         protected void dgvPacientes_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            int id = int.Parse(e.CommandArgument.ToString());
+            PacienteNegocio negocio = new PacienteNegocio();
+
             if (e.CommandName == "Eliminar")
             {
-                PacienteNegocio negocio = new PacienteNegocio();
-                negocio.eliminar(int.Parse(e.CommandArgument.ToString()));
-                cargarPacientes(); 
+                negocio.eliminar(id);
+                cargarPacientes();
+                pnlEditarPaciente.Visible = false;
             }
+            else if (e.CommandName == "Modificar")
+            {
+                Paciente pac = negocio.listar().FirstOrDefault(p => p.Id == id);
+                if (pac != null)
+                {
+                    hfIdPaciente.Value = pac.Id.ToString();
+                    txtEditDni.Text = pac.Dni;
+                    txtEditNombre.Text = pac.Nombre;
+                    txtEditApellido.Text = pac.Apellido;
+                    txtEditEmail.Text = pac.Email;
+                    txtEditTelefono.Text = pac.Telefono;
+                    txtEditDireccion.Text = pac.Direccion;
+                    txtEditFechaNac.Text = pac.FechaNacimiento.ToString("yyyy-MM-dd");
+                    lblMensajePac.Text = "";
+                    pnlEditarPaciente.Visible = true;
+                }
+            }
+        }
+        protected void btnGuardarPac_Click(object sender, EventArgs e)
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+
+            Paciente pac = new Paciente();
+            pac.Id = int.Parse(hfIdPaciente.Value);
+            pac.Dni = txtEditDni.Text.Trim();
+            pac.Nombre = txtEditNombre.Text.Trim();
+            pac.Apellido = txtEditApellido.Text.Trim();
+            pac.Email = txtEditEmail.Text.Trim();
+            pac.Telefono = txtEditTelefono.Text.Trim();
+            pac.Direccion = txtEditDireccion.Text.Trim();
+            pac.FechaNacimiento = DateTime.Parse(txtEditFechaNac.Text);
+
+            negocio.modificar(pac);
+
+            lblMensajePac.Text = "Paciente modificado correctamente.";
+            cargarPacientes();
+        }
+
+        protected void btnCancelarPac_Click(object sender, EventArgs e)
+        {
+            pnlEditarPaciente.Visible = false;
+            lblMensajePac.Text = "";
         }
     }
 }

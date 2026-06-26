@@ -138,16 +138,21 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    UPDATE Persona SET
-                        Dni = @dni,
-                        Nombre = @nombre,
-                        Apellido = @apellido,
-                        Email = @email,
-                        Telefono = @telefono,
-                        Direccion = @direccion,
-                        FechaNacimiento= @fechaNac
-                    WHERE Id_Persona = (
-                        SELECT Id_Persona FROM Medico WHERE Id_Medico = @id)");
+            UPDATE per SET
+                per.Dni = @dni,
+                per.Nombre = @nombre,
+                per.Apellido = @apellido,
+                per.Email = @email,
+                per.Telefono = @telefono,
+                per.Direccion = @direccion,
+                per.FechaNacimiento = @fechaNac
+            FROM Persona per
+            INNER JOIN Medico m ON per.Id_Persona = m.Id_Persona
+            WHERE m.Id_Medico = @id;
+
+            UPDATE Medico SET
+                Matricula = @matricula
+            WHERE Id_Medico = @id");
 
                 datos.setearParametro("@dni", med.Dni);
                 datos.setearParametro("@nombre", med.Nombre);
@@ -156,6 +161,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@telefono", med.Telefono);
                 datos.setearParametro("@direccion", med.Direccion);
                 datos.setearParametro("@fechaNac", med.FechaNacimiento);
+                datos.setearParametro("@matricula", med.Matricula);
                 datos.setearParametro("@id", med.Id);
 
                 datos.ejecutarAccion();

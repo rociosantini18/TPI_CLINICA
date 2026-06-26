@@ -22,7 +22,6 @@
                     </li>
                 </ul>
                 <asp:Label ID="lblNombre" runat="server" Text=""></asp:Label>
-                </p>
             </div>
         </div>
         <div class="row g-3 justify-content-center">
@@ -80,7 +79,6 @@
                 </div>
             </div>
         </asp:Panel>
-    </div>
 
     <div class="container my-5">
         <div class="row g-4 justify-content-center">
@@ -92,6 +90,9 @@
                     <asp:BoundField HeaderText="Matricula" DataField="Matricula" />
                     <asp:BoundField HeaderText="Especialidad" DataField="Especialidad.Nombre" />
                     <asp:BoundField HeaderText="Fecha de Nacimiento" DataField="FechaNacimiento" />
+                    <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
+                    <asp:BoundField HeaderText="Email" DataField="Email" />
+                    <asp:BoundField HeaderText="Telefono" DataField="Telefono" />
 
                     <asp:TemplateField HeaderText="">
                     <ItemTemplate>
@@ -102,10 +103,91 @@
                             OnClientClick="return confirm('¿Seguro que querés dar de baja este médico?');">
                             Eliminar
                         </asp:LinkButton>
+                            <asp:LinkButton runat="server"
+                            CommandName="Modificar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            CssClass="btn btn-sm btn-outline-primary me-1">
+                            Modificar
+                            </asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </div>
     </div>
+
+ <%-- Tabla modificarsss --%>
+<asp:Panel ID="pnlEditarMedico" runat="server" Visible="false" CssClass="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card shadow-sm border-0 p-4 text-start">
+                    <h5 class="fw-bold mb-3">Modificar Médico</h5>
+                    <asp:HiddenField ID="hfIdMedico" runat="server" />
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="DNI:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedDni" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditMedDni"
+                                ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedNombre" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditMedNombre"
+                                ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Apellido:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedApellido" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditMedApellido"
+                                ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Email:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedEmail" runat="server" CssClass="form-control" TextMode="Email" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Teléfono:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedTelefono" runat="server" CssClass="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Dirección:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedDireccion" runat="server" CssClass="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Fecha de Nacimiento:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMedFechaNac" runat="server" CssClass="form-control" TextMode="Date" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditMedFechaNac"
+                                ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                            <div class="col-md-6">
+                            <asp:Label runat="server" Text="Matricula:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditMatri" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditMatri"
+                                ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                    </div>
+
+                    <asp:Label ID="lblMensajeMed" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />
+
+                    <div class="d-flex gap-2 mt-3">
+                        <asp:Button ID="btnGuardarMed" runat="server" Text="Guardar cambios"
+                            CssClass="btn btn-primary"
+                            ValidationGroup="vgEditMedico"
+                            OnClick="btnGuardarMed_Click" />
+                        <asp:Button ID="btnCancelarMed" runat="server" Text="Cancelar"
+                            CssClass="btn btn-outline-secondary"
+                            CausesValidation="false"
+                            OnClick="btnCancelarMed_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asp:Panel>
 </asp:Content>

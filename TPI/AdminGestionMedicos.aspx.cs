@@ -22,15 +22,6 @@ namespace TPI
             dgvMedicos.DataSource = negocio.listar();
             dgvMedicos.DataBind();
         }
-        protected void dgvMedicos_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Eliminar")
-            {
-                MedicoNegocio negocio = new MedicoNegocio();
-                negocio.eliminar(int.Parse(e.CommandArgument.ToString()));
-                cargarMedicos();
-            }
-        }
         protected void btnMostrarFormEspecialidad_Click(object sender, EventArgs e)
         {
             pnlNuevaEspecialidad.Visible = true;
@@ -60,6 +51,62 @@ namespace TPI
             txtDescripcionEsp.Text = "";
             lblMensajeEsp.Text = "";
             pnlNuevaEspecialidad.Visible = false;
+        }
+        protected void dgvMedicos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int id = int.Parse(e.CommandArgument.ToString());
+            MedicoNegocio negocio = new MedicoNegocio();
+
+            if (e.CommandName == "Eliminar")
+            {
+                negocio.eliminar(id);
+                cargarMedicos();
+                pnlEditarMedico.Visible = false;
+            }
+            else if (e.CommandName == "Modificar")
+            {
+                Medico med = negocio.listar().FirstOrDefault(m => m.Id == id);
+                if (med != null)
+                {
+                    hfIdMedico.Value = med.Id.ToString();
+                    txtEditMedDni.Text = med.Dni;
+                    txtEditMedNombre.Text = med.Nombre;
+                    txtEditMedApellido.Text = med.Apellido;
+                    txtEditMedEmail.Text = med.Email;
+                    txtEditMedTelefono.Text = med.Telefono;
+                    txtEditMedDireccion.Text = med.Direccion;
+                    txtEditMedFechaNac.Text = med.FechaNacimiento.ToString("yyyy-MM-dd");
+                    txtEditMatri.Text = med.Matricula;
+                    lblMensajeMed.Text = "";
+                    pnlEditarMedico.Visible = true;
+                }
+            }
+        }
+
+        protected void btnGuardarMed_Click(object sender, EventArgs e)
+        {
+            MedicoNegocio negocio = new MedicoNegocio();
+
+            Medico med = new Medico();
+            med.Id = int.Parse(hfIdMedico.Value);
+            med.Dni = txtEditMedDni.Text.Trim();
+            med.Nombre = txtEditMedNombre.Text.Trim();
+            med.Apellido = txtEditMedApellido.Text.Trim();
+            med.Email = txtEditMedEmail.Text.Trim();
+            med.Telefono = txtEditMedTelefono.Text.Trim();
+            med.Direccion = txtEditMedDireccion.Text.Trim();
+            med.FechaNacimiento = DateTime.Parse(txtEditMedFechaNac.Text);
+            med.Matricula = txtEditMatri.Text.Trim();
+
+            negocio.modificar(med);
+
+            lblMensajeMed.Text = "Médico modificado correctamente.";
+            cargarMedicos();
+        }
+        protected void btnCancelarMed_Click(object sender, EventArgs e)
+        {
+            pnlEditarMedico.Visible = false;
+            lblMensajeMed.Text = "";
         }
     }
 }

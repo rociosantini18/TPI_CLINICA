@@ -227,6 +227,9 @@ VALUES
 ('T0003','2026-06-22','11:00:00','11:30:00','Consulta general','Pendiente',GETDATE(),NULL,'Nuevo',1,2);
 GO
 
+ALTER TABLE Medico ADD Activo BIT NOT NULL DEFAULT 1;
+ALTER TABLE Especialidad ADD Activo BIT NOT NULL DEFAULT 1;
+ALTER TABLE Especialidad DROP COLUMN Imagen_URL;
 SELECT * FROM Medico;
 SELECT * FROM Persona;
 SELECT * FROM Rol;
