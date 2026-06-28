@@ -33,6 +33,9 @@ namespace TPI
             dgvPacientes.DataSource = negocio.BuscarPaciente(txtBuscarPaciente.Text);
             dgvPacientes.DataBind();
 
+            pnlPaciente.Visible = false;
+            dgvPacientes.Visible = true;
+
         }
 
         protected void dgvPacientes_SelectedIndexChanged(object sender, EventArgs e)
@@ -42,12 +45,14 @@ namespace TPI
             PacienteNegocio negocio = new PacienteNegocio();
             Paciente paciente = negocio.BuscarPorId(id);
 
+            lblPacienteId.Text = paciente.IdPaciente.ToString();
             lblPacienteDNI.Text = paciente.Dni;
             lblPacienteNombre.Text = paciente.Nombre;
             lblPacienteApellido.Text = paciente.Apellido;
             lblPacienteOS.Text = paciente.ObraSocial;
 
             pnlPaciente.Visible = true;
+            dgvPacientes.Visible = false;
         }
     }
 }

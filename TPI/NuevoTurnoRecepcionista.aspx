@@ -41,6 +41,12 @@
 
                     <asp:Panel ID="pnlPaciente" runat="server" Visible="false" CssClass="alert alert-success mt-3">
                         <div class="row">
+                            <div class="col-md-10">
+                                <small class="text-muted">Id del Paciente:</small>
+                                <p class="fw-bold mb-0">
+                                    <asp:Label ID="lblPacienteId" runat="server" Text=""></asp:Label>
+                                </p>
+                            </div>
                             <div class="col-md-3">
                                 <small class="text-muted">Nombre:</small>
                                 <p class="fw-bold mb-0">

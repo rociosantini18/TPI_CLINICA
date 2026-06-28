@@ -314,7 +314,7 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    select p.Id_Persona, p.Nombre, p.Apellido, p.DNI, ob.Id_ObraSocial, ob.Nombre_ObraSocial
+                    select pac.Id_Paciente, p.Id_Persona, p.Nombre, p.Apellido, p.DNI, ob.Id_ObraSocial, ob.Nombre_ObraSocial
                         from Paciente pac
                     inner join Persona p on pac.Id_Persona = p.Id_Persona
                     inner join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
@@ -330,7 +330,7 @@ namespace TPI.Negocio
                 {
 
                     p = new Paciente();
-
+                    p.IdPaciente = (int)datos.Lector["Id_Paciente"];
                     p.Id = (int)datos.Lector["Id_Persona"];
                     p.Dni = datos.Lector["Dni"].ToString();
                     p.Nombre = datos.Lector["Nombre"].ToString();
