@@ -25,5 +25,10 @@ namespace TPI
                 return;
             }
         }
+
+        protected void btnBuscarPaciente_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

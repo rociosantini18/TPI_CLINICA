@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterDefault.Master" AutoEventWireup="true" CodeBehind="MisDatos.aspx.cs" Inherits="TPI.MisDatos" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -38,8 +39,8 @@
 
                     <div class="mb-3">
                         <asp:Label runat="server" Text="Fecha de nacimiento:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtFechaNacimiento" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                       <small class="text-muted">La fecha de nacimiento no puede modificarse.</small>
+                        <asp:TextBox ID="txtFechaNacimiento" runat="server" CssClass="form-control" ReadOnly="true" TextMode="Date"></asp:TextBox>
+                        <small class="text-muted">La fecha de nacimiento no puede modificarse.</small>
                     </div>
 
                     <div class="mb-3">
@@ -54,7 +55,7 @@
 
                     <div class="mb-4">
                         <asp:Label runat="server" Text="Obra social:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtObraSocial" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:DropDownList ID="ddlObraSocial" runat="server"></asp:DropDownList>
                     </div>
 
                     <hr class="my-4" />

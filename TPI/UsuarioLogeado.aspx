@@ -32,9 +32,8 @@
             </div>
 
             <div class="col-md-3">
-                <asp:Button ID="btnMisDatos" runat="server" Text="Mis Datos"
-                    CssClass="btn btn-primary w-100 py-3 fs-5"
-                    PostBackUrl="~/MisDatos.aspx" />
+                <asp:Button ID="btnMisDatos" runat="server" Text="Mis Datos" OnClick="btnMisDatos_Click"
+                    CssClass="btn btn-primary w-100 py-3 fs-5" />
             </div>
 
         </div>

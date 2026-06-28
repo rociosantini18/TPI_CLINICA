@@ -25,7 +25,7 @@
                                 placeholder="Ej: 45265789 o Vicente Melina"></asp:TextBox>
                         </div>
                         <div class="col-md-4">
-                            <asp:Button ID="btnBuscarPaciente" runat="server" Text="Buscar"
+                            <asp:Button ID="btnBuscarPaciente" runat="server" Text="Buscar" OnClick="btnBuscarPaciente_Click"
                                 CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen" />
                         </div>
                     </div>

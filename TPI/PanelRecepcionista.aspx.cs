@@ -19,11 +19,14 @@ namespace TPI
             }
 
             Perfil perfil = (Perfil)Session["perfil"];
+            lblNombre.Text = perfil.NombreUsuario;
+
             if (perfil.Rol != "Recepcionista")
             {
                 Response.Redirect("~/InicioSesion.aspx");
                 return;
             }
+                     
         }
     }
 }

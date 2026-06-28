@@ -123,7 +123,7 @@ VALUES
 ('Pediatría');
 GO
 
-UPDATE Especialidad 
+UPDATE Medico 
 SET Imagen_URL = 'https://centromedicoabc.com/wp-content/uploads/2023/05/elegir-nutricionista-1.webp' 
 WHERE Id_Especialidad = 1; -- Nutrición
 
@@ -131,7 +131,7 @@ UPDATE Especialidad
 SET Imagen_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7AH8KsiMyBAZlm0T_VfORxLhNtFWvv8HtJc-MVAM6CpFb3oW7gvjc75O9&s=10' 
 WHERE Id_Especialidad = 2; -- Psicología
 
-UPDATE Especialidad 
+UPDATE Medico 
 SET Imagen_URL = 'https://i.pinimg.com/236x/bc/98/6c/bc986c077f35ccad9bcd07a7062b11b7.jpg' 
 WHERE Id_Especialidad = 3; -- Médico Clínico
 
@@ -215,8 +215,8 @@ GO
 
 INSERT INTO Medico (Id_Persona, Matricula, Id_Especialidad, Imagen_URL)
 VALUES
-(2,'MP1001',1,'doctor1.jpg'),
-(3,'MP1002',3,'doctor2.jpg');
+(2,'MP1001',1,'https://i.pinimg.com/236x/bc/98/6c/bc986c077f35ccad9bcd07a7062b11b7.jpg'),
+(3,'MP1002',3,'https://i.pinimg.com/236x/bc/98/6c/bc986c077f35ccad9bcd07a7062b11b7.jpg');
 GO
 
 INSERT INTO Turno
@@ -246,3 +246,12 @@ select
 m.Id_Medico, m.Id_Persona
 from Persona p
 inner join Medico m on p.Id_Persona = m.Id_Persona
+
+SELECT m.Id_Medico, m.Imagen_URL,
+                           e.Id_Especialidad, e.Nombre_Especialidad, e.Descripcion
+                    FROM Medico m
+                    INNER JOIN Especialidad e ON m.Id_Especialidad = e.Id_Especialidad
+                    WHERE m.Activo = 1 AND e.Activo = 1
+                    AND m.Id_Medico = (
+                        SELECT TOP 1 Id_Medico FROM Medico 
+                        WHERE Id_Especialidad = e.Id_Especialidad AND Activo = 1)

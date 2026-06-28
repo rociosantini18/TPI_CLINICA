@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h1 class="display-4 fw-bold">Recepción</h1>
-                <p class="lead text-muted mt-2">Bienvenida, (nombre de la recepcionista)
+                <p class="lead text-muted mt-2">Bienvenida,
                     <asp:Label ID="lblNombre" runat="server" Text=""></asp:Label>
                 </p>
             </div>

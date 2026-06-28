@@ -111,7 +111,7 @@ namespace TPI.Negocio
 
                 datos.ejecutarLectura();
                 if (datos.Lector.Read())
-                idPersona = (int)datos.Lector[0];
+                    idPersona = (int)datos.Lector[0];
                 datos.CerrarConexion();
 
                 datos = new AccesoDatos();
@@ -127,7 +127,7 @@ namespace TPI.Negocio
 
                 datos.ejecutarLectura();
                 if (datos.Lector.Read())
-                idPerfil = (int)datos.Lector[0];
+                    idPerfil = (int)datos.Lector[0];
                 datos.CerrarConexion();
 
                 datos = new AccesoDatos();
@@ -215,6 +215,55 @@ namespace TPI.Negocio
             finally { datos.CerrarConexion(); }
         }
 
-    }
+        public Paciente RelacionPerfilPersona(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                select p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, ob.Id_ObraSocial, ob.Nombre_ObraSocial 
+                        from Paciente pac
+                        inner join Perfil perf on pac.Id_Perfil = perf.Id_Perfil 
+                        inner join Persona p on pac.Id_Persona = p.Id_Persona
+                        inner join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
+                    where perf.Id_Perfil = @id");
 
+                datos.setearParametro("@id", id);
+
+                datos.ejecutarLectura();
+
+                Paciente p = null;
+
+                if (datos.Lector.Read())
+                {
+
+                    p = new Paciente();
+
+                    p.Id = (int)datos.Lector["Id_Persona"];
+                    p.Dni = datos.Lector["Dni"].ToString();
+                    p.Nombre = datos.Lector["Nombre"].ToString();
+                    p.Apellido = datos.Lector["Apellido"].ToString();
+                    p.Telefono = datos.Lector["Telefono"].ToString();
+                    p.Email = datos.Lector["Email"].ToString();
+                    p.Direccion = datos.Lector["Direccion"].ToString();
+                    p.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+                    p.ObraSocial = datos.Lector["Nombre_ObraSocial"].ToString();
+                    p.IdObraSocial = (int)datos.Lector["Id_ObraSocial"];
+
+                }
+
+                return p;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+      
     }
+}

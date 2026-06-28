@@ -37,13 +37,13 @@ namespace TPI
                 switch (perfil.Rol)
                 {
                     case "Cliente":
-                        Response.Redirect("UsuarioLogeado.aspx");
+                        Response.Redirect("UsuarioLogeado.aspx?id=" + perfil.Id);
                         break;
                     case "Recepcionista":
-                        Response.Redirect("PanelRecepcionista.aspx");
+                        Response.Redirect("PanelRecepcionista.aspx?id=" + perfil.Id);
                         break;
                     case "Administrador":
-                        Response.Redirect("PruebaBD.aspx");
+                        Response.Redirect("AdminGestionPacientes.aspx?id=" + perfil.Id);
                         break;
                     default:
                         lblError.Visible = true;

@@ -25,7 +25,18 @@ namespace TPI
                 Response.Redirect("~/InicioSesion.aspx");
                 return;
             }
+
+
         }
 
+        protected void btnMisDatos_Click(object sender, EventArgs e)
+        {
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+                Response.Redirect("~/MisDatos.aspx?id=" + id);
+                return;
+            }
+        }
     }
 }
