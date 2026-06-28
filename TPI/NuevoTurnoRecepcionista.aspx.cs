@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using TPI.Dominio;
+using TPI.Negocio;
 
 namespace TPI
 {
@@ -28,7 +29,25 @@ namespace TPI
 
         protected void btnBuscarPaciente_Click(object sender, EventArgs e)
         {
+            PacienteNegocio negocio = new PacienteNegocio();
+            dgvPacientes.DataSource = negocio.BuscarPaciente(txtBuscarPaciente.Text);
+            dgvPacientes.DataBind();
 
+        }
+
+        protected void dgvPacientes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int id = (int)dgvPacientes.SelectedDataKey.Value;
+
+            PacienteNegocio negocio = new PacienteNegocio();
+            Paciente paciente = negocio.BuscarPorId(id);
+
+            lblPacienteDNI.Text = paciente.Dni;
+            lblPacienteNombre.Text = paciente.Nombre;
+            lblPacienteApellido.Text = paciente.Apellido;
+            lblPacienteOS.Text = paciente.ObraSocial;
+
+            pnlPaciente.Visible = true;
         }
     }
 }

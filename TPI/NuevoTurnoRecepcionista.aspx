@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterDefault.Master" AutoEventWireup="true" CodeBehind="NuevoTurnoRecepcionista.aspx.cs" Inherits="TPI.NuevoTurnoRecepcionista" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -30,12 +31,26 @@
                         </div>
                     </div>
 
+                    <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" DataKeyNames="Id" AutoGenerateSelectButton="True" OnSelectedIndexChanged="dgvPacientes_SelectedIndexChanged">
+                        <Columns>
+                            <asp:BoundField DataField="Dni" HeaderText="DNI" />
+                            <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
+                            <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
+                        </Columns>
+                    </asp:GridView>
+
                     <asp:Panel ID="pnlPaciente" runat="server" Visible="false" CssClass="alert alert-success mt-3">
                         <div class="row">
-                            <div class="col-md-6">
-                                <small class="text-muted">Paciente encontrado:</small>
+                            <div class="col-md-3">
+                                <small class="text-muted">Nombre:</small>
                                 <p class="fw-bold mb-0">
                                     <asp:Label ID="lblPacienteNombre" runat="server" Text=""></asp:Label>
+                                </p>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="text-muted">Apellido:</small>
+                                <p class="fw-bold mb-0">
+                                    <asp:Label ID="lblPacienteApellido" runat="server" Text=""></asp:Label>
                                 </p>
                             </div>
                             <div class="col-md-3">
