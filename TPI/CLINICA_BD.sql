@@ -98,7 +98,7 @@ GO
 CREATE TABLE HorarioMedico (
     Id_Horario   INT IDENTITY(1,1) PRIMARY KEY,
     Id_Medico    INT NOT NULL,
-    DiaSemana    int NOT NULL,
+    Fecha        DATE NOT NULL,
     HoraInicio   TIME NOT NULL,
     HoraFin      TIME NOT NULL,
     FOREIGN KEY (Id_Medico) REFERENCES Medico(Id_Medico)
@@ -173,6 +173,10 @@ SET Descripcion = 'Atención médica integral para bebés, niños y adolescentes
 WHERE Id_Especialidad = 6; -- Pediatría
 GO
 
+ALTER TABLE HorarioMedico
+DROP COLUMN DiaSemana;
+
+alter table HorarioMedico add Fecha Date not null
 
 INSERT INTO ObraSocial(Nombre_ObraSocial)
 VALUES
@@ -227,16 +231,35 @@ VALUES
 ('T0003','2026-06-22','11:00:00','11:30:00','Consulta general','Pendiente',GETDATE(),NULL,'Nuevo',1,2);
 GO
 
+INSERT INTO HorarioMedico (Id_Medico, Fecha, HoraInicio, HoraFin)
+VALUES
+-- Médico 1
+(1, '2026-07-01', '08:00:00', '08:30:00'),
+(1, '2026-07-01', '08:30:00', '09:00:00'),
+(1, '2026-07-01', '09:00:00', '09:30:00'),
+(1, '2026-07-01', '09:30:00', '10:00:00'),
+(1, '2026-07-02', '08:00:00', '08:30:00'),
+(1, '2026-07-02', '08:30:00', '09:00:00'),
+(1, '2026-07-02', '09:00:00', '09:30:00'),
+
+-- Médico 2
+(2, '2026-07-01', '14:00:00', '14:30:00'),
+(2, '2026-07-01', '14:30:00', '15:00:00'),
+(2, '2026-07-01', '15:00:00', '15:30:00'),
+(2, '2026-07-03', '10:00:00', '10:30:00'),
+(2, '2026-07-03', '10:30:00', '11:00:00'),
+(2, '2026-07-03', '11:00:00', '11:30:00');
+
 ALTER TABLE Medico ADD Activo BIT NOT NULL DEFAULT 1;
 ALTER TABLE Especialidad ADD Activo BIT NOT NULL DEFAULT 1;
 ALTER TABLE Especialidad DROP COLUMN Imagen_URL;
 SELECT * FROM Medico;
-SELECT * FROM Persona;
 SELECT * FROM Rol;
+SELECT * FROM Paciente;
+SELECT * FROM Persona;
 SELECT * FROM Perfil;
 SELECT * FROM Empleado;
 SELECT * FROM ObraSocial;
-SELECT * FROM Paciente;
 SELECT * FROM HorarioMedico;
 Select * from turno;
 select * from Especialidad;
@@ -255,3 +278,34 @@ SELECT m.Id_Medico, m.Imagen_URL,
                     AND m.Id_Medico = (
                         SELECT TOP 1 Id_Medico FROM Medico 
                         WHERE Id_Especialidad = e.Id_Especialidad AND Activo = 1)
+
+
+select p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento,  ob.Id_ObraSocial, ob.Nombre_ObraSocial
+from Paciente pac
+inner join Perfil perf on pac.Id_Perfil = perf.Id_Perfil
+inner join Persona p on pac.Id_Persona = p.Id_Persona
+inner join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
+    where perf.Id_Perfil = @id
+
+    SELECT p.Id_Persona, p.Dni, p.Nombre, p.Apellido
+FROM Paciente pac
+INNER JOIN Persona p ON pac.Id_Persona = p.Id_Persona
+WHERE
+    (@dni = '' OR p.Dni LIKE @dni + '%')
+    AND (@nombre = '' OR p.Nombre LIKE @nombre + '%')
+    AND (@apellido = '' OR p.Apellido LIKE @apellido + '%')
+
+select pac.Id_Paciente, p.Nombre, p.Apellido, p.DNI, ob.Id_ObraSocial, ob.Nombre_ObraSocial
+from Paciente pac
+inner join Persona p on pac.Id_Persona = p.Id_Persona
+inner join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
+where p.Id_Persona = 1
+
+select distinct hm.Fecha, m.Id_Medico
+from HorarioMedico hm
+inner join Medico m on hm.Id_Medico = m.Id_Medico
+WHERE m.Id_Medico = @id
+
+select HoraInicio 
+from HorarioMedico
+where Fecha = 2026-07-01

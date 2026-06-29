@@ -84,7 +84,20 @@ namespace TPI
         }
         protected void ddlFechasDisponibles_SelectedIndexChanged(object sender, EventArgs e)
         {
+            HorarioMedicoNegocio negocioHor = new HorarioMedicoNegocio();
 
+            DateTime fecha = DateTime.Parse(ddlFechasDisponibles.SelectedValue);
+
+            if (ddlFechasDisponibles.SelectedValue != "0")
+            {
+                ddlHorario.DataSource = negocioHor.listarHorarioDisponiblesPorFecha(fecha);
+                ddlHorario.DataTextField = "HoraInicio";
+                ddlHorario.DataValueField = "HoraInicio";
+                ddlHorario.DataBind();
+                                
+            }
+            ddlHorario.Items.Insert(0, new ListItem("Seleccione un horario", "0"));
+        
         }
 
         protected void ddlMedico_SelectedIndexChanged(object sender, EventArgs e)
@@ -108,6 +121,14 @@ namespace TPI
 
             }
             ddlFechasDisponibles.Items.Insert(0, new ListItem("Seleccione una fecha", "0"));
+        }
+
+        protected void btnConfirmar_Click(object sender, EventArgs e)
+        {
+            TurnoNegocio negocio = new TurnoNegocio();
+            Turno turno = new Turno();         
+
+            negocio.agregar(turno);
         }
     }
 }

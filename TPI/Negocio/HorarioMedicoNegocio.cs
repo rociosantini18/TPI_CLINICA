@@ -156,7 +156,8 @@ namespace TPI.Negocio
 
         }
 
-        public List<HorarioMedico> listarFechasDisponiblesPorMedico(int idMedico)
+
+        public List<HorarioMedico> listarHorarioDisponiblesPorFecha(DateTime fecha)
         {
             AccesoDatos datos = new AccesoDatos();
             List<HorarioMedico> lista = new List<HorarioMedico>();
@@ -164,19 +165,18 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                select distinct hm.Fecha, m.Id_Medico
-                    from HorarioMedico hm
-                    inner join Medico m on hm.Id_Medico = m.Id_Medico
-                    where m.Id_Medico = @id");
+                select HoraInicio 
+                    from HorarioMedico
+                    where Fecha = @fecha");
 
-                datos.setearParametro("@id", idMedico);
+                datos.setearParametro("@fecha", fecha);
 
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     HorarioMedico h = new HorarioMedico();
-                    h.Fecha = (DateTime)datos.Lector["Fecha"];
+                    h.HoraInicio = (TimeSpan)datos.Lector["HoraInicio"];
 
                     lista.Add(h);
                 }
@@ -194,8 +194,8 @@ namespace TPI.Negocio
                 datos.CerrarConexion();
             }
 
+
         }
 
     }
-
 }

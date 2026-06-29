@@ -128,7 +128,7 @@
 
                     <div class="d-flex gap-2">
                         <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar Turno"
-                            CssClass="btn btn-lg flex-grow-1" BackColor="LightGreen" BorderColor="LightGreen" />
+                            CssClass="btn btn-lg flex-grow-1" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnConfirmar_Click" />
                         <a href="PanelRecepcionista.aspx" class="btn btn-lg btn-outline-secondary">Cancelar</a>
                     </div>
 
