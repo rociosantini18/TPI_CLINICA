@@ -83,38 +83,46 @@
 
                     <h5 class="fw-bold mb-3">2. Datos del turno</h5>
 
-                    <div class="mb-3">
-                        <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:DropDownList ID="ddlEspecialidad" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Seleccione una especialidad" Value="" />
-                        </asp:DropDownList>
-                    </div>
+                    <asp:UpdatePanel runat="server">
+                        <ContentTemplate>
+                            <asp:Panel ID="pnlDatosMedico" runat="server" CssClass="alert alert-success mt-3">
+                                <div class="mb-3">
+                                    <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold"></asp:Label>
+                                    <asp:DropDownList ID="ddlEspecialidad" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged">
+                                        <asp:ListItem Text="Seleccione una especialidad" Value="" />
+                                    </asp:DropDownList>
+                                </div>
 
-                    <div class="mb-3">
-                        <asp:Label runat="server" Text="Médico:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:DropDownList ID="ddlMedico" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Seleccione un médico" Value="" />
-                        </asp:DropDownList>
-                    </div>
+                                <div class="mb-3">
+                                    <asp:Label runat="server" Text="Médico:" CssClass="form-label fw-semibold"></asp:Label>
+                                    <asp:DropDownList ID="ddlMedico" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlMedico_SelectedIndexChanged">
+                                        <asp:ListItem Text="Seleccione un médico" Value="" />
+                                    </asp:DropDownList>
+                                </div>                                
+                                <div class="mb-3">
+                                    <asp:Label runat="server" Text="Fechas disponibles:" CssClass="form-label fw-semibold"></asp:Label>
+                                    <asp:DropDownList ID="ddlFechasDisponibles" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFechasDisponibles_SelectedIndexChanged">
+                                        <asp:ListItem Text="Seleccione una fecha" Value="" />
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="mb-3">
+                                    <asp:Label runat="server" Text="Horario disponible:" CssClass="form-label fw-semibold"></asp:Label>
+                                    <asp:DropDownList ID="ddlHorario" runat="server" CssClass="form-select" AutoPostBack="true">
+                                        <asp:ListItem Text="Seleccione un horario" Value="" />
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="mb-4">
+                                    <asp:Label runat="server" Text="Observaciones:" CssClass="form-label fw-semibold"></asp:Label>
+                                    <asp:TextBox ID="txtObservaciones" runat="server" CssClass="form-control"
+                                        TextMode="MultiLine" Rows="3"
+                                        placeholder="Motivo de la consulta..."></asp:TextBox>
+                                </div>
+                            </asp:Panel>
 
-                    <div class="mb-3">
-                        <asp:Label runat="server" Text="Fecha:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtFecha" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                    </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
 
-                    <div class="mb-3">
-                        <asp:Label runat="server" Text="Horario disponible:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:DropDownList ID="ddlHorario" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Seleccione un horario" Value="" />
-                        </asp:DropDownList>
-                    </div>
 
-                    <div class="mb-4">
-                        <asp:Label runat="server" Text="Observaciones:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtObservaciones" runat="server" CssClass="form-control"
-                            TextMode="MultiLine" Rows="3"
-                            placeholder="Motivo de la consulta..."></asp:TextBox>
-                    </div>
 
                     <asp:Label ID="lblError" runat="server" CssClass="text-danger mb-3 d-block" Visible="false"></asp:Label>
 

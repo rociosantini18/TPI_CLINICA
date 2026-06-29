@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -174,6 +175,51 @@ namespace TPI.Negocio
             {
                 datos.CerrarConexion();
             }
+        }
+
+        public List<Medico> listarMedicosSegunEspecialidad(int idEspecialidad)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            List<Medico> lista = new List<Medico>();
+
+
+            try
+            {
+                datos.setearConsulta(@"
+                select m.Id_Medico, e.Id_Especialidad, p.Nombre + ' ' + p.Apellido as Nombre
+                    from Medico m 
+                    inner join Persona p on m.Id_Persona = p.Id_Persona
+                    inner join Especialidad e on m.Id_Especialidad = e.Id_Especialidad
+                    where m.Activo = 1 AND e.Activo = 1 and m.Id_Especialidad = @id");
+
+                datos.setearParametro("@id", idEspecialidad);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Medico aux = new Medico();
+
+                    aux.Id = (int)datos.Lector["Id_Medico"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Especialidad = new Especialidad();
+                    aux.Especialidad.Id = (int)datos.Lector["Id_Especialidad"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+
         }
 
     }

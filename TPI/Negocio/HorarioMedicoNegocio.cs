@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,10 +16,10 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    SELECT Id_Horario, DiaSemana, HoraInicio, HoraFin
+                    SELECT Id_Horario, Fecha, HoraInicio, HoraFin
                     FROM HorarioMedico
                     WHERE Id_Medico = @idMedico
-                    ORDER BY DiaSemana, HoraInicio");
+                    ORDER BY HoraInicio");
                 datos.setearParametro("@idMedico", idMedico);
                 datos.ejecutarLectura();
 
@@ -26,7 +27,7 @@ namespace TPI.Negocio
                 {
                     HorarioMedico h = new HorarioMedico();
                     h.Id = (int)datos.Lector["Id_Horario"];
-                    h.DiaSemana = (DayOfWeek)datos.Lector["DiaSemana"];
+                    h.Fecha = (DateTime)datos.Lector["Fecha"];
                     h.HoraInicio = (TimeSpan)datos.Lector["HoraInicio"];
                     h.HoraFin = (TimeSpan)datos.Lector["HoraFin"];
                     lista.Add(h);
@@ -83,7 +84,7 @@ namespace TPI.Negocio
                     INSERT INTO HorarioMedico (Id_Medico, DiaSemana, HoraInicio, HoraFin)
                     VALUES (@idMedico, @dia, @horaInicio, @horaFin)");
                 datos.setearParametro("@idMedico", idMedico);
-                datos.setearParametro("@dia", (int) diaSemana);
+                datos.setearParametro("@dia", (int)diaSemana);
                 datos.setearParametro("@horaInicio", horaInicio);
                 datos.setearParametro("@horaFin", horaFin);
                 datos.ejecutarAccion();
@@ -115,7 +116,86 @@ namespace TPI.Negocio
 
             return medico;
         }
+        public List<HorarioMedico> listarFechasDisponiblesPorMedico(int idMedico)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            List<HorarioMedico> lista = new List<HorarioMedico>();
 
+            try
+            {
+                datos.setearConsulta(@"
+                select distinct hm.Fecha, m.Id_Medico
+                    from HorarioMedico hm
+                    inner join Medico m on hm.Id_Medico = m.Id_Medico
+                    where m.Id_Medico = @id");
+
+                datos.setearParametro("@id", idMedico);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    HorarioMedico h = new HorarioMedico();
+                    h.Fecha = (DateTime)datos.Lector["Fecha"];
+
+                    lista.Add(h);
+                }
+
+                return lista;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+
+        }
+
+        public List<HorarioMedico> listarFechasDisponiblesPorMedico(int idMedico)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            List<HorarioMedico> lista = new List<HorarioMedico>();
+
+            try
+            {
+                datos.setearConsulta(@"
+                select distinct hm.Fecha, m.Id_Medico
+                    from HorarioMedico hm
+                    inner join Medico m on hm.Id_Medico = m.Id_Medico
+                    where m.Id_Medico = @id");
+
+                datos.setearParametro("@id", idMedico);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    HorarioMedico h = new HorarioMedico();
+                    h.Fecha = (DateTime)datos.Lector["Fecha"];
+
+                    lista.Add(h);
+                }
+
+                return lista;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+
+        }
 
     }
+
 }

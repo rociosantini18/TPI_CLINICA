@@ -105,6 +105,15 @@ namespace TPI
         protected global::System.Web.UI.WebControls.Panel pnlPacienteNoEncontrado;
 
         /// <summary>
+        /// pnlDatosMedico control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDatosMedico;
+
+        /// <summary>
         /// ddlEspecialidad control.
         /// </summary>
         /// <remarks>
@@ -123,13 +132,13 @@ namespace TPI
         protected global::System.Web.UI.WebControls.DropDownList ddlMedico;
 
         /// <summary>
-        /// txtFecha control.
+        /// ddlFechasDisponibles control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFecha;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFechasDisponibles;
 
         /// <summary>
         /// ddlHorario control.
