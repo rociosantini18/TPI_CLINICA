@@ -69,7 +69,11 @@ namespace TPI.Negocio
 
             try
             {
-                datos.setearConsulta("DELETE FROM Empleado WHERE Id_Empleado = @id");
+                datos.setearConsulta(@"
+            UPDATE Perfil SET Activo = 0
+            WHERE Id_Perfil = (
+                SELECT Id_Perfil FROM Empleado WHERE Id_Empleado = @id
+            )");
                 datos.setearParametro("@id", id);
                 datos.ejecutarAccion();
             }
