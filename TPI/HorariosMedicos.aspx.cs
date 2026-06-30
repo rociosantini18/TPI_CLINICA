@@ -53,10 +53,10 @@ namespace TPI
             if (ddlMedico.SelectedValue == "0") return;
             try
             {
-                DayOfWeek dia = (DayOfWeek)int.Parse(ddlDia.SelectedValue);
+                DateTime fecha = DateTime.Parse(txtFecha.Text);
 
                 HorarioMedicoNegocio negocio = new HorarioMedicoNegocio();
-                negocio.agregar(int.Parse(ddlMedico.SelectedValue),dia,TimeSpan.Parse(txtHoraInicio.Text),TimeSpan.Parse(txtHoraFin.Text));
+                negocio.agregar(int.Parse(ddlMedico.SelectedValue), fecha, TimeSpan.Parse(txtHoraInicio.Text),TimeSpan.Parse(txtHoraFin.Text));
                 lblMensaje.Visible = true;
                 lblMensaje.CssClass = "text-success mb-2 d-block";
                 lblMensaje.Text = "Horario agregado correctamente.";

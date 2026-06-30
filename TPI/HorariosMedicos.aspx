@@ -23,15 +23,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <asp:Label runat="server" Text="Día:" CssClass="form-label fw-semibold"></asp:Label>
-                    <asp:DropDownList ID="ddlDia" runat="server" CssClass="form-select">
-                        <asp:ListItem Text="Lunes" Value="1" />
-                        <asp:ListItem Text="Martes" Value="2" />
-                        <asp:ListItem Text="Miércoles" Value="3" />
-                        <asp:ListItem Text="Jueves" Value="4" />
-                        <asp:ListItem Text="Viernes" Value="5" />
-                        <asp:ListItem Text="Sábado" Value="6" />
-                    </asp:DropDownList>
+                    <asp:Label runat="server" Text="Fecha:" CssClass="form-label fw-semibold" />
+                    <asp:TextBox ID="txtFecha" runat="server" CssClass="form-control" TextMode="Date" />
+                    <asp:RequiredFieldValidator runat="server"
+                        ControlToValidate="txtFecha"
+                        ErrorMessage="La fecha es obligatoria."
+                        CssClass="text-danger small" Display="Dynamic" />
                 </div>
 
                 <div class="mb-3">
@@ -49,6 +46,7 @@
                 <asp:Button ID="btnAgregar" runat="server" Text="Agregar Horario"
                     CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen"
                     OnClick="btnAgregar_Click" />
+                     <a href="PanelRecepcionista.aspx" class="btn btn-lg btn-outline-secondary">Cancelar</a>
             </div>
         </div>
 
@@ -59,7 +57,7 @@
                     <table class="table table-bordered table-hover align-middle">
                         <thead class="table-success">
                             <tr>
-                                <th>Día</th>
+                                <th>Fecha</th>
                                 <th>Hora inicio</th>
                                 <th>Hora fin</th>
                                 <th>Eliminar</th>
@@ -69,7 +67,7 @@
                             <asp:Repeater ID="rptHorarios" runat="server" OnItemCommand="rptHorarios_ItemCommand">
                                 <ItemTemplate>
                                     <tr>
-                                        <td><%# Eval("DiaSemana") %></td>
+                                        <td><%# ((DateTime)Eval("Fecha")).ToString("dd/MM/yyyy") %></td>
                                         <td><%# ((TimeSpan)Eval("HoraInicio")).ToString(@"hh\:mm") %></td>
                                         <td><%# ((TimeSpan)Eval("HoraFin")).ToString(@"hh\:mm") %></td>
                                         <td>

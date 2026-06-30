@@ -18,73 +18,73 @@
             <div class="col-md-8">
                 <div class="card shadow-sm border-0 p-5">
 
-                    <h5 class="fw-bold mb-3">1. Buscar paciente</h5>
-                    <div class="row g-2 align-items-end mb-2">
-                        <div class="col-md-8">
-                            <asp:Label runat="server" Text="DNI o nombre del paciente:" CssClass="form-label fw-semibold"></asp:Label>
-                            <asp:TextBox ID="txtBuscarPaciente" runat="server" CssClass="form-control"
-                                placeholder="Ej: 45265789 o Vicente Melina"></asp:TextBox>
-                        </div>
-                        <div class="col-md-4">
-                            <asp:Button ID="btnBuscarPaciente" runat="server" Text="Buscar" OnClick="btnBuscarPaciente_Click"
-                                CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen" />
-                        </div>
-                    </div>
-
-                    <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" DataKeyNames="Id" AutoGenerateSelectButton="True" OnSelectedIndexChanged="dgvPacientes_SelectedIndexChanged">
-                        <Columns>
-                            <asp:BoundField DataField="Dni" HeaderText="DNI" />
-                            <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
-                            <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
-                        </Columns>
-                    </asp:GridView>
-
-                    <asp:Panel ID="pnlPaciente" runat="server" Visible="false" CssClass="alert alert-success mt-3">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <small class="text-muted">Id del Paciente:</small>
-                                <p class="fw-bold mb-0">
-                                    <asp:Label ID="lblPacienteId" runat="server" Text=""></asp:Label>
-                                </p>
-                            </div>
-                            <div class="col-md-3">
-                                <small class="text-muted">Nombre:</small>
-                                <p class="fw-bold mb-0">
-                                    <asp:Label ID="lblPacienteNombre" runat="server" Text=""></asp:Label>
-                                </p>
-                            </div>
-                            <div class="col-md-3">
-                                <small class="text-muted">Apellido:</small>
-                                <p class="fw-bold mb-0">
-                                    <asp:Label ID="lblPacienteApellido" runat="server" Text=""></asp:Label>
-                                </p>
-                            </div>
-                            <div class="col-md-3">
-                                <small class="text-muted">DNI:</small>
-                                <p class="fw-bold mb-0">
-                                    <asp:Label ID="lblPacienteDNI" runat="server" Text=""></asp:Label>
-                                </p>
-                            </div>
-                            <div class="col-md-3">
-                                <small class="text-muted">Obra social:</small>
-                                <p class="fw-bold mb-0">
-                                    <asp:Label ID="lblPacienteOS" runat="server" Text=""></asp:Label>
-                                </p>
-                            </div>
-                        </div>
-                    </asp:Panel>
-
-                    <asp:Panel ID="pnlPacienteNoEncontrado" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
-                        <p class="mb-1">No se encontró el paciente. ¿Querés registrarlo?</p>
-                        <a href="Registrarse.aspx" class="btn btn-sm btn-outline-secondary">Registrar paciente</a>
-                    </asp:Panel>
-
-                    <hr class="my-4" />
-
-                    <h5 class="fw-bold mb-3">2. Datos del turno</h5>
-
-                    <asp:UpdatePanel runat="server">
+                    <asp:UpdatePanel runat="server" ID="upFormularioTurno">
                         <ContentTemplate>
+                            <h5 class="fw-bold mb-3">1. Buscar paciente</h5>
+                            <div class="row g-2 align-items-end mb-2">
+                                <div class="col-md-8">
+                                    <asp:Label runat="server" Text="DNI o nombre del paciente:" CssClass="form-label fw-semibold"></asp:Label>
+                                    <asp:TextBox ID="txtBuscarPaciente" runat="server" CssClass="form-control"
+                                        placeholder="Ej: 45265789 o Vicente Melina"></asp:TextBox>
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:Button ID="btnBuscarPaciente" runat="server" Text="Buscar" OnClick="btnBuscarPaciente_Click"
+                                        CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen" />
+                                </div>
+                            </div>
+
+                            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" DataKeyNames="Id" AutoGenerateSelectButton="True" OnSelectedIndexChanged="dgvPacientes_SelectedIndexChanged">
+                                <Columns>
+                                    <asp:BoundField DataField="Dni" HeaderText="DNI" />
+                                    <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
+                                    <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
+                                </Columns>
+                            </asp:GridView>
+
+                            <asp:Panel ID="pnlPaciente" runat="server" Visible="false" CssClass="alert alert-success mt-3">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <small class="text-muted">Id del Paciente:</small>
+                                        <p class="fw-bold mb-0">
+                                            <asp:Label ID="lblPacienteId" runat="server" Text=""></asp:Label>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <small class="text-muted">Nombre:</small>
+                                        <p class="fw-bold mb-0">
+                                            <asp:Label ID="lblPacienteNombre" runat="server" Text=""></asp:Label>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <small class="text-muted">Apellido:</small>
+                                        <p class="fw-bold mb-0">
+                                            <asp:Label ID="lblPacienteApellido" runat="server" Text=""></asp:Label>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <small class="text-muted">DNI:</small>
+                                        <p class="fw-bold mb-0">
+                                            <asp:Label ID="lblPacienteDNI" runat="server" Text=""></asp:Label>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <small class="text-muted">Obra social:</small>
+                                        <p class="fw-bold mb-0">
+                                            <asp:Label ID="lblPacienteOS" runat="server" Text=""></asp:Label>
+                                        </p>
+                                    </div>
+                                </div>
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlPacienteNoEncontrado" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                                <p class="mb-1">No se encontró el paciente. ¿Querés registrarlo?</p>
+                                <a href="Registrarse.aspx" class="btn btn-sm btn-outline-secondary">Registrar paciente</a>
+                            </asp:Panel>
+
+                            <hr class="my-4" />
+
+                            <h5 class="fw-bold mb-3">2. Datos del turno</h5>
+
                             <asp:Panel ID="pnlDatosMedico" runat="server" CssClass="alert alert-success mt-3">
                                 <div class="mb-3">
                                     <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold"></asp:Label>
@@ -122,8 +122,7 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>
 
-
-
+                    <asp:Label ID="lblExito" runat="server" CssClass="text-success fw-bold mb-3 d-block" Visible="false"></asp:Label>
                     <asp:Label ID="lblError" runat="server" CssClass="text-danger mb-3 d-block" Visible="false"></asp:Label>
 
                     <div class="d-flex gap-2">

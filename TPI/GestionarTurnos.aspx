@@ -112,6 +112,7 @@
             <asp:Button ID="btnNuevoTurno" runat="server" Text="+ Nuevo Turno"
                 CssClass="btn btn-lg btn-success"
                 PostBackUrl="NuevoTurnoRecepcionista.aspx" />
+            <a href="PanelRecepcionista.aspx" class="btn btn-lg btn-outline-secondary">Cancelar</a>
         </div>
 
     </div>

@@ -165,7 +165,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@horaFin", turno.HoraFin);
                 datos.setearParametro("@observaciones", turno.Observaciones ?? (object)DBNull.Value);
                 datos.setearParametro("@diagnostico", turno.Diagnostico ?? (object)DBNull.Value);
-                datos.setearParametro("@fechaCreacion", DateTime.Today);
+                datos.setearParametro("@fechaCreacion", DateTime.Now);
                 datos.setearParametro("@estado", "Nuevo");
                 datos.setearParametro("@idPaciente", turno.Paciente.Id);
                 datos.setearParametro("@idMedico", turno.Medico.Id);
