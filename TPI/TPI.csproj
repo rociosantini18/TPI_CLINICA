@@ -88,6 +88,7 @@
     <Content Include="NuevoTurnoRecepcionista.aspx" />
     <Content Include="PanelRecepcionista.aspx" />
     <Content Include="PruebaBD.aspx" />
+    <Content Include="RegistrarEmpleado.aspx" />
     <Content Include="RegistrarMedico.aspx" />
     <Content Include="Registrarse.aspx" />
     <Content Include="SacarTurno.aspx" />
@@ -220,6 +221,13 @@
     </Compile>
     <Compile Include="PruebaBD.aspx.designer.cs">
       <DependentUpon>PruebaBD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrarEmpleado.aspx.cs">
+      <DependentUpon>RegistrarEmpleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegistrarEmpleado.aspx.designer.cs">
+      <DependentUpon>RegistrarEmpleado.aspx</DependentUpon>
     </Compile>
     <Compile Include="RegistrarMedico.aspx.cs">
       <DependentUpon>RegistrarMedico.aspx</DependentUpon>

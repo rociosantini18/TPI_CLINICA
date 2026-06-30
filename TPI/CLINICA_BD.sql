@@ -264,6 +264,18 @@ SELECT * FROM HorarioMedico;
 Select * from turno;
 select * from Especialidad;
 
+
+select 
+e.Id_Empleado,
+e.Id_Persona,
+p.Nombre,
+p.Apellido,
+pe.Id_Rol
+from Empleado e
+inner join Persona p on e.Id_Persona = p.Id_Persona
+inner join Perfil pe on e.Id_Perfil = pe.Id_Perfil
+
+
 select 
 (p.Apellido +' '+ p.Nombre) as 'Nombre completo',
 m.Id_Medico, m.Id_Persona

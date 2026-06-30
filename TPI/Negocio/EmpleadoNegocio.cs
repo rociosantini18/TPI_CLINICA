@@ -87,20 +87,17 @@ namespace TPI.Negocio
             }
         }
 
-
-        public void agregar(Empleado emp)
+        public void agregar(Empleado emp, int idRol)
         {
             AccesoDatos datos = new AccesoDatos();
             int idPersona = 0;
             int idPerfil = 0;
-
             try
             {
                 datos.setearConsulta(@"
-                INSERT INTO Empleado (Dni, Nombre, Apellido, Email, Telefono, Direccion, FechaNacimiento)
-                OUTPUT INSERTED.Id_Empleado
-                VALUES (@dni, @nombre, @apellido, @email, @telefono, @direccion, @fechaNac)");
-
+            INSERT INTO Persona (Dni, Nombre, Apellido, Email, Telefono, Direccion, FechaNacimiento)
+            OUTPUT INSERTED.Id_Persona
+            VALUES (@dni, @nombre, @apellido, @email, @telefono, @direccion, @fechaNac)");
                 datos.setearParametro("@dni", emp.Dni);
                 datos.setearParametro("@nombre", emp.Nombre);
                 datos.setearParametro("@apellido", emp.Apellido);
@@ -108,7 +105,6 @@ namespace TPI.Negocio
                 datos.setearParametro("@telefono", emp.Telefono);
                 datos.setearParametro("@direccion", emp.Direccion);
                 datos.setearParametro("@fechaNac", emp.FechaNacimiento);
-
                 datos.ejecutarLectura();
                 if (datos.Lector.Read())
                     idPersona = (int)datos.Lector[0];
@@ -118,36 +114,23 @@ namespace TPI.Negocio
                 datos.setearConsulta(@"
                 INSERT INTO Perfil (Id_Rol, NombreUsuario, Contraseña, Activo)
                 OUTPUT INSERTED.Id_Perfil
-                VALUES (@idRol, @usuario, @contrasena, @activo)");
-
-                datos.setearParametro("@idRol", 3);
+                VALUES (@idRol, @usuario, @contrasena, 1)");
+    
+                datos.setearParametro("@idRol", idRol);
                 datos.setearParametro("@usuario", emp.Perfil.NombreUsuario);
                 datos.setearParametro("@contrasena", emp.Perfil.Contraseña);
-                datos.setearParametro("@activo", true);
-
                 datos.ejecutarLectura();
-                if (datos.Lector.Read())
-                    idPerfil = (int)datos.Lector[0];
+                if (datos.Lector.Read()) idPerfil = (int)datos.Lector[0];
                 datos.CerrarConexion();
 
                 datos = new AccesoDatos();
-                datos.setearConsulta(@"
-                INSERT INTO Empleado (Id_Persona, Id_Perfil)
-                VALUES (@idPersona, @idPerfil)");
-
+                datos.setearConsulta("INSERT INTO Empleado (Id_Persona, Id_Perfil) VALUES (@idPersona, @idPerfil)");
                 datos.setearParametro("@idPersona", idPersona);
                 datos.setearParametro("@idPerfil", idPerfil);
-
                 datos.ejecutarAccion();
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
         }
 
         public void modificar(Empleado emp)
@@ -206,7 +189,8 @@ namespace TPI.Negocio
                     FROM Empleado e
                     INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
                     INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
-                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol");
+                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol
+                    WHERE r.Id_Rol = 3 AND pf.Activo = 1");
 
                 datos.ejecutarLectura();
 
@@ -230,10 +214,8 @@ namespace TPI.Negocio
                     aux.Perfil.Activo = (bool)datos.Lector["Activo"];
                     aux.Perfil.Rol = (string)datos.Lector["NombreRol"];
 
-                    if (aux.Perfil.Rol == "Recepcionista")
-                    {
                         lista.Add(aux);
-                    }
+                    
                 }
 
                 return lista;
@@ -266,7 +248,8 @@ namespace TPI.Negocio
                     FROM Empleado e
                     INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
                     INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
-                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol");
+                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol
+                    WHERE pf.Activo = 1");
 
                 datos.ejecutarLectura();
 
