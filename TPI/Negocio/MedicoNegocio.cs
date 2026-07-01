@@ -104,6 +104,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@direccion", med.Direccion);
                 datos.setearParametro("@fechaNac", med.FechaNacimiento);
 
+
                 datos.ejecutarLectura();
                 if (datos.Lector.Read())
                     idPersona = (int)datos.Lector[0];
@@ -152,7 +153,8 @@ namespace TPI.Negocio
             WHERE m.Id_Medico = @id;
 
             UPDATE Medico SET
-                Matricula = @matricula
+                Matricula = @matricula,
+                Imagen_URL = @imagenUrl
             WHERE Id_Medico = @id");
 
                 datos.setearParametro("@dni", med.Dni);
@@ -164,6 +166,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@fechaNac", med.FechaNacimiento);
                 datos.setearParametro("@matricula", med.Matricula);
                 datos.setearParametro("@id", med.Id);
+                datos.setearParametro("@imagenUrl", med.imagenURL);
 
                 datos.ejecutarAccion();
             }

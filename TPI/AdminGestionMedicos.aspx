@@ -172,6 +172,14 @@
                                 ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
                                 CssClass="text-danger small" Display="Dynamic" />
                         </div>
+                        </div>
+                            <div class="col-md-6">
+                            <asp:Label runat="server" Text="URL Imagen:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditFoto" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditFoto"
+                                ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
                     </div>
 
                     <asp:Label ID="lblMensajeMed" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />

@@ -77,6 +77,7 @@ namespace TPI
                     txtEditMedDireccion.Text = med.Direccion;
                     txtEditMedFechaNac.Text = med.FechaNacimiento.ToString("yyyy-MM-dd");
                     txtEditMatri.Text = med.Matricula;
+                    txtEditFoto.Text = med.imagenURL;
                     lblMensajeMed.Text = "";
                     pnlEditarMedico.Visible = true;
                 }
@@ -97,6 +98,7 @@ namespace TPI
             med.Direccion = txtEditMedDireccion.Text.Trim();
             med.FechaNacimiento = DateTime.Parse(txtEditMedFechaNac.Text);
             med.Matricula = txtEditMatri.Text.Trim();
+            med.imagenURL = txtEditFoto.Text.Trim();
 
             negocio.modificar(med);
 
