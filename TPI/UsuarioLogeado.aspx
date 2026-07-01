@@ -20,15 +20,13 @@
         <div class="row g-3">
 
             <div class="col-md-3">
-                <asp:Button ID="btnMisTurnos" runat="server" Text="Mis Turnos"
-                    CssClass="btn btn-primary w-100 py-3 fs-5"
-                    PostBackUrl="~/MisTurnos.aspx" />
+                <asp:Button ID="btnMisTurnos" runat="server" Text="Mis Turnos" OnClick="btnMisTurnos_Click"
+                    CssClass="btn btn-primary w-100 py-3 fs-5"/>
             </div>
 
             <div class="col-md-3">
-                <asp:Button ID="btnTomarTurno" runat="server" Text="Pedir Turno"
-                    CssClass="btn btn-primary w-100 py-3 fs-5"
-                    PostBackUrl="~/SacarTurno.aspx" />
+                <asp:Button ID="btnTomarTurno" runat="server" Text="Pedir Turno" OnClick="btnTomarTurno_Click"
+                    CssClass="btn btn-primary w-100 py-3 fs-5" />
             </div>
 
             <div class="col-md-3">

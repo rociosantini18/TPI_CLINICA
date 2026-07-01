@@ -90,6 +90,9 @@ namespace TPI
 
             ddlMedico.Items.Insert(0, new ListItem(" Seleccione un medico", "0"));
 
+            ddlFechasDisponibles.Items.Clear();
+            ddlHorario.Items.Clear();
+
         }
         protected void ddlFechasDisponibles_SelectedIndexChanged(object sender, EventArgs e)
         {

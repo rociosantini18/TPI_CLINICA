@@ -38,5 +38,25 @@ namespace TPI
                 return;
             }
         }
+
+        protected void btnTomarTurno_Click(object sender, EventArgs e)
+        {
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+                Response.Redirect("~/SacarTurno.aspx?id=" + id);
+                return;
+            }
+        }
+
+        protected void btnMisTurnos_Click(object sender, EventArgs e)
+        {
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+                Response.Redirect("~/MisTurnos.aspx?id=" + id);
+                return;
+            }
+        }
     }
 }

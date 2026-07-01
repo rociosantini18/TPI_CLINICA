@@ -84,7 +84,7 @@ CREATE TABLE Turno (
     HoraInicio TIME NOT NULL,
     HoraFin TIME NOT NULL,
     Observaciones VARCHAR(300),
-    Diagnostico VARCHAR(300) NOT NULL,
+    Diagnostico VARCHAR(300),
     FechaCreacion DATE NOT NULL,
     FechaModificación DATE,
     Estado VARCHAR(50),
@@ -249,6 +249,9 @@ VALUES
 (2, '2026-07-03', '10:00:00', '10:30:00'),
 (2, '2026-07-03', '10:30:00', '11:00:00'),
 (2, '2026-07-03', '11:00:00', '11:30:00');
+
+ALTER TABLE Turno
+ALTER COLUMN Diagnostico VARCHAR(300) NULL;
 
 ALTER TABLE Medico ADD Activo BIT NOT NULL DEFAULT 1;
 ALTER TABLE Especialidad ADD Activo BIT NOT NULL DEFAULT 1;
