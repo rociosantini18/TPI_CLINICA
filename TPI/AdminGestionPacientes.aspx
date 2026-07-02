@@ -32,6 +32,11 @@
                     CssClass="btn btn-primary w-100 py-3 fs-5"
                     PostBackUrl="~/Registrarse.aspx" />
             </div>
+                    <div class="col-md-3">
+            <asp:Button ID="btnAgregarObraSocial" runat="server" Text="+ Agregar Obra Social"
+                CssClass="btn btn-success w-100 py-3 fs-5"
+                OnClick="btnAgregarObraSocial_Click" CausesValidation="false" />
+        </div>
         </div>
 
     </div>
@@ -45,10 +50,12 @@
                     <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
                     <asp:BoundField HeaderText="Obra Social" DataField="ObraSocial" />
                     <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
-                    <asp:BoundField HeaderText="Fecha de Nacimiento" DataField="FechaNacimiento" />
                     <asp:BoundField HeaderText="Usuario" DataField="Perfil.NombreUsuario" />
                     <asp:BoundField HeaderText="Contraseña" DataField="Perfil.Contraseña" />
 
+                    <asp:TemplateField HeaderText="Fecha de Nacimiento">
+                        <ItemTemplate><%# ((DateTime)Eval("FechaNacimiento")).ToString("dd/MM/yyyy") %></ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="">
                     <ItemTemplate>
                         <asp:LinkButton runat="server"
@@ -71,6 +78,35 @@
             </asp:GridView>
             </div>
         </div>
+    <asp:Panel ID="pnlNuevaObraSocial" runat="server" Visible="false" CssClass="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 p-4 text-start">
+                <h5 class="fw-bold mb-3">Nueva Obra Social</h5>
+
+                <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
+                <asp:TextBox ID="txtNombreObraSocial" runat="server" CssClass="form-control"
+                    placeholder="Ej: Swiss Medical" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtNombreObraSocial"
+                    ValidationGroup="vgObraSocial" ErrorMessage="Requerido."
+                    CssClass="text-danger small" Display="Dynamic" />
+
+                <asp:Label ID="lblMensajeObraSocial" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />
+
+                <div class="d-flex gap-2 mt-3">
+                    <asp:Button ID="btnGuardarObraSocial" runat="server" Text="Guardar"
+                        CssClass="btn btn-success"
+                        ValidationGroup="vgObraSocial"
+                        OnClick="btnGuardarObraSocial_Click" />
+                    <asp:Button ID="btnCancelarObraSocial" runat="server" Text="Cancelar"
+                        CssClass="btn btn-outline-secondary"
+                        CausesValidation="false"
+                        OnClick="btnCancelarObraSocial_Click" />
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:Panel>
             <%-- Tabla modificarsss --%>
             <asp:Panel ID="pnlEditarPaciente" runat="server" Visible="false" CssClass="container my-4">
         <div class="row justify-content-center">
@@ -119,6 +155,20 @@
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditFechaNac"
                                 ValidationGroup="vgEditPaciente" ErrorMessage="Requerido."
                                 CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                            <div class="col-md-6">
+                            <asp:Label runat="server" Text="Contraseña:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditContraseña" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditContraseña"
+                                ValidationGroup="vgEditPaciente" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Obra Social:" CssClass="form-label fw-semibold" />
+                            <asp:DropDownList ID="ddlEditObraSocial" runat="server" CssClass="form-select" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlEditObraSocial"
+                                ValidationGroup="vgEditPaciente" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" InitialValue="" />
                         </div>
                     </div>
 

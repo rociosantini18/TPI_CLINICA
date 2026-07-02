@@ -28,7 +28,6 @@
                 <asp:DropDownList ID="ddlFiltroEstado" runat="server" CssClass="form-select">
                     <asp:ListItem Text="Todos los estados" Value="" />
                     <asp:ListItem Text="Nuevo" Value="Nuevo" />
-                    <asp:ListItem Text="Reprogramado" Value="Reprogramado" />
                     <asp:ListItem Text="Cancelado" Value="Cancelado" />
                     <asp:ListItem Text="Atendido" Value="Atendido" />
                 </asp:DropDownList>
@@ -80,11 +79,6 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <asp:Button CommandName="Reprogramar"
-                                        CommandArgument='<%# Eval("Id") %>'
-                                        runat="server" Text="Reprogramar"
-                                        CssClass="btn btn-sm btn-outline-warning"
-                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Atendido" %>' />
                                     <asp:Button CommandName="Cancelar"
                                         CommandArgument='<%# Eval("Id") %>'
                                         runat="server" Text="Cancelar"

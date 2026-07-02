@@ -62,7 +62,7 @@ namespace TPI
                     txtEditTelefono.Text = emp.Telefono;
                     txtEditDireccion.Text = emp.Direccion;
                     txtEditFechaNac.Text = emp.FechaNacimiento.ToString("yyyy-MM-dd");
-
+                    txtEditContraseña.Text = emp.Perfil.Contraseña;
                     lblMensajeRecep.Text = "";
                     lblError.Text = "";
                     pnlEditarRecepcionista.Visible = true;
@@ -85,6 +85,7 @@ namespace TPI
                 emp.Telefono = txtEditTelefono.Text.Trim();
                 emp.Direccion = txtEditDireccion.Text.Trim();
                 emp.FechaNacimiento = DateTime.Parse(txtEditFechaNac.Text);
+                emp.Perfil = new Perfil { Contraseña = txtEditContraseña.Text.Trim() };
 
                 negocio.modificar(emp);
 

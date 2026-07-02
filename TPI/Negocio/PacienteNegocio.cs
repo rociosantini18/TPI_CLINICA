@@ -22,7 +22,7 @@ namespace TPI.Negocio
                 datos.setearConsulta(@"
                     SELECT p.Id_Paciente, per.Dni, per.Nombre, per.Apellido,
                            per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
-                           os.Nombre_ObraSocial,
+                           os.Nombre_ObraSocial, os.Id_ObraSocial,
                            pf.Id_Perfil, pf.NombreUsuario, pf.Contraseña, pf.Activo,
                            r.NombreRol
                     FROM Paciente p
@@ -47,6 +47,7 @@ namespace TPI.Negocio
                     aux.Direccion = (string)datos.Lector["Direccion"];
                     aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
                     aux.ObraSocial = datos.Lector["Nombre_ObraSocial"] as string;
+                    aux.IdObraSocial = datos.Lector["Id_ObraSocial"] == DBNull.Value ? 0 : (int)datos.Lector["Id_ObraSocial"];
 
                     aux.Perfil = new Perfil();
                     aux.Perfil.Id = (int)datos.Lector["Id_Perfil"];
@@ -158,19 +159,27 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    UPDATE Persona SET
-                        Dni = @dni,
-                        Nombre = @nombre,
-                        Apellido = @apellido,
-                        Email = @email,
-                        Telefono = @telefono,
-                        Direccion = @direccion,
-                        FechaNacimiento= @fechaNac
-                    WHERE Id_Persona = @id
+            UPDATE per SET
+                per.Dni = @dni,
+                per.Nombre = @nombre,
+                per.Apellido = @apellido,
+                per.Email = @email,
+                per.Telefono = @telefono,
+                per.Direccion = @direccion,
+                per.FechaNacimiento = @fechaNac
+            FROM Persona per
+            INNER JOIN Paciente p ON per.Id_Persona = p.Id_Persona
+            WHERE p.Id_Paciente = @id;
 
-                    UPDATE Paciente SET
-                        Id_ObraSocial = @obraSocial
-                    WHERE Id_Persona = @id;");
+            UPDATE Paciente SET
+                Id_ObraSocial = @obraSocial
+            WHERE Id_Paciente = @id;
+
+            UPDATE pf SET
+                pf.Contraseña = @contrasena
+            FROM Perfil pf
+            INNER JOIN Paciente p ON pf.Id_Perfil = p.Id_Perfil
+            WHERE p.Id_Paciente = @id;");
 
                 datos.setearParametro("@dni", pac.Dni);
                 datos.setearParametro("@nombre", pac.Nombre);
@@ -179,6 +188,8 @@ namespace TPI.Negocio
                 datos.setearParametro("@telefono", pac.Telefono);
                 datos.setearParametro("@direccion", pac.Direccion);
                 datos.setearParametro("@fechaNac", pac.FechaNacimiento);
+                datos.setearParametro("@obraSocial", pac.IdObraSocial);
+                datos.setearParametro("@contrasena", pac.Perfil.Contraseña);
                 datos.setearParametro("@id", pac.Id);
 
                 datos.ejecutarAccion();
@@ -208,29 +219,7 @@ namespace TPI.Negocio
             }
             finally { datos.CerrarConexion(); }
         }
-        public Dictionary<int, string> listarObrasSociales()
-        {
-            Dictionary<int, string> obras = new Dictionary<int, string>();
-            AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
-                datos.setearConsulta("SELECT Id_ObraSocial, Nombre_ObraSocial FROM ObraSocial");
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
-                {
-                    obras.Add(
-                        (int)datos.Lector["Id_ObraSocial"],
-                        (string)datos.Lector["Nombre_ObraSocial"]
-                    );
-                }
-
-                return obras;
-            }
-            catch (Exception ex) { throw ex; }
-            finally { datos.CerrarConexion(); }
-        }
 
         public Paciente RelacionPerfilPersona(int id)
         {
@@ -290,28 +279,31 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                select p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email
-                    from Paciente pac
-                    inner join Persona p ON pac.Id_Persona = p.Id_Persona
-                    where 
-                        p.Dni like @criterio
-                        or p.Nombre like @criterio
-                        or p.Apellido like @criterio");
+            select pac.Id_Paciente, p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, ob.Nombre_ObraSocial
+            from Paciente pac
+            inner join Persona p ON pac.Id_Persona = p.Id_Persona
+            left join ObraSocial ob ON pac.Id_ObraSocial = ob.Id_ObraSocial
+            where
+               p.Dni like @criterio 
+               or p.Nombre like @criterio 
+               or p.Apellido like @criterio");
 
                 datos.setearParametro("@criterio", "%" + criterio + "%");
-
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Paciente paciente = new Paciente();
 
+                    paciente.IdPaciente = (int)datos.Lector["Id_Paciente"];
                     paciente.Id = (int)datos.Lector["Id_Persona"];
                     paciente.Dni = datos.Lector["Dni"].ToString();
                     paciente.Nombre = datos.Lector["Nombre"].ToString();
                     paciente.Apellido = datos.Lector["Apellido"].ToString();
                     paciente.Telefono = datos.Lector["Telefono"].ToString();
                     paciente.Email = datos.Lector["Email"].ToString();
+
+                    paciente.ObraSocial = datos.Lector["Nombre_ObraSocial"] != DBNull.Value ? datos.Lector["Nombre_ObraSocial"].ToString() : "Particular";
 
                     lista.Add(paciente);
                 }
@@ -323,51 +315,40 @@ namespace TPI.Negocio
                 datos.CerrarConexion();
             }
         }
-
-        public Paciente BuscarPorId(int id)
+        public Dictionary<int, string> listarObrasSociales()
         {
+            Dictionary<int, string> obras = new Dictionary<int, string>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setearConsulta(@"
-                    select pac.Id_Paciente, p.Id_Persona, p.Nombre, p.Apellido, p.DNI, ob.Id_ObraSocial, ob.Nombre_ObraSocial
-                        from Paciente pac
-                    inner join Persona p on pac.Id_Persona = p.Id_Persona
-                    inner join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
-                    where p.Id_Persona = @id");
-
-                datos.setearParametro("@id", id);
-
+                datos.setearConsulta("SELECT Id_ObraSocial, Nombre_ObraSocial FROM ObraSocial");
                 datos.ejecutarLectura();
 
-                Paciente p = null;
-
-                if (datos.Lector.Read())
+                while (datos.Lector.Read())
                 {
-
-                    p = new Paciente();
-                    p.IdPaciente = (int)datos.Lector["Id_Paciente"];
-                    p.Id = (int)datos.Lector["Id_Persona"];
-                    p.Dni = datos.Lector["Dni"].ToString();
-                    p.Nombre = datos.Lector["Nombre"].ToString();
-                    p.Apellido = datos.Lector["Apellido"].ToString();
-                    p.ObraSocial = datos.Lector["Nombre_ObraSocial"].ToString();
-                    p.IdObraSocial = (int)datos.Lector["Id_ObraSocial"];
-
+                    obras.Add(
+                        (int)datos.Lector["Id_ObraSocial"],
+                        (string)datos.Lector["Nombre_ObraSocial"]
+                    );
                 }
 
-                return p;
-
+                return obras;
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
         }
-
+        public void agregarObraSocial(string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("INSERT INTO ObraSocial (Nombre_ObraSocial) VALUES (@nombre)");
+                datos.setearParametro("@nombre", nombre);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
     }
 }

@@ -48,11 +48,9 @@
                     <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
                     <asp:BoundField HeaderText="Telefono" DataField="Telefono" />
                     <asp:BoundField HeaderText="Email" DataField="Email" />
+                    <asp:BoundField HeaderText="Usuario" DataField="Perfil.NombreUsuario" />
+                    <asp:BoundField HeaderText="Contraseña" DataField="Perfil.Contraseña" />
 
-
-                    <asp:TemplateField HeaderText="Usuario">
-                        <ItemTemplate><%# Eval("Perfil.NombreUsuario") %></ItemTemplate>
-                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="Fecha de Nacimiento">
                         <ItemTemplate><%# ((DateTime)Eval("FechaNacimiento")).ToString("dd/MM/yyyy") %></ItemTemplate>
                     </asp:TemplateField>
@@ -123,6 +121,13 @@
                             <asp:Label runat="server" Text="Fecha de Nacimiento:" CssClass="form-label fw-semibold" />
                             <asp:TextBox ID="txtEditFechaNac" runat="server" CssClass="form-control" TextMode="Date" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditFechaNac"
+                                ValidationGroup="vgEditAdmin" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                          <div class="col-md-6">
+                            <asp:Label runat="server" Text="Contraseña:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditContraseña" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditContraseña"
                                 ValidationGroup="vgEditAdmin" ErrorMessage="Requerido."
                                 CssClass="text-danger small" Display="Dynamic" />
                         </div>

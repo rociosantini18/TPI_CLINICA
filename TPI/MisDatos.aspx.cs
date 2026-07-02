@@ -76,9 +76,7 @@ namespace TPI
                 paciente.Email= txtEmail.Text;
                 paciente.Direccion= txtDireccion.Text;
 
-                throw new Exception("Id Persona: " + paciente.Id);
-
-                negocio.modificar(paciente);
+                negocio.modificar(paciente); 
             }
         }
     }

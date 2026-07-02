@@ -15,6 +15,7 @@ namespace TPI
         {
             if (!IsPostBack)
                 cargarPacientes();
+            cargarObrasSociales();
         }
 
         private void cargarPacientes()
@@ -22,6 +23,15 @@ namespace TPI
             PacienteNegocio negocio = new PacienteNegocio();
             dgvPacientes.DataSource = negocio.listar();
             dgvPacientes.DataBind();
+        }
+
+        private void cargarObrasSociales()
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+            ddlEditObraSocial.DataSource = negocio.listarObrasSociales();
+            ddlEditObraSocial.DataTextField = "Value";
+            ddlEditObraSocial.DataValueField = "Key";
+            ddlEditObraSocial.DataBind();
         }
         protected void dgvPacientes_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -48,6 +58,8 @@ namespace TPI
                     txtEditDireccion.Text = pac.Direccion;
                     txtEditFechaNac.Text = pac.FechaNacimiento.ToString("yyyy-MM-dd");
                     lblMensajePac.Text = "";
+                    txtEditContraseña.Text = pac.Perfil.Contraseña;
+                    ddlEditObraSocial.Items.FindByValue(pac.IdObraSocial.ToString()).Selected = true;
                     pnlEditarPaciente.Visible = true;
                 }
             }
@@ -65,6 +77,8 @@ namespace TPI
             pac.Telefono = txtEditTelefono.Text.Trim();
             pac.Direccion = txtEditDireccion.Text.Trim();
             pac.FechaNacimiento = DateTime.Parse(txtEditFechaNac.Text);
+            pac.IdObraSocial = int.Parse(ddlEditObraSocial.SelectedValue); 
+            pac.Perfil = new Perfil{Contraseña = txtEditContraseña.Text.Trim()};
 
             negocio.modificar(pac);
 
@@ -76,6 +90,28 @@ namespace TPI
         {
             pnlEditarPaciente.Visible = false;
             lblMensajePac.Text = "";
+        }
+        protected void btnAgregarObraSocial_Click(object sender, EventArgs e)
+        {
+            txtNombreObraSocial.Text = "";
+            lblMensajeObraSocial.Text = "";
+            pnlNuevaObraSocial.Visible = true;
+        }
+
+        protected void btnGuardarObraSocial_Click(object sender, EventArgs e)
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+            negocio.agregarObraSocial(txtNombreObraSocial.Text.Trim());
+
+            lblMensajeObraSocial.Text = "Obra social agregada correctamente.";
+            txtNombreObraSocial.Text = "";
+
+            cargarObrasSociales();
+        }
+
+        protected void btnCancelarObraSocial_Click(object sender, EventArgs e)
+        {
+            pnlNuevaObraSocial.Visible = false;
         }
     }
 }

@@ -32,8 +32,11 @@
                                         CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen" />
                                 </div>
                             </div>
-
-                            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" DataKeyNames="Id" AutoGenerateSelectButton="True" OnSelectedIndexChanged="dgvPacientes_SelectedIndexChanged">
+                            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" 
+                                          AutoGenerateColumns="False" 
+                                          DataKeyNames="IdPaciente, Dni, Nombre, Apellido, ObraSocial" 
+                                          AutoGenerateSelectButton="True" 
+                                          OnSelectedIndexChanged="dgvPacientes_SelectedIndexChanged">
                                 <Columns>
                                     <asp:BoundField DataField="Dni" HeaderText="DNI" />
                                     <asp:BoundField DataField="Nombre" HeaderText="Nombre" />

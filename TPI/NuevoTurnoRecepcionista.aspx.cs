@@ -60,19 +60,14 @@ namespace TPI
 
         protected void dgvPacientes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int id = (int)dgvPacientes.SelectedDataKey.Value;
-
-            PacienteNegocio negocio = new PacienteNegocio();
-            Paciente paciente = negocio.BuscarPorId(id);
-
-            lblPacienteId.Text = paciente.IdPaciente.ToString();
-            lblPacienteDNI.Text = paciente.Dni;
-            lblPacienteNombre.Text = paciente.Nombre;
-            lblPacienteApellido.Text = paciente.Apellido;
-            lblPacienteOS.Text = paciente.ObraSocial;
+            lblPacienteId.Text = dgvPacientes.SelectedDataKey.Values["IdPaciente"].ToString();
+            lblPacienteDNI.Text = dgvPacientes.SelectedDataKey.Values["Dni"].ToString();
+            lblPacienteNombre.Text = dgvPacientes.SelectedDataKey.Values["Nombre"].ToString();
+            lblPacienteApellido.Text = dgvPacientes.SelectedDataKey.Values["Apellido"].ToString();
+            lblPacienteOS.Text = dgvPacientes.SelectedDataKey.Values["ObraSocial"].ToString();
 
             pnlPaciente.Visible = true;
-            dgvPacientes.Visible = false;
+            dgvPacientes.Visible = false; 
         }
 
 

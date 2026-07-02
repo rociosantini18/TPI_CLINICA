@@ -39,7 +39,6 @@ namespace TPI
                 cargarTurnos(idPaciente);
             }
         }
-
         private void cargarFiltroMedicos()
         {
             MedicoNegocio negocio = new MedicoNegocio();
