@@ -29,13 +29,14 @@ namespace TPI
 
             if (!IsPostBack)
             {
-                if (Request.QueryString["id"] != null)
-                {
-                    int id = int.Parse(Request.QueryString["id"].ToString());
-                    cargarFiltroMedicos();
-                    cargarFiltroEspecialidades();
-                    cargarTurnos(id);
-                }
+                PacienteNegocio pacNegocio = new PacienteNegocio();
+                int idPaciente = pacNegocio.ObtenerIdPacientePorPerfil(perfil.Id);
+
+                ViewState["idPaciente"] = idPaciente;
+
+                cargarFiltroMedicos();
+                cargarFiltroEspecialidades();
+                cargarTurnos(idPaciente);
             }
         }
 
@@ -100,31 +101,20 @@ namespace TPI
             else if (e.CommandName == "Reprogramar")
                 negocio.modificarEstado(idTurno, "Reprogramado");
 
-            if (Request.QueryString["id"] != null)
-            {
-                int id = int.Parse(Request.QueryString["id"].ToString());
-                cargarTurnos(id);
-            }
+            int idPaciente = (int)ViewState["idPaciente"];
+            cargarTurnos(idPaciente);
         }
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            if (Request.QueryString["id"] != null)
-            {
-                int id = int.Parse(Request.QueryString["id"].ToString());
-
-                cargarTurnos(id);
-            }
+            int idPaciente = (int)ViewState["idPaciente"];
+            cargarTurnos(idPaciente);
         }
 
         protected void btnLimpiar_Click(object sender, EventArgs e)
         {
-            if (Request.QueryString["id"] != null)
-            {
-                int id = int.Parse(Request.QueryString["id"].ToString());
-                cargarTurnos(id);
-            }
-
+            int idPaciente = (int)ViewState["idPaciente"];
+            cargarTurnos(idPaciente);
         }
     }
 }

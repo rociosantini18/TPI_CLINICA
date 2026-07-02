@@ -216,5 +216,26 @@ namespace TPI.Negocio
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
+        public void cargarDiagnostico(int idTurno, string diagnostico)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            UPDATE Turno SET
+                Diagnostico = @diagnostico,
+                Estado = 'Atendido',
+                FechaModificación = @fecha
+            WHERE Id_Turno = @id");
+
+                datos.setearParametro("@diagnostico", string.IsNullOrEmpty(diagnostico) ? (object)DBNull.Value : diagnostico);
+                datos.setearParametro("@fecha", DateTime.Today);
+                datos.setearParametro("@id", idTurno);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
     }
 }

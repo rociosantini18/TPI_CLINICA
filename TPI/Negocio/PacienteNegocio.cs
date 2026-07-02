@@ -190,7 +190,22 @@ namespace TPI.Negocio
                 datos.CerrarConexion();
             }
         }
+        public int ObtenerIdPacientePorPerfil(int idPerfil)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT Id_Paciente FROM Paciente WHERE Id_Perfil = @idPerfil");
+                datos.setearParametro("@idPerfil", idPerfil);
+                datos.ejecutarLectura();
 
+                if (datos.Lector.Read())
+                    return (int)datos.Lector["Id_Paciente"];
+
+                return 0;
+            }
+            finally { datos.CerrarConexion(); }
+        }
         public Dictionary<int, string> listarObrasSociales()
         {
             Dictionary<int, string> obras = new Dictionary<int, string>();
