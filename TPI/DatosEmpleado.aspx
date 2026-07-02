@@ -14,6 +14,10 @@
 
     <div class="container my-5">
         <div class="row justify-content-center">
+            <div class="text-start mb-3">
+                <asp:Button ID="btnVolver" runat="server" Text="VOLVER" OnClick="btnVolver_Click"
+                    CssClass="btn btn-primary w-15 py-3 fs-5" />
+            </div>
             <div class="col-md-7">
                 <div class="card shadow-sm border-0 p-5">
 
@@ -23,10 +27,26 @@
                         <div class="col-md-6">
                             <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold"></asp:Label>
                             <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control"></asp:TextBox>
+                            <asp:RequiredFieldValidator
+                                ID="rfvNombre"
+                                runat="server"
+                                ControlToValidate="txtNombre"
+                                ErrorMessage="El nombre es obligatorio."
+                                ForeColor="Red"
+                                Display="Dynamic">
+                            </asp:RequiredFieldValidator>
                         </div>
                         <div class="col-md-6">
                             <asp:Label runat="server" Text="Apellido:" CssClass="form-label fw-semibold"></asp:Label>
                             <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control"></asp:TextBox>
+                            <asp:RequiredFieldValidator
+                                ID="rfvApellido"
+                                runat="server"
+                                ControlToValidate="txtApellido"
+                                ErrorMessage="El apellido es obligatorio."
+                                ForeColor="Red"
+                                Display="Dynamic">
+                            </asp:RequiredFieldValidator>
                         </div>
                     </div>
 
@@ -45,38 +65,48 @@
                     <div class="mb-3">
                         <asp:Label runat="server" Text="Teléfono:" CssClass="form-label fw-semibold"></asp:Label>
                         <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:RequiredFieldValidator
+                            ID="rfvTelefono"
+                            runat="server"
+                            ControlToValidate="txtTelefono"
+                            ErrorMessage="El telefono es obligatorio."
+                            ForeColor="Red"
+                            Display="Dynamic">
+                        </asp:RequiredFieldValidator>
                     </div>
 
                     <div class="mb-3">
                         <asp:Label runat="server" Text="Dirección:" CssClass="form-label fw-semibold"></asp:Label>
                         <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:RequiredFieldValidator
+                            ID="rfvDireccion"
+                            runat="server"
+                            ControlToValidate="txtDireccion"
+                            ErrorMessage="La direccion es obligatorio."
+                            ForeColor="Red"
+                            Display="Dynamic">
+                        </asp:RequiredFieldValidator>
                     </div>
 
                     <hr class="my-4" />
-                    <h5 class="fw-bold mb-4 text-center">Datos de acceso</h5>
 
                     <div class="mb-3">
-                        <asp:Label runat="server" Text="Email:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
+                        <asp:Label runat="server" Text="Email:" CssClass="form-label fw-semibold" Visible="false"></asp:Label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" Visible="false"></asp:TextBox>
                     </div>
 
                     <div class="mb-3">
-                        <asp:Label runat="server" Text="Nueva contraseña:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"
-                            placeholder="Dejá en blanco para no cambiarla"></asp:TextBox>
+                        <asp:Label runat="server" Text="Nueva contraseña:" CssClass="form-label fw-semibold" Visible="false"></asp:Label>
+                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" ReadOnly="true" Visible="false"></asp:TextBox>
                     </div>
 
-                    <div class="mb-4">
-                        <asp:Label runat="server" Text="Confirmar nueva contraseña:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:TextBox ID="txtPasswordConfirm" runat="server" CssClass="form-control" TextMode="Password"
-                            placeholder="Repetí la nueva contraseña"></asp:TextBox>
-                    </div>
 
-                    <asp:Label ID="lblMensaje" runat="server" CssClass="d-block mb-3" Visible="false"></asp:Label>
+                    <asp:Label ID="lblExito" runat="server" CssClass="text-success fw-bold mb-3 d-block" Visible="false"></asp:Label>
+                    <asp:Label ID="lblError" runat="server" CssClass="text-danger mb-3 d-block" Visible="false"></asp:Label>
 
                     <div class="d-grid">
                         <asp:Button ID="btnGuardar" runat="server" Text="Guardar cambios"
-                            CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" />
+                            CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnGuardar_Click" />
                     </div>
                 </div>
             </div>

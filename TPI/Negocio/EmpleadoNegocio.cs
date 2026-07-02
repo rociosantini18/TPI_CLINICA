@@ -148,14 +148,8 @@ namespace TPI.Negocio
                         Telefono = @telefono,
                         Direccion = @direccion,
                         FechaNacimiento= @fechaNac
-                    WHERE Id_Persona = (
-                        SELECT Id_Persona FROM Empleado WHERE Id_Empleado = @id
-                    );
-                        UPDATE pf SET
-                        pf.Contraseña = @contrasena
-                    FROM Perfil pf
-                    INNER JOIN Empleado e ON pf.Id_Perfil = e.Id_Perfil
-                    WHERE e.Id_Empleado = @id; ");
+                    WHERE Id_Persona = @id");
+
 
                 datos.setearParametro("@dni", emp.Dni);
                 datos.setearParametro("@nombre", emp.Nombre);
@@ -164,7 +158,6 @@ namespace TPI.Negocio
                 datos.setearParametro("@telefono", emp.Telefono);
                 datos.setearParametro("@direccion", emp.Direccion);
                 datos.setearParametro("@fechaNac", emp.FechaNacimiento);
-                datos.setearParametro("@contrasena", emp.Perfil.Contraseña);
                 datos.setearParametro("@id", emp.Id);
 
                 datos.ejecutarAccion();

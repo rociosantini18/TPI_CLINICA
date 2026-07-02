@@ -159,27 +159,19 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-            UPDATE per SET
-                per.Dni = @dni,
-                per.Nombre = @nombre,
-                per.Apellido = @apellido,
-                per.Email = @email,
-                per.Telefono = @telefono,
-                per.Direccion = @direccion,
-                per.FechaNacimiento = @fechaNac
-            FROM Persona per
-            INNER JOIN Paciente p ON per.Id_Persona = p.Id_Persona
-            WHERE p.Id_Paciente = @id;
+                    UPDATE Persona SET
+                        Dni = @dni,
+                        Nombre = @nombre,
+                        Apellido = @apellido,
+                        Email = @email,
+                        Telefono = @telefono,
+                        Direccion = @direccion,
+                        FechaNacimiento= @fechaNac
+                    WHERE Id_Persona = @id
 
-            UPDATE Paciente SET
-                Id_ObraSocial = @obraSocial
-            WHERE Id_Paciente = @id;
-
-            UPDATE pf SET
-                pf.Contraseña = @contrasena
-            FROM Perfil pf
-            INNER JOIN Paciente p ON pf.Id_Perfil = p.Id_Perfil
-            WHERE p.Id_Paciente = @id;");
+                    UPDATE Paciente SET
+                        Id_ObraSocial = @obraSocial
+                    WHERE Id_Persona = @id;");
 
                 datos.setearParametro("@dni", pac.Dni);
                 datos.setearParametro("@nombre", pac.Nombre);
@@ -189,7 +181,6 @@ namespace TPI.Negocio
                 datos.setearParametro("@direccion", pac.Direccion);
                 datos.setearParametro("@fechaNac", pac.FechaNacimiento);
                 datos.setearParametro("@obraSocial", pac.IdObraSocial);
-                datos.setearParametro("@contrasena", pac.Perfil.Contraseña);
                 datos.setearParametro("@id", pac.Id);
 
                 datos.ejecutarAccion();
