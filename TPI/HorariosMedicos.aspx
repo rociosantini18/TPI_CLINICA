@@ -11,45 +11,44 @@
 <div class="container my-5">
     <div class="row g-4">
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 p-4">
-                <h5 class="fw-bold mb-3">Agregar Horario</h5>
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 p-4">
+                        <h5 class="fw-bold mb-3">Agregar Horario</h5>
 
-                <div class="mb-3">
-                    <asp:Label runat="server" Text="Médico:" CssClass="form-label fw-semibold"></asp:Label>
-                    <asp:DropDownList ID="ddlMedico" runat="server" CssClass="form-select"
-                        AutoPostBack="true" OnSelectedIndexChanged="ddlMedico_SelectedIndexChanged">
-                    </asp:DropDownList>
+                        <div class="mb-3">
+                            <asp:Label runat="server" Text="Médico:" CssClass="form-label fw-semibold"></asp:Label>
+                            <asp:DropDownList ID="ddlMedico" runat="server" CssClass="form-select"
+                                AutoPostBack="true" OnSelectedIndexChanged="ddlMedico_SelectedIndexChanged">
+                            </asp:DropDownList>
+                        </div>
+
+                        <div class="mb-3">
+                            <asp:Label runat="server" Text="Fecha:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtFecha" runat="server" CssClass="form-control" TextMode="Date" />
+                            <asp:RequiredFieldValidator runat="server"
+                                ControlToValidate="txtFecha"
+                                ErrorMessage="La fecha es obligatoria."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+
+                        <div class="mb-3">
+                            <asp:Label runat="server" Text="Hora inicio:" CssClass="form-label fw-semibold"></asp:Label>
+                            <asp:TextBox ID="txtHoraInicio" runat="server" CssClass="form-control" TextMode="Time" required="true"></asp:TextBox>
+                        </div>
+
+                        <div class="mb-3">
+                            <asp:Label runat="server" Text="Hora fin:" CssClass="form-label fw-semibold"></asp:Label>
+                            <asp:TextBox ID="txtHoraFin" runat="server" CssClass="form-control" TextMode="Time" required="true"></asp:TextBox>
+
+                        <asp:Label ID="lblMensaje" runat="server" Visible="false" CssClass="mb-2 d-block"></asp:Label>
+
+                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar Horario"
+                            CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen"
+                            OnClick="btnAgregar_Click" />
+                        <a href="PanelRecepcionista.aspx" class="btn btn-lg btn-outline-secondary">Cancelar</a>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <asp:Label runat="server" Text="Fecha:" CssClass="form-label fw-semibold" />
-                    <asp:TextBox ID="txtFecha" runat="server" CssClass="form-control" TextMode="Date" />
-                    <asp:RequiredFieldValidator runat="server"
-                        ControlToValidate="txtFecha"
-                        ErrorMessage="La fecha es obligatoria."
-                        CssClass="text-danger small" Display="Dynamic" />
-                </div>
-
-                <div class="mb-3">
-                    <asp:Label runat="server" Text="Hora inicio:" CssClass="form-label fw-semibold"></asp:Label>
-                    <asp:TextBox ID="txtHoraInicio" runat="server" CssClass="form-control" TextMode="Time"></asp:TextBox>
-                </div>
-
-                <div class="mb-3">
-                    <asp:Label runat="server" Text="Hora fin:" CssClass="form-label fw-semibold"></asp:Label>
-                    <asp:TextBox ID="txtHoraFin" runat="server" CssClass="form-control" TextMode="Time"></asp:TextBox>
-                </div>
-
-                <asp:Label ID="lblMensaje" runat="server" Visible="false" CssClass="mb-2 d-block"></asp:Label>
-
-                <asp:Button ID="btnAgregar" runat="server" Text="Agregar Horario"
-                    CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen"
-                    OnClick="btnAgregar_Click" />
-                     <a href="PanelRecepcionista.aspx" class="btn btn-lg btn-outline-secondary">Cancelar</a>
-            </div>
         </div>
-
         <div class="col-md-8">
             <div class="card shadow-sm border-0 p-4">
                 <h5 class="fw-bold mb-3">Horarios del médico seleccionado</h5>
