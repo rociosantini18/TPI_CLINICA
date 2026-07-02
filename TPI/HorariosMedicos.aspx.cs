@@ -74,9 +74,30 @@ namespace TPI
                     return;
                 }
 
-
+                int idMedico = int.Parse(ddlMedico.SelectedValue);
                 HorarioMedicoNegocio negocio = new HorarioMedicoNegocio();
-                negocio.agregar(int.Parse(ddlMedico.SelectedValue), fecha, TimeSpan.Parse(txtHoraInicio.Text),TimeSpan.Parse(txtHoraFin.Text));
+
+                Medico medicoSeleccionado = negocio.obtenerConHorarios(idMedico);
+
+                if (medicoSeleccionado != null && medicoSeleccionado.Horarios != null)
+                {
+                    foreach (var h in medicoSeleccionado.Horarios)
+                    {
+                        if (h.Fecha.Date == fecha.Date)
+                        {
+                            if (horaInicio < h.HoraFin && horaFin > h.HoraInicio)
+                            {
+                                lblMensaje.Text = "El médico ya tiene un horario registrado que se superpone con este.";
+                                lblMensaje.CssClass = "text-danger mb-2 d-block";
+                                lblMensaje.Visible = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                negocio.agregar(idMedico, fecha, horaInicio, horaFin);
+
                 lblMensaje.Visible = true;
                 lblMensaje.CssClass = "text-success mb-2 d-block";
                 lblMensaje.Text = "Horario agregado correctamente.";

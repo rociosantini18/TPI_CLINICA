@@ -28,7 +28,8 @@
                             <asp:RequiredFieldValidator runat="server"
                                 ControlToValidate="txtFecha"
                                 ErrorMessage="La fecha es obligatoria."
-                                CssClass="text-danger small" Display="Dynamic" />
+                                CssClass="text-danger small" Display="Dynamic"
+                                ValidationGroup="AgregarHorario" />
                         </div>
 
                         <div class="mb-3">
@@ -44,7 +45,7 @@
 
                         <asp:Button ID="btnAgregar" runat="server" Text="Agregar Horario"
                             CssClass="btn w-100" BackColor="LightGreen" BorderColor="LightGreen"
-                            OnClick="btnAgregar_Click" />
+                            OnClick="btnAgregar_Click" ValidationGroup="AgregarHorario" />
                         <a href="PanelRecepcionista.aspx" class="btn btn-lg btn-outline-secondary">Cancelar</a>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
                                         <td><%# ((TimeSpan)Eval("HoraInicio")).ToString(@"hh\:mm") %></td>
                                         <td><%# ((TimeSpan)Eval("HoraFin")).ToString(@"hh\:mm") %></td>
                                         <td>
-                                            <asp:Button CommandName="Eliminar" CommandArgument='<%# Eval("Id") %>' runat="server" Text="Eliminar" CssClass="btn btn-sm btn-outline-danger" />
+                                            <asp:Button CommandName="Eliminar" CommandArgument='<%# Eval("Id") %>' runat="server" Text="Eliminar" CssClass="btn btn-sm btn-outline-danger" CausesValidation="false" />
                                         </td>
                                     </tr>
                                 </ItemTemplate>
