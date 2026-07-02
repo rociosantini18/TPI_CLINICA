@@ -20,6 +20,8 @@ namespace TPI
 
             if (!IsPostBack)
                 cargarMedicos();
+            txtFecha.Attributes["min"] = DateTime.Now.ToString("yyyy-MM-dd");
+            txtFecha.Attributes["max"] = DateTime.Now.AddYears(2).ToString("yyyy-MM-dd");
         }
 
         private void cargarMedicos()
@@ -54,13 +56,36 @@ namespace TPI
             try
             {
                 DateTime fecha = DateTime.Parse(txtFecha.Text);
+                TimeSpan horaInicio = TimeSpan.Parse(txtHoraInicio.Text);
+                TimeSpan horaFin = TimeSpan.Parse(txtHoraFin.Text);
+
+                if (fecha.Date < DateTime.Today || fecha.Date > DateTime.Today.AddYears(1))
+                {
+                    lblMensaje.Visible = true;
+                    lblMensaje.CssClass = "text-danger mb-2 d-block";
+                    lblMensaje.Text = "La fecha debe ser a partir de hoy y dentro del próximo año.";
+                    return;
+                }
+                if (horaInicio >= horaFin)
+                {
+                    lblMensaje.Visible = true;
+                    lblMensaje.CssClass = "text-danger mb-2 d-block";
+                    lblMensaje.Text = "La hora de fin debe ser posterior a la hora de inicio.";
+                    return;
+                }
+
 
                 HorarioMedicoNegocio negocio = new HorarioMedicoNegocio();
-                negocio.agregar(int.Parse(ddlMedico.SelectedValue), fecha, TimeSpan.Parse(txtHoraInicio.Text),TimeSpan.Parse(txtHoraFin.Text));
+                negocio.agregar(int.Parse(ddlMedico.SelectedValue), fecha, TimeSpan.Parse(txtHoraInicio.Text), TimeSpan.Parse(txtHoraFin.Text));
                 lblMensaje.Visible = true;
                 lblMensaje.CssClass = "text-success mb-2 d-block";
                 lblMensaje.Text = "Horario agregado correctamente.";
                 cargarHorarios();
+
+                txtFecha.Text = "";
+                txtHoraInicio.Text = "";
+                txtHoraFin.Text = "";
+                ddlMedico.SelectedValue = "0";
             }
             catch (Exception ex)
             {
