@@ -38,7 +38,7 @@ namespace TPI
                 txtNombre.Text = paciente.Nombre;
                 txtApellido.Text = paciente.Apellido;
                 txtTelefono.Text = paciente.Telefono;
-                txtFechaNacimiento.Text = paciente.FechaNacimiento.ToString("yyyy-MM-dd"); 
+                txtFechaNacimiento.Text = paciente.FechaNacimiento.ToString("yyyy-MM-dd");
                 ddlObraSocial.DataSource = negocio.listarObrasSociales();
                 ddlObraSocial.DataTextField = "Value";
                 ddlObraSocial.DataValueField = "Key";
@@ -50,6 +50,36 @@ namespace TPI
             }
 
 
+        }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+
+                PacienteNegocio negocio = new PacienteNegocio();
+                Paciente paciente = negocio.RelacionPerfilPersona(id);
+
+                if (paciente == null)
+                {
+                    throw new Exception("No se encontró el paciente.");
+                }
+
+                paciente.Dni = txtDNI.Text;
+                paciente.Nombre = txtNombre.Text;
+                paciente.Apellido = txtApellido.Text;
+                paciente.Telefono = txtTelefono.Text;
+                paciente.FechaNacimiento = Convert.ToDateTime(txtFechaNacimiento.Text); ;
+                paciente.IdObraSocial = int.Parse(ddlObraSocial.SelectedValue);
+                paciente.Email= txtEmail.Text;
+                paciente.Direccion= txtDireccion.Text;
+
+                throw new Exception("Id Persona: " + paciente.Id);
+
+                negocio.modificar(paciente);
+            }
         }
     }
 }

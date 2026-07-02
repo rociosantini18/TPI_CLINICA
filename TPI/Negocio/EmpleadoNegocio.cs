@@ -291,5 +291,51 @@ namespace TPI.Negocio
             }
         }
 
+        public Empleado RelacionPerfilPersona(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                select p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento 
+                        from Empleado emp
+                        inner join Perfil perf on emp.Id_Perfil = perf.Id_Perfil 
+                        inner join Persona p on emp.Id_Persona = p.Id_Persona
+                    where perf.Id_Perfil = @id");
+
+                datos.setearParametro("@id", id);
+
+                datos.ejecutarLectura();
+
+                Empleado e = null;
+
+                if (datos.Lector.Read())
+                {
+
+                    e = new Empleado();
+
+                    e.Id = (int)datos.Lector["Id_Persona"];
+                    e.Dni = datos.Lector["Dni"].ToString();
+                    e.Nombre = datos.Lector["Nombre"].ToString();
+                    e.Apellido = datos.Lector["Apellido"].ToString();
+                    e.Telefono = datos.Lector["Telefono"].ToString();
+                    e.Email = datos.Lector["Email"].ToString();
+                    e.Direccion = datos.Lector["Direccion"].ToString();
+                    e.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+                }
+
+                return e;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
     }
 }

@@ -68,6 +68,7 @@
     <Content Include="AdminGestionAdministradores.aspx" />
     <Content Include="AdminGestionMedicos.aspx" />
     <Content Include="AdminGestionRecepcionistas.aspx" />
+    <Content Include="DatosEmpleado.aspx" />
     <Content Include="Especialidades.aspx" />
     <Content Include="AdminGestionPacientes.aspx" />
     <Content Include="GestionarTurnos.aspx" />
@@ -117,6 +118,13 @@
     </Compile>
     <Compile Include="AdminGestionRecepcionistas.aspx.designer.cs">
       <DependentUpon>AdminGestionRecepcionistas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DatosEmpleado.aspx.cs">
+      <DependentUpon>DatosEmpleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DatosEmpleado.aspx.designer.cs">
+      <DependentUpon>DatosEmpleado.aspx</DependentUpon>
     </Compile>
     <Compile Include="Dominio\Empleado.cs" />
     <Compile Include="Dominio\HorarioMedico.cs" />

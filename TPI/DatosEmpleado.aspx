@@ -1,9 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterDefault.Master" AutoEventWireup="true" CodeBehind="MisDatos.aspx.cs" Inherits="TPI.MisDatos" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterDefault.Master" AutoEventWireup="true" CodeBehind="DatosEmpleado.aspx.cs" Inherits="TPI.DatosEmpleado" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
     <div class="container-fluid text-center py-5" style="background-color: #f8fff8;">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -53,11 +52,6 @@
                         <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
 
-                    <div class="mb-4">
-                        <asp:Label runat="server" Text="Obra social:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:DropDownList ID="ddlObraSocial" runat="server"></asp:DropDownList>
-                    </div>
-
                     <hr class="my-4" />
                     <h5 class="fw-bold mb-4 text-center">Datos de acceso</h5>
 
@@ -82,12 +76,10 @@
 
                     <div class="d-grid">
                         <asp:Button ID="btnGuardar" runat="server" Text="Guardar cambios"
-                            CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnGuardar_Click" />
+                            CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" />
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 </asp:Content>

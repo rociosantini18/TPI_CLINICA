@@ -166,9 +166,11 @@ namespace TPI.Negocio
                         Telefono = @telefono,
                         Direccion = @direccion,
                         FechaNacimiento= @fechaNac
-                    WHERE Id_Persona = (
-                        SELECT Id_Persona FROM Paciente WHERE Id_Paciente = @id
-                    )");
+                    WHERE Id_Persona = @id
+
+                    UPDATE Paciente SET
+                        Id_ObraSocial = @obraSocial
+                    WHERE Id_Persona = @id;");
 
                 datos.setearParametro("@dni", pac.Dni);
                 datos.setearParametro("@nombre", pac.Nombre);

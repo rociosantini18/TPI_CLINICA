@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using TPI.Dominio;
+using TPI.Negocio;
 
 namespace TPI
 {
-    public partial class PanelRecepcionista : System.Web.UI.Page
+    public partial class DatosEmpleado : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,24 +20,30 @@ namespace TPI
             }
 
             Perfil perfil = (Perfil)Session["perfil"];
-            lblNombre.Text = perfil.NombreUsuario;
 
-            if (perfil.Rol != "Recepcionista")
+            if (perfil.Rol != "Recepcionista" && perfil.Rol != "Administrador")
             {
                 Response.Redirect("~/InicioSesion.aspx");
                 return;
             }
-                     
-        }
 
-        protected void btnMisDatos_Click(object sender, EventArgs e)
-        {
             if (Request.QueryString["id"] != null)
             {
                 int id = int.Parse(Request.QueryString["id"].ToString());
-                Response.Redirect("~/DatosEmpleado.aspx?id=" + id);
-                return;
+
+                EmpleadoNegocio negocio = new EmpleadoNegocio();
+                Empleado empleado = negocio.RelacionPerfilPersona(id);
+
+                txtDNI.Text = empleado.Dni;
+                txtNombre.Text = empleado.Nombre;
+                txtApellido.Text = empleado.Apellido;
+                txtTelefono.Text = empleado.Telefono;
+                txtFechaNacimiento.Text = empleado.FechaNacimiento.ToString("yyyy-MM-dd");
+                txtEmail.Text = empleado.Email;
+                txtDireccion.Text = empleado.Direccion;
+
             }
+
         }
     }
 }
