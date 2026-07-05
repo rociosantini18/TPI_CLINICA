@@ -252,6 +252,7 @@ VALUES
 
 ALTER TABLE Turno
 ALTER COLUMN Diagnostico VARCHAR(300) NULL;
+ALTER TABLE ObraSocial ADD Activo BIT NOT NULL DEFAULT 1;
 
 ALTER TABLE Medico ADD Activo BIT NOT NULL DEFAULT 1;
 ALTER TABLE Especialidad ADD Activo BIT NOT NULL DEFAULT 1;
@@ -267,7 +268,8 @@ SELECT * FROM HorarioMedico;
 Select * from turno;
 select * from Especialidad;
 
-
+INSERT INTO ObraSocial (Nombre_ObraSocial, Activo) 
+VALUES ('Sin Obra Social', 1);
 select 
 e.Id_Empleado,
 e.Id_Persona,
