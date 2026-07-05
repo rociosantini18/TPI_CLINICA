@@ -159,19 +159,23 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    UPDATE Persona SET
-                        Dni = @dni,
-                        Nombre = @nombre,
-                        Apellido = @apellido,
-                        Email = @email,
-                        Telefono = @telefono,
-                        Direccion = @direccion,
-                        FechaNacimiento= @fechaNac
-                    WHERE Id_Persona = @id
-
-                    UPDATE Paciente SET
-                        Id_ObraSocial = @obraSocial
-                    WHERE Id_Persona = @id;");
+            UPDATE Persona SET 
+                Dni = @dni, 
+                Nombre = @nombre, 
+                Apellido = @apellido, 
+                Email = @email, 
+                Telefono = @telefono, 
+                Direccion = @direccion, 
+                FechaNacimiento= @fechaNac 
+            WHERE Id_Persona = (SELECT Id_Persona FROM Paciente WHERE Id_Paciente = @id);
+            UPDATE Paciente SET 
+                Id_ObraSocial = @obraSocial 
+            WHERE Id_Paciente = @id;
+            UPDATE Perfil SET
+                Contraseña = @contrasena,
+                NombreUsuario = @email
+            WHERE Id_Perfil = (SELECT Id_Perfil FROM Paciente WHERE Id_Paciente = @id);
+        ");
 
                 datos.setearParametro("@dni", pac.Dni);
                 datos.setearParametro("@nombre", pac.Nombre);
@@ -181,6 +185,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@direccion", pac.Direccion);
                 datos.setearParametro("@fechaNac", pac.FechaNacimiento);
                 datos.setearParametro("@obraSocial", pac.IdObraSocial);
+                datos.setearParametro("@contrasena", pac.Perfil.Contraseña);
                 datos.setearParametro("@id", pac.Id);
 
                 datos.ejecutarAccion();
@@ -313,7 +318,7 @@ namespace TPI.Negocio
 
             try
             {
-                datos.setearConsulta("SELECT Id_ObraSocial, Nombre_ObraSocial FROM ObraSocial");
+                datos.setearConsulta("SELECT Id_ObraSocial, Nombre_ObraSocial FROM ObraSocial WHERE Activo = 1");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -336,6 +341,39 @@ namespace TPI.Negocio
             {
                 datos.setearConsulta("INSERT INTO ObraSocial (Nombre_ObraSocial) VALUES (@nombre)");
                 datos.setearParametro("@nombre", nombre);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void modificarObraSocial(int id, string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE ObraSocial SET Nombre_ObraSocial = @nombre WHERE Id_ObraSocial = @id");
+                datos.setearParametro("@nombre", nombre);
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void eliminarObraSocial(int idObraEliminar, int idSinObraSocial)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            UPDATE Paciente SET Id_ObraSocial = @idNueva WHERE Id_ObraSocial = @idEliminar;
+            UPDATE ObraSocial SET Activo = 0 WHERE Id_ObraSocial = @idEliminar;
+        ");
+
+                datos.setearParametro("@idNueva", idSinObraSocial);
+                datos.setearParametro("@idEliminar", idObraEliminar);
+
                 datos.ejecutarAccion();
             }
             catch (Exception ex) { throw ex; }

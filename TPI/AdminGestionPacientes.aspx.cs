@@ -14,8 +14,11 @@ namespace TPI
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
+            {
                 cargarPacientes();
-            cargarObrasSociales();
+                cargarObrasSocialesGrid();
+                cargarObrasSociales();
+            }
         }
 
         private void cargarPacientes()
@@ -32,6 +35,13 @@ namespace TPI
             ddlEditObraSocial.DataTextField = "Value";
             ddlEditObraSocial.DataValueField = "Key";
             ddlEditObraSocial.DataBind();
+        }
+
+        private void cargarObrasSocialesGrid()
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+            dgvObrasSociales.DataSource = negocio.listarObrasSociales();
+            dgvObrasSociales.DataBind();
         }
         protected void dgvPacientes_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -59,8 +69,9 @@ namespace TPI
                     txtEditFechaNac.Text = pac.FechaNacimiento.ToString("yyyy-MM-dd");
                     lblMensajePac.Text = "";
                     txtEditContraseña.Text = pac.Perfil.Contraseña;
-                    ddlEditObraSocial.Items.FindByValue(pac.IdObraSocial.ToString()).Selected = true;
                     pnlEditarPaciente.Visible = true;
+                    ddlEditObraSocial.ClearSelection();
+                    ddlEditObraSocial.SelectedValue = pac.IdObraSocial.ToString();
                 }
             }
         }
@@ -77,8 +88,8 @@ namespace TPI
             pac.Telefono = txtEditTelefono.Text.Trim();
             pac.Direccion = txtEditDireccion.Text.Trim();
             pac.FechaNacimiento = DateTime.Parse(txtEditFechaNac.Text);
-            pac.IdObraSocial = int.Parse(ddlEditObraSocial.SelectedValue); 
-            pac.Perfil = new Perfil{Contraseña = txtEditContraseña.Text.Trim()};
+            pac.IdObraSocial = int.Parse(ddlEditObraSocial.SelectedValue);
+            pac.Perfil = new Perfil { Contraseña = txtEditContraseña.Text.Trim() };
 
             negocio.modificar(pac);
 
@@ -98,12 +109,33 @@ namespace TPI
             pnlNuevaObraSocial.Visible = true;
         }
 
+        protected void btnMostrarListaObrasSociales_Click(object sender, EventArgs e)
+        {
+            pnlListaObrasSociales.Visible = !pnlListaObrasSociales.Visible;
+            btnMostrarListaObrasSociales.Text = pnlListaObrasSociales.Visible
+                ? "Ocultar Obras Sociales"
+                : "Mostrar Obras Sociales";
+
+            if (pnlListaObrasSociales.Visible)
+                cargarObrasSocialesGrid();
+        }
+
         protected void btnGuardarObraSocial_Click(object sender, EventArgs e)
         {
             PacienteNegocio negocio = new PacienteNegocio();
-            negocio.agregarObraSocial(txtNombreObraSocial.Text.Trim());
+            string nombreOS = txtNombreObraSocial.Text.Trim();
+
+            if (negocio.listarObrasSociales().Values.Any(v => v.Equals(nombreOS, StringComparison.OrdinalIgnoreCase)))
+            {
+                lblMensajeObraSocial.Text = "Error: Esta obra social ya existe.";
+                lblMensajeObraSocial.CssClass = "text-danger fw-semibold mt-3 d-block";
+                return;
+            }
+
+            negocio.agregarObraSocial(nombreOS);
 
             lblMensajeObraSocial.Text = "Obra social agregada correctamente.";
+            lblMensajeObraSocial.CssClass = "text-success fw-semibold mt-3 d-block";
             txtNombreObraSocial.Text = "";
 
             cargarObrasSociales();
@@ -112,6 +144,60 @@ namespace TPI
         protected void btnCancelarObraSocial_Click(object sender, EventArgs e)
         {
             pnlNuevaObraSocial.Visible = false;
+        }
+
+        protected void dgvObrasSociales_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int id = int.Parse(e.CommandArgument.ToString());
+            PacienteNegocio negocio = new PacienteNegocio();
+
+            lblErrorGrillaOS.Text = "";
+
+            if (e.CommandName == "EliminarOS")
+            {
+                int idSinObraSocial = 6;
+
+                if (id == idSinObraSocial)
+                {
+                    lblErrorGrillaOS.Text = "Error: No se puede eliminar la opción 'Sin Obra Social'.";
+                    return; 
+                }
+
+                negocio.eliminarObraSocial(id, idSinObraSocial);
+
+                cargarObrasSociales();
+                cargarObrasSocialesGrid();
+                cargarPacientes();
+                pnlEditarObraSocial.Visible = false;
+            }
+            else if (e.CommandName == "ModificarOS")
+            {
+                var obras = negocio.listarObrasSociales();
+                if (obras.ContainsKey(id))
+                {
+                    hfIdObraSocial.Value = id.ToString();
+                    txtEditNombreObraSocial.Text = obras[id];
+                    lblMensajeObraSocialEdit.Text = "";
+                    pnlEditarObraSocial.Visible = true;
+                }
+            }
+        }
+
+        protected void btnGuardarObraSocialEdit_Click(object sender, EventArgs e)
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+            int id = int.Parse(hfIdObraSocial.Value);
+            negocio.modificarObraSocial(id, txtEditNombreObraSocial.Text.Trim());
+
+            lblMensajeObraSocialEdit.Text = "Obra social modificada correctamente.";
+            cargarObrasSociales();
+            cargarObrasSocialesGrid();
+        }
+
+        protected void btnCancelarObraSocialEdit_Click(object sender, EventArgs e)
+        {
+            pnlEditarObraSocial.Visible = false;
+            lblMensajeObraSocialEdit.Text = "";
         }
     }
 }

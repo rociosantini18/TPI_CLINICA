@@ -37,9 +37,78 @@
                 CssClass="btn btn-success w-100 py-3 fs-5"
                 OnClick="btnAgregarObraSocial_Click" CausesValidation="false" />
         </div>
+                    <div class="col-md-3">
+            <asp:Button ID="btnMostrarListaObrasSociales" runat="server" Text="Mostrar Obras Sociales"
+                CssClass="btn btn-outline-success w-100 py-3 fs-5"
+                OnClick="btnMostrarListaObrasSociales_Click" CausesValidation="false" />
+        </div>
         </div>
 
     </div>
+    
+    <%-- Tabla de obras sociales --%>
+<asp:Panel ID="pnlListaObrasSociales" runat="server" Visible="false">
+    <div class="container my-5">
+        <div class="row g-4 justify-content-center">
+            <h5 class="fw-bold mb-3 text-start">Obras Sociales</h5>
+            
+            <asp:Label ID="lblErrorGrillaOS" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text=""></asp:Label>
+
+            <asp:GridView runat="server" ID="dgvObrasSociales" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" OnRowCommand="dgvObrasSociales_RowCommand">
+                <Columns>
+                    <asp:BoundField HeaderText="Obra Social" DataField="Value" />
+                    <asp:TemplateField HeaderText="">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server"
+                            CommandName="EliminarOS"
+                            CommandArgument='<%# Eval("Key") %>'
+                            CssClass="btn btn-sm btn-outline-danger"
+                            OnClientClick="return confirm('¿Seguro que querés eliminar esta obra social?');">
+                            Eliminar
+                        </asp:LinkButton>
+                            <asp:LinkButton runat="server"
+                            CommandName="ModificarOS"
+                            CommandArgument='<%# Eval("Key") %>'
+                            CssClass="btn btn-sm btn-outline-primary me-1">
+                            Modificar
+                            </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+        </div>
+    </div>
+
+    <asp:Panel ID="pnlEditarObraSocial" runat="server" Visible="false" CssClass="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card shadow-sm border-0 p-4 text-start">
+                    <h5 class="fw-bold mb-3">Modificar Obra Social</h5>
+                    <asp:HiddenField ID="hfIdObraSocial" runat="server" />
+
+                    <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
+                    <asp:TextBox ID="txtEditNombreObraSocial" runat="server" CssClass="form-control" />
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditNombreObraSocial"
+                        ValidationGroup="vgEditObraSocial" ErrorMessage="Requerido."
+                        CssClass="text-danger small" Display="Dynamic" />
+
+                    <asp:Label ID="lblMensajeObraSocialEdit" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />
+
+                    <div class="d-flex gap-2 mt-3">
+                        <asp:Button ID="btnGuardarObraSocialEdit" runat="server" Text="Guardar cambios"
+                            CssClass="btn btn-primary"
+                            ValidationGroup="vgEditObraSocial"
+                            OnClick="btnGuardarObraSocialEdit_Click" />
+                        <asp:Button ID="btnCancelarObraSocialEdit" runat="server" Text="Cancelar"
+                            CssClass="btn btn-outline-secondary"
+                            CausesValidation="false"
+                            OnClick="btnCancelarObraSocialEdit_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asp:Panel>
+    </asp:Panel>
 
     <div class="container my-5">
         <div class="row g-4 justify-content-center">

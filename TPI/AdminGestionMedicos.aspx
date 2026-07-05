@@ -36,25 +36,26 @@
                     CssClass="btn btn-success w-100 py-3 fs-5"
                     OnClick="btnMostrarFormEspecialidad_Click" />
             </div>
+        <div class="col-md-3">
+                <asp:Button ID="btnMostrarListaEspecialidades" runat="server"
+                    Text="Mostrar Especialidades"
+                    CssClass="btn btn-outline-success w-100 py-3 fs-5"
+                    CausesValidation="false"
+                    OnClick="btnMostrarListaEspecialidades_Click" />
+            </div>
         </div>
     </div>
-     <%-- Tabla de especialidadesssss --%>
-            <asp:Panel ID="pnlNuevaEspecialidad" runat="server" Visible="false"
-            CssClass="row justify-content-center mt-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0 p-4 text-start">
-                    <h5 class="fw-bold mb-3">Nueva Especialidad</h5>
-
-                    <div class="mb-3">
-                        <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
-                        <asp:TextBox ID="txtNombreEsp" runat="server" CssClass="form-control"
-                            placeholder="Ej: Cardiología" />
-                        <asp:RequiredFieldValidator runat="server"
-                            ControlToValidate="txtNombreEsp"
-                            ValidationGroup="vgEspecialidad"
-                            ErrorMessage="El nombre es obligatorio."
-                            CssClass="text-danger small" Display="Dynamic" />
-                    </div>
+     <%-- Tabla de especialidades Nueva --%>
+<asp:Panel ID="pnlNuevaEspecialidad" runat="server" Visible="false" CssClass="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-4 text-start">
+            <h5 class="fw-bold mb-3">Nueva Especialidad</h5>
+            
+            <div class="mb-3">
+                <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
+                <asp:TextBox ID="txtNombreEsp" runat="server" CssClass="form-control" placeholder="Ej: Cardiología" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtNombreEsp" ValidationGroup="vgEspecialidad" ErrorMessage="El nombre es obligatorio." CssClass="text-danger small" Display="Dynamic" />
+            </div>
 
                     <div class="mb-3">
                         <asp:Label runat="server" Text="Descripción:" CssClass="form-label fw-semibold" />
@@ -79,6 +80,71 @@
                 </div>
             </div>
         </asp:Panel>
+<%-- Tabla de especialidades Listar --%>
+<asp:Panel ID="pnlListaEspecialidades" runat="server" Visible="false">
+<div class="container my-5">
+    <div class="row g-4 justify-content-center">
+        <h5 class="fw-bold mb-3 text-start">Especialidades</h5>
+        
+        <asp:Label ID="lblErrorGrillaEsp" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text=""></asp:Label>
+
+        <asp:GridView runat="server" ID="dgvEspecialidades" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" OnRowCommand="dgvEspecialidades_RowCommand">
+            <Columns>
+                <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                <asp:BoundField HeaderText="Descripción" DataField="Descripcion" />
+                <asp:TemplateField HeaderText="">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" CommandName="EliminarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger" OnClientClick="return confirm('¿Seguro que querés eliminar esta especialidad?');">
+                            Eliminar
+                        </asp:LinkButton>
+                        <asp:LinkButton runat="server" CommandName="ModificarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-primary me-1">
+                            Modificar
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+           </Columns>
+        </asp:GridView>
+    </div>
+</div>
+
+    <asp:Panel ID="pnlEditarEspecialidad" runat="server" Visible="false" CssClass="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card shadow-sm border-0 p-4 text-start">
+                    <h5 class="fw-bold mb-3">Modificar Especialidad</h5>
+                    <asp:HiddenField ID="hfIdEspecialidad" runat="server" />
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
+                        <asp:TextBox ID="txtEditNombreEsp" runat="server" CssClass="form-control" />
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditNombreEsp"
+                            ValidationGroup="vgEditEspecialidad" ErrorMessage="Requerido."
+                            CssClass="text-danger small" Display="Dynamic" />
+                    </div>
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" Text="Descripción:" CssClass="form-label fw-semibold" />
+                        <asp:TextBox ID="txtEditDescripcionEsp" runat="server" CssClass="form-control"
+                            TextMode="MultiLine" Rows="3" />
+                    </div>
+
+                    <asp:Label ID="lblMensajeEspEdit" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />
+
+                    <div class="d-flex gap-2 mt-3">
+                        <asp:Button ID="btnGuardarEspEdit" runat="server" Text="Guardar cambios"
+                            CssClass="btn btn-primary"
+                            ValidationGroup="vgEditEspecialidad"
+                            OnClick="btnGuardarEspEdit_Click" />
+                        <asp:Button ID="btnCancelarEspEdit" runat="server" Text="Cancelar"
+                            CssClass="btn btn-outline-secondary"
+                            CausesValidation="false"
+                            OnClick="btnCancelarEspEdit_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asp:Panel>
+    </asp:Panel>
 
     <div class="container my-5">
         <div class="row g-4 justify-content-center">
@@ -196,6 +262,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </asp:Panel>
 </asp:Content>
