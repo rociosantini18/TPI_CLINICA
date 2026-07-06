@@ -94,7 +94,7 @@
                 <asp:BoundField HeaderText="Descripción" DataField="Descripcion" />
                 <asp:TemplateField HeaderText="">
                     <ItemTemplate>
-                        <asp:LinkButton runat="server" CommandName="EliminarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger" OnClientClick="return confirm('¿Seguro que querés eliminar esta especialidad?');">
+                        <asp:LinkButton runat="server" CommandName="EliminarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger">
                             Eliminar
                         </asp:LinkButton>
                         <asp:LinkButton runat="server" CommandName="ModificarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-primary me-1">
@@ -104,6 +104,13 @@
                 </asp:TemplateField>
            </Columns>
         </asp:GridView>
+
+        <asp:Panel ID="pnlConfirmarEliminarEsp" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+            <asp:HiddenField ID="hfIdEliminarEsp" runat="server" />
+            <p class="fw-semibold mb-2">¿Seguro que querés eliminar esta especialidad?</p>
+            <asp:Button ID="btnConfirmarEliminarEsp" runat="server" Text="Sí, eliminar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarEsp_Click" />
+            <asp:Button ID="btnCancelarEliminarEsp" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarEsp_Click" />
+        </asp:Panel>
     </div>
 </div>
 
@@ -155,18 +162,19 @@
                     <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
                     <asp:BoundField HeaderText="Matricula" DataField="Matricula" />
                     <asp:BoundField HeaderText="Especialidad" DataField="Especialidad.Nombre" />
-                    <asp:BoundField HeaderText="Fecha de Nacimiento" DataField="FechaNacimiento" />
                     <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
                     <asp:BoundField HeaderText="Email" DataField="Email" />
                     <asp:BoundField HeaderText="Telefono" DataField="Telefono" />
 
+                    <asp:TemplateField HeaderText="Fecha de Nacimiento">
+                        <ItemTemplate><%# ((DateTime)Eval("FechaNacimiento")).ToString("dd/MM/yyyy") %></ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="">
                     <ItemTemplate>
                         <asp:LinkButton runat="server"
                             CommandName="Eliminar"
                             CommandArgument='<%# Eval("Id") %>'
-                            CssClass="btn btn-sm btn-outline-danger"
-                            OnClientClick="return confirm('¿Seguro que querés dar de baja este médico?');">
+                            CssClass="btn btn-sm btn-outline-danger">
                             Eliminar
                         </asp:LinkButton>
                             <asp:LinkButton runat="server"
@@ -179,6 +187,13 @@
                 </asp:TemplateField>
                 </Columns>
             </asp:GridView>
+
+            <asp:Panel ID="pnlConfirmarEliminarMed" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                <asp:HiddenField ID="hfIdEliminarMed" runat="server" />
+                <p class="fw-semibold mb-2">¿Seguro que querés dar de baja este médico?</p>
+                <asp:Button ID="btnConfirmarEliminarMed" runat="server" Text="Sí, dar de baja" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarMed_Click" />
+                <asp:Button ID="btnCancelarEliminarMed" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarMed_Click" />
+            </asp:Panel>
         </div>
     </div>
 
@@ -246,6 +261,13 @@
                                 ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
                                 CssClass="text-danger small" Display="Dynamic" />
                         </div>
+                    <div class="col-md-6">
+                        <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold" />
+                        <asp:DropDownList ID="ddlEditEspecialidad" runat="server" CssClass="form-select" />
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlEditEspecialidad"
+                            ValidationGroup="vgEditMedico" ErrorMessage="Requerido."
+                            CssClass="text-danger small" Display="Dynamic" InitialValue="" />
+                    </div>
                     </div>
 
                     <asp:Label ID="lblMensajeMed" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />
@@ -262,5 +284,44 @@
                     </div>
                 </div>
             </div>
+    </asp:Panel>
+    <div class="row g-3 justify-content-center mt-5 mb-4 border-top pt-4">
+        <div class="col-md-3">
+            <asp:Button ID="btnRecuperarMedicos" runat="server" Text="Recuperar Médicos" CssClass="btn btn-secondary w-100 py-2" OnClick="btnRecuperarMedicos_Click" CausesValidation="false" />
+        </div>
+        <div class="col-md-3">
+            <asp:Button ID="btnRecuperarEspecialidad" runat="server" Text="Recuperar Especialidades" CssClass="btn btn-outline-secondary w-100 py-2" OnClick="btnRecuperarEspecialidad_Click" CausesValidation="false" />
+        </div>
+    </div>
+
+    <asp:Panel ID="pnlMedicosInactivos" runat="server" Visible="false" CssClass="container my-4 bg-light p-4 rounded shadow-sm">
+        <h5 class="fw-bold mb-3 text-secondary">Médicos Dados de Baja</h5>
+        <asp:GridView runat="server" ID="dgvMedicosInactivos" CssClass="table table-secondary table-hover" AutoGenerateColumns="False" OnRowCommand="dgvMedicosInactivos_RowCommand" EmptyDataText="No hay médicos inactivos.">
+            <Columns>
+                <asp:BoundField HeaderText="DNI" DataField="DNI" />
+                <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
+                <asp:BoundField HeaderText="Matricula" DataField="Matricula" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" CommandName="ReactivarMed" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-success">Reactivar</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+    </asp:Panel>
+
+    <asp:Panel ID="pnlEspecialidadesInactivas" runat="server" Visible="false" CssClass="container my-4 bg-light p-4 rounded shadow-sm">
+        <h5 class="fw-bold mb-3 text-secondary">Especialidades Dadas de Baja</h5>
+        <asp:GridView runat="server" ID="dgvEspecialidadesInactivas" CssClass="table table-secondary table-hover" AutoGenerateColumns="False" OnRowCommand="dgvEspecialidadesInactivas_RowCommand" EmptyDataText="No hay especialidades inactivas.">
+            <Columns>
+                <asp:BoundField HeaderText="Especialidad" DataField="Nombre" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" CommandName="ReactivarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-success">Reactivar</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
     </asp:Panel>
 </asp:Content>

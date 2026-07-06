@@ -379,5 +379,82 @@ namespace TPI.Negocio
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
+
+        public List<Paciente> listarInactivos()
+        {
+            List<Paciente> lista = new List<Paciente>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT p.Id_Paciente, per.Dni, per.Nombre, per.Apellido,
+                   os.Nombre_ObraSocial
+            FROM Paciente p
+            INNER JOIN Persona per ON p.Id_Persona = per.Id_Persona
+            LEFT JOIN ObraSocial os ON p.Id_ObraSocial = os.Id_ObraSocial
+            INNER JOIN Perfil pf ON p.Id_Perfil = pf.Id_Perfil
+            WHERE pf.Activo = 0");
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Paciente aux = new Paciente();
+                    aux.Id = (int)datos.Lector["Id_Paciente"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.ObraSocial = datos.Lector["Nombre_ObraSocial"] as string;
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            UPDATE Perfil SET Activo = 1 
+            WHERE Id_Perfil = (SELECT Id_Perfil FROM Paciente WHERE Id_Paciente = @id)");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public Dictionary<int, string> listarObrasSocialesInactivas()
+        {
+            Dictionary<int, string> obras = new Dictionary<int, string>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT Id_ObraSocial, Nombre_ObraSocial FROM ObraSocial WHERE Activo = 0");
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    obras.Add((int)datos.Lector["Id_ObraSocial"], (string)datos.Lector["Nombre_ObraSocial"]);
+                }
+                return obras;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void reactivarObraSocial(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE ObraSocial SET Activo = 1 WHERE Id_ObraSocial = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
     }
 }

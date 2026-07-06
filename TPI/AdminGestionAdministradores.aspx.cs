@@ -38,10 +38,9 @@ namespace TPI
                     return;
                 }
 
-                negocio.eliminar(id);
+                hfIdEliminarAdmin.Value = id.ToString();
+                pnlConfirmarEliminarAdmin.Visible = true;
                 lblError.Text = "";
-                pnlEditarAdmin.Visible = false;
-                cargarAdmins();
             }
             else if (e.CommandName == "Modificar")
             {
@@ -65,6 +64,23 @@ namespace TPI
                     pnlEditarAdmin.Visible = true;
                 }
             }
+        }
+
+        protected void btnConfirmarEliminarAdmin_Click(object sender, EventArgs e)
+        {
+            int id = int.Parse(hfIdEliminarAdmin.Value);
+            EmpleadoNegocio negocio = new EmpleadoNegocio();
+
+            negocio.eliminar(id);
+            lblError.Text = "";
+            pnlConfirmarEliminarAdmin.Visible = false;
+            pnlEditarAdmin.Visible = false;
+            cargarAdmins();
+        }
+
+        protected void btnCancelarEliminarAdmin_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarAdmin.Visible = false;
         }
 
         protected void btnGuardarAdmin_Click(object sender, EventArgs e)
@@ -94,6 +110,38 @@ namespace TPI
         {
             pnlEditarAdmin.Visible = false;
             lblError.Text = "";
+        }
+
+        protected void btnRecuperarAdmin_Click(object sender, EventArgs e)
+        {
+            pnlAdminInactivos.Visible = !pnlAdminInactivos.Visible;
+
+            if (pnlAdminInactivos.Visible)
+            {
+                CargarAdministradoresInactivos();
+            }
+        }
+
+        private void CargarAdministradoresInactivos()
+        {
+            EmpleadoNegocio negocio = new EmpleadoNegocio();
+            dgvAdminInactivos.DataSource = negocio.listarInactivos(1);
+            dgvAdminInactivos.DataBind();
+        }
+
+        protected void dgvAdminInactivos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ReactivarAdmin")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+                EmpleadoNegocio negocio = new EmpleadoNegocio();
+                negocio.reactivar(id);
+
+                CargarAdministradoresInactivos();
+
+                dgvAdmins.DataSource = negocio.listarAdministradores();
+                dgvAdmins.DataBind();
+            }
         }
     }
 }

@@ -154,7 +154,8 @@ namespace TPI.Negocio
 
             UPDATE Medico SET
                 Matricula = @matricula,
-                Imagen_URL = @imagenUrl
+                Imagen_URL = @imagenUrl,
+                Id_Especialidad = @idEspecialidad   
             WHERE Id_Medico = @id");
 
                 datos.setearParametro("@dni", med.Dni);
@@ -167,6 +168,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@matricula", med.Matricula);
                 datos.setearParametro("@id", med.Id);
                 datos.setearParametro("@imagenUrl", med.imagenURL);
+                datos.setearParametro("@idEspecialidad", med.Especialidad.Id);
 
                 datos.ejecutarAccion();
             }
@@ -220,10 +222,53 @@ namespace TPI.Negocio
                 throw;
             }
 
+        }
+            public List<Medico> listarInactivos()
+        {
+            List<Medico> lista = new List<Medico>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT m.Id_Medico, per.Dni, per.Nombre, per.Apellido,
+                   per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
+                   m.Matricula, m.Imagen_URL, esp.Id_Especialidad,
+                   esp.Nombre_Especialidad, esp.Descripcion
+            FROM Medico m
+            INNER JOIN Persona per ON m.Id_Persona = per.Id_Persona
+            LEFT JOIN Especialidad esp ON m.Id_Especialidad = esp.Id_Especialidad
+            WHERE m.Activo = 0");
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Medico aux = new Medico();
+                    aux.Id = (int)datos.Lector["Id_Medico"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Matricula = (string)datos.Lector["Matricula"];
+                    aux.Especialidad = new Especialidad();
+                    aux.Especialidad.Nombre = datos.Lector["Nombre_Especialidad"] as string;
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
 
-
-
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE Medico SET Activo = 1 WHERE Id_Medico = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
         }
 
     }
-}
+    }

@@ -110,5 +110,40 @@ namespace TPI.Negocio
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
+
+        public List<Especialidad> listarInactivas()
+        {
+            List<Especialidad> lista = new List<Especialidad>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT Id_Especialidad, Nombre_Especialidad, Descripcion FROM Especialidad WHERE Activo = 0");
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Especialidad esp = new Especialidad();
+                    esp.Id = (int)datos.Lector["Id_Especialidad"];
+                    esp.Nombre = (string)datos.Lector["Nombre_Especialidad"];
+                    esp.Descripcion = datos.Lector["Descripcion"] as string;
+                    lista.Add(esp);
+                }
+                return lista;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE Especialidad SET Activo = 1 WHERE Id_Especialidad = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
     }
 }

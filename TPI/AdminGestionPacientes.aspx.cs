@@ -50,9 +50,8 @@ namespace TPI
 
             if (e.CommandName == "Eliminar")
             {
-                negocio.eliminar(id);
-                cargarPacientes();
-                pnlEditarPaciente.Visible = false;
+                hfIdEliminarPac.Value = id.ToString();
+                pnlConfirmarEliminarPac.Visible = true;
             }
             else if (e.CommandName == "Modificar")
             {
@@ -75,6 +74,23 @@ namespace TPI
                 }
             }
         }
+
+        protected void btnConfirmarEliminarPac_Click(object sender, EventArgs e)
+        {
+            int id = int.Parse(hfIdEliminarPac.Value);
+            PacienteNegocio negocio = new PacienteNegocio();
+            negocio.eliminar(id);
+
+            pnlConfirmarEliminarPac.Visible = false;
+            pnlEditarPaciente.Visible = false;
+            cargarPacientes();
+        }
+
+        protected void btnCancelarEliminarPac_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarPac.Visible = false;
+        }
+
         protected void btnGuardarPac_Click(object sender, EventArgs e)
         {
             PacienteNegocio negocio = new PacienteNegocio();
@@ -131,6 +147,12 @@ namespace TPI
                 lblMensajeObraSocial.CssClass = "text-danger fw-semibold mt-3 d-block";
                 return;
             }
+            if (negocio.listarObrasSocialesInactivas().Values.Any(v => v.Equals(nombreOS, StringComparison.OrdinalIgnoreCase)))
+            {
+                lblMensajeObraSocial.Text = "Obra social existente pero inactiva, actívela.";
+                lblMensajeObraSocial.CssClass = "text-warning fw-semibold mt-3 d-block";
+                return;
+            }
 
             negocio.agregarObraSocial(nombreOS);
 
@@ -160,15 +182,11 @@ namespace TPI
                 if (id == idSinObraSocial)
                 {
                     lblErrorGrillaOS.Text = "Error: No se puede eliminar la opción 'Sin Obra Social'.";
-                    return; 
+                    return;
                 }
 
-                negocio.eliminarObraSocial(id, idSinObraSocial);
-
-                cargarObrasSociales();
-                cargarObrasSocialesGrid();
-                cargarPacientes();
-                pnlEditarObraSocial.Visible = false;
+                hfIdEliminarOS.Value = id.ToString();
+                pnlConfirmarEliminarOS.Visible = true;
             }
             else if (e.CommandName == "ModificarOS")
             {
@@ -183,13 +201,53 @@ namespace TPI
             }
         }
 
+        protected void btnConfirmarEliminarOS_Click(object sender, EventArgs e)
+        {
+            int id = int.Parse(hfIdEliminarOS.Value);
+            int idSinObraSocial = 6;
+            PacienteNegocio negocio = new PacienteNegocio();
+
+            negocio.eliminarObraSocial(id, idSinObraSocial);
+
+            pnlConfirmarEliminarOS.Visible = false;
+            pnlEditarObraSocial.Visible = false;
+            cargarObrasSociales();
+            cargarObrasSocialesGrid();
+            cargarPacientes();
+        }
+
+        protected void btnCancelarEliminarOS_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarOS.Visible = false;
+        }
+
         protected void btnGuardarObraSocialEdit_Click(object sender, EventArgs e)
         {
             PacienteNegocio negocio = new PacienteNegocio();
             int id = int.Parse(hfIdObraSocial.Value);
-            negocio.modificarObraSocial(id, txtEditNombreObraSocial.Text.Trim());
+            string nombreOS = txtEditNombreObraSocial.Text.Trim();
+ 
+            var activas = negocio.listarObrasSociales();
+            if (activas.Any(x => x.Value.Equals(nombreOS, StringComparison.OrdinalIgnoreCase) && x.Key != id))
+            {
+                lblMensajeObraSocialEdit.Text = "Error: Ya existe otra obra social activa con ese nombre.";
+                lblMensajeObraSocialEdit.CssClass = "text-danger fw-semibold mt-3 d-block";
+                return;
+            }
+
+            var inactivas = negocio.listarObrasSocialesInactivas();
+            if (inactivas.Any(x => x.Value.Equals(nombreOS, StringComparison.OrdinalIgnoreCase) && x.Key != id))
+            {
+                lblMensajeObraSocialEdit.Text = "Obra social existente pero inactiva, actívela.";
+                lblMensajeObraSocialEdit.CssClass = "text-warning fw-semibold mt-3 d-block";
+                return;
+            }
+
+            negocio.modificarObraSocial(id, nombreOS);
 
             lblMensajeObraSocialEdit.Text = "Obra social modificada correctamente.";
+            lblMensajeObraSocialEdit.CssClass = "text-success fw-semibold mt-3 d-block";
+
             cargarObrasSociales();
             cargarObrasSocialesGrid();
         }
@@ -198,6 +256,69 @@ namespace TPI
         {
             pnlEditarObraSocial.Visible = false;
             lblMensajeObraSocialEdit.Text = "";
+        }
+
+        protected void btnRecuperarPacientes_Click(object sender, EventArgs e)
+        {
+            pnlPacientesInactivos.Visible = !pnlPacientesInactivos.Visible;
+
+            if (pnlPacientesInactivos.Visible)
+            {
+                CargarPacientesInactivos();
+            }
+        }
+
+        private void CargarPacientesInactivos()
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+            dgvPacientesInactivos.DataSource = negocio.listarInactivos();
+            dgvPacientesInactivos.DataBind();
+        }
+
+        protected void dgvPacientesInactivos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Reactivar")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+                PacienteNegocio negocio = new PacienteNegocio();
+                negocio.reactivar(id);
+
+                CargarPacientesInactivos();
+
+                dgvPacientes.DataSource = negocio.listar();
+                dgvPacientes.DataBind();
+            }
+        }
+        protected void btnRecuperarObraSocial_Click(object sender, EventArgs e)
+        {
+            pnlObrasSocialesInactivas.Visible = !pnlObrasSocialesInactivas.Visible;
+
+            if (pnlObrasSocialesInactivas.Visible)
+            {
+                CargarObrasSocialesInactivas();
+            }
+        }
+
+        private void CargarObrasSocialesInactivas()
+        {
+            PacienteNegocio negocio = new PacienteNegocio();
+            dgvObrasSocialesInactivas.DataSource = negocio.listarObrasSocialesInactivas();
+            dgvObrasSocialesInactivas.DataBind();
+        }
+
+        protected void dgvObrasSocialesInactivas_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ReactivarOS")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+                PacienteNegocio negocio = new PacienteNegocio();
+                negocio.reactivarObraSocial(id);
+
+                CargarObrasSocialesInactivas();
+
+                dgvObrasSociales.DataSource = negocio.listarObrasSociales();
+                dgvObrasSociales.DataBind();
+            }
         }
     }
 }

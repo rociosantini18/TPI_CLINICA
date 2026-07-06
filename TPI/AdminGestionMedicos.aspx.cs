@@ -17,6 +17,7 @@ namespace TPI
             {
                 cargarMedicos();
                 cargarEspecialidades();
+                cargarDesplegableEspecialidades();
             }
         }
         private void cargarMedicos()
@@ -25,7 +26,14 @@ namespace TPI
             dgvMedicos.DataSource = negocio.listar();
             dgvMedicos.DataBind();
         }
-
+        private void cargarDesplegableEspecialidades()
+        {
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+            ddlEditEspecialidad.DataSource = negocio.listar();
+            ddlEditEspecialidad.DataTextField = "Nombre";
+            ddlEditEspecialidad.DataValueField = "Id";
+            ddlEditEspecialidad.DataBind();
+        }
         private void cargarEspecialidades()
         {
             EspecialidadNegocio negocio = new EspecialidadNegocio();
@@ -53,10 +61,18 @@ namespace TPI
         {
             EspecialidadNegocio negocio = new EspecialidadNegocio();
             string nombreEsp = txtNombreEsp.Text.Trim();
+
             if (negocio.listar().Any(x => x.Nombre.Equals(nombreEsp, StringComparison.OrdinalIgnoreCase)))
             {
                 lblMensajeEsp.Text = "Error: Esta especialidad ya existe.";
                 lblMensajeEsp.CssClass = "text-danger fw-semibold mt-3 d-block";
+                return;
+            }
+
+            if (negocio.listarInactivas().Any(x => x.Nombre.Equals(nombreEsp, StringComparison.OrdinalIgnoreCase)))
+            {
+                lblMensajeEsp.Text = "Especialidad existente pero inactiva, actívela.";
+                lblMensajeEsp.CssClass = "text-warning fw-semibold mt-3 d-block";
                 return;
             }
 
@@ -89,9 +105,8 @@ namespace TPI
 
             if (e.CommandName == "Eliminar")
             {
-                negocio.eliminar(id);
-                cargarMedicos();
-                pnlEditarMedico.Visible = false;
+                hfIdEliminarMed.Value = id.ToString();
+                pnlConfirmarEliminarMed.Visible = true;
             }
             else if (e.CommandName == "Modificar")
             {
@@ -108,10 +123,31 @@ namespace TPI
                     txtEditMedFechaNac.Text = med.FechaNacimiento.ToString("yyyy-MM-dd");
                     txtEditMatri.Text = med.Matricula;
                     txtEditFoto.Text = med.imagenURL;
+                    ddlEditEspecialidad.ClearSelection();
+                    if (med.Especialidad != null)
+                    {
+                        ddlEditEspecialidad.SelectedValue = med.Especialidad.Id.ToString();
+                    }
                     lblMensajeMed.Text = "";
                     pnlEditarMedico.Visible = true;
                 }
             }
+        }
+
+        protected void btnConfirmarEliminarMed_Click(object sender, EventArgs e)
+        {
+            int id = int.Parse(hfIdEliminarMed.Value);
+            MedicoNegocio negocio = new MedicoNegocio();
+            negocio.eliminar(id);
+
+            pnlConfirmarEliminarMed.Visible = false;
+            pnlEditarMedico.Visible = false;
+            cargarMedicos();
+        }
+
+        protected void btnCancelarEliminarMed_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarMed.Visible = false;
         }
 
         protected void btnGuardarMed_Click(object sender, EventArgs e)
@@ -129,6 +165,8 @@ namespace TPI
             med.FechaNacimiento = DateTime.Parse(txtEditMedFechaNac.Text);
             med.Matricula = txtEditMatri.Text.Trim();
             med.imagenURL = txtEditFoto.Text.Trim();
+            med.Especialidad = new Especialidad();
+            med.Especialidad.Id = int.Parse(ddlEditEspecialidad.SelectedValue);
 
             negocio.modificar(med);
 
@@ -157,9 +195,8 @@ namespace TPI
                     return;
                 }
 
-                negocio.eliminar(id);
-                cargarEspecialidades();
-                pnlEditarEspecialidad.Visible = false;
+                hfIdEliminarEsp.Value = id.ToString();
+                pnlConfirmarEliminarEsp.Visible = true;
             }
             else if (e.CommandName == "ModificarEsp")
             {
@@ -175,18 +212,50 @@ namespace TPI
             }
         }
 
+        protected void btnConfirmarEliminarEsp_Click(object sender, EventArgs e)
+        {
+            int id = int.Parse(hfIdEliminarEsp.Value);
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+            negocio.eliminar(id);
+
+            pnlConfirmarEliminarEsp.Visible = false;
+            pnlEditarEspecialidad.Visible = false;
+            cargarEspecialidades();
+        }
+
+        protected void btnCancelarEliminarEsp_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarEsp.Visible = false;
+        }
+
         protected void btnGuardarEspEdit_Click(object sender, EventArgs e)
         {
             EspecialidadNegocio negocio = new EspecialidadNegocio();
+            int id = int.Parse(hfIdEspecialidad.Value);
+            string nombreEsp = txtEditNombreEsp.Text.Trim();
 
+            if (negocio.listar().Any(x => x.Nombre.Equals(nombreEsp, StringComparison.OrdinalIgnoreCase) && x.Id != id))
+            {
+                lblMensajeEspEdit.Text = "Error: Ya existe otra especialidad activa con ese nombre.";
+                lblMensajeEspEdit.CssClass = "text-danger fw-semibold mt-3 d-block";
+                return;
+            }
+
+            if (negocio.listarInactivas().Any(x => x.Nombre.Equals(nombreEsp, StringComparison.OrdinalIgnoreCase) && x.Id != id))
+            {
+                lblMensajeEspEdit.Text = "Especialidad existente pero inactiva, actívela.";
+                lblMensajeEspEdit.CssClass = "text-warning fw-semibold mt-3 d-block";
+                return;
+            }
             Especialidad esp = new Especialidad();
-            esp.Id = int.Parse(hfIdEspecialidad.Value);
-            esp.Nombre = txtEditNombreEsp.Text.Trim();
+            esp.Id = id;
+            esp.Nombre = nombreEsp;
             esp.Descripcion = string.IsNullOrWhiteSpace(txtEditDescripcionEsp.Text) ? null : txtEditDescripcionEsp.Text.Trim();
 
             negocio.modificar(esp);
 
             lblMensajeEspEdit.Text = "Especialidad modificada correctamente.";
+            lblMensajeEspEdit.CssClass = "text-success fw-semibold mt-3 d-block";
             cargarEspecialidades();
         }
 
@@ -195,5 +264,68 @@ namespace TPI
             pnlEditarEspecialidad.Visible = false;
             lblMensajeEspEdit.Text = "";
         }
+        protected void btnRecuperarMedicos_Click(object sender, EventArgs e)
+        {
+            pnlMedicosInactivos.Visible = !pnlMedicosInactivos.Visible;
+
+            if (pnlMedicosInactivos.Visible)
+            {
+                CargarMedicosInactivos();
+            }
+        }
+
+        private void CargarMedicosInactivos()
+        {
+            MedicoNegocio negocio = new MedicoNegocio();
+            dgvMedicosInactivos.DataSource = negocio.listarInactivos();
+            dgvMedicosInactivos.DataBind();
+        }
+
+        protected void dgvMedicosInactivos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ReactivarMed")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+                MedicoNegocio negocio = new MedicoNegocio();
+                negocio.reactivar(id);
+
+                CargarMedicosInactivos();
+
+                dgvMedicos.DataSource = negocio.listar();
+                dgvMedicos.DataBind();
+            }
+        }
+        protected void btnRecuperarEspecialidad_Click(object sender, EventArgs e)
+        {
+            pnlEspecialidadesInactivas.Visible = !pnlEspecialidadesInactivas.Visible;
+
+            if (pnlEspecialidadesInactivas.Visible)
+            {
+                CargarEspecialidadesInactivas();
+            }
+        }
+
+        private void CargarEspecialidadesInactivas()
+        {
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+            dgvEspecialidadesInactivas.DataSource = negocio.listarInactivas();
+            dgvEspecialidadesInactivas.DataBind();
+        }
+
+        protected void dgvEspecialidadesInactivas_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ReactivarEsp")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                negocio.reactivar(id);
+
+                CargarEspecialidadesInactivas();
+
+                dgvEspecialidades.DataSource = negocio.listar();
+                dgvEspecialidades.DataBind();
+            }
+        }
+
     }
 }

@@ -336,5 +336,50 @@ namespace TPI.Negocio
             }
         }
 
+        public List<Empleado> listarInactivos(int idRol)
+        {
+            List<Empleado> lista = new List<Empleado>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT e.Id_Empleado, per.Dni, per.Nombre, per.Apellido, per.Email
+            FROM Empleado e
+            INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
+            INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
+            WHERE pf.Id_Rol = @idRol AND pf.Activo = 0");
+                datos.setearParametro("@idRol", idRol);
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Empleado aux = new Empleado();
+                    aux.Id = (int)datos.Lector["Id_Empleado"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Email = (string)datos.Lector["Email"];
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+            UPDATE Perfil SET Activo = 1 
+            WHERE Id_Perfil = (SELECT Id_Perfil FROM Empleado WHERE Id_Empleado = @id)");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
     }
 }

@@ -59,8 +59,7 @@
                             <asp:LinkButton runat="server"
                                 CommandName="Eliminar"
                                 CommandArgument='<%# Eval("Id") %>'
-                                CssClass="btn btn-sm btn-outline-danger"
-                                OnClientClick="return confirm('¿Seguro que querés dar de baja este administrador?');">
+                                CssClass="btn btn-sm btn-outline-danger">
                                 Eliminar
                             </asp:LinkButton>
                             <asp:LinkButton runat="server"
@@ -73,6 +72,13 @@
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>
+
+            <asp:Panel ID="pnlConfirmarEliminarAdmin" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                <asp:HiddenField ID="hfIdEliminarAdmin" runat="server" />
+                <p class="fw-semibold mb-2">¿Seguro que querés dar de baja este administrador?</p>
+                <asp:Button ID="btnConfirmarEliminarAdmin" runat="server" Text="Sí, dar de baja" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarAdmin_Click" />
+                <asp:Button ID="btnCancelarEliminarAdmin" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarAdmin_Click" />
+            </asp:Panel>
         </div>
     </div>
 
@@ -149,5 +155,25 @@
             </div>
         </div>
     </asp:Panel>
+    <div class="row g-3 justify-content-center mt-5 mb-4 border-top pt-4">
+        <div class="col-md-4">
+            <asp:Button ID="btnRecuperarAdmin" runat="server" Text="Recuperar Administrador" CssClass="btn btn-secondary w-100 py-2" OnClick="btnRecuperarAdmin_Click" CausesValidation="false" />
+        </div>
+    </div>
 
+    <asp:Panel ID="pnlAdminInactivos" runat="server" Visible="false" CssClass="container my-4 bg-light p-4 rounded shadow-sm">
+        <h5 class="fw-bold mb-3 text-secondary">Admins Dados de Baja</h5>
+        <asp:GridView runat="server" ID="dgvAdminInactivos" CssClass="table table-secondary table-hover" AutoGenerateColumns="False" OnRowCommand="dgvAdminInactivos_RowCommand" EmptyDataText="No hay Admins inactivos.">
+            <Columns>
+                <asp:BoundField HeaderText="DNI" DataField="DNI" />
+                <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" CommandName="ReactivarAdmin" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-success">Reactivar</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+    </asp:Panel>
 </asp:Content>

@@ -62,8 +62,7 @@
                         <asp:LinkButton runat="server"
                             CommandName="EliminarOS"
                             CommandArgument='<%# Eval("Key") %>'
-                            CssClass="btn btn-sm btn-outline-danger"
-                            OnClientClick="return confirm('¿Seguro que querés eliminar esta obra social?');">
+                            CssClass="btn btn-sm btn-outline-danger">
                             Eliminar
                         </asp:LinkButton>
                             <asp:LinkButton runat="server"
@@ -76,6 +75,13 @@
                 </asp:TemplateField>
                 </Columns>
             </asp:GridView>
+
+            <asp:Panel ID="pnlConfirmarEliminarOS" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                <asp:HiddenField ID="hfIdEliminarOS" runat="server" />
+                <p class="fw-semibold mb-2">¿Seguro que querés eliminar esta obra social?</p>
+                <asp:Button ID="btnConfirmarEliminarOS" runat="server" Text="Sí, eliminar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarOS_Click" />
+                <asp:Button ID="btnCancelarEliminarOS" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarOS_Click" />
+            </asp:Panel>
         </div>
     </div>
 
@@ -109,45 +115,7 @@
         </div>
     </asp:Panel>
     </asp:Panel>
-
-    <div class="container my-5">
-        <div class="row g-4 justify-content-center">
-            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False"  OnRowCommand="dgvPacientes_RowCommand">
-                <Columns>
-                    <asp:BoundField HeaderText="DNI" DataField="DNI" />
-                    <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
-                    <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
-                    <asp:BoundField HeaderText="Obra Social" DataField="ObraSocial" />
-                    <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
-                    <asp:BoundField HeaderText="Usuario" DataField="Perfil.NombreUsuario" />
-                    <asp:BoundField HeaderText="Contraseña" DataField="Perfil.Contraseña" />
-
-                    <asp:TemplateField HeaderText="Fecha de Nacimiento">
-                        <ItemTemplate><%# ((DateTime)Eval("FechaNacimiento")).ToString("dd/MM/yyyy") %></ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="">
-                    <ItemTemplate>
-                        <asp:LinkButton runat="server"
-                            CommandName="Eliminar"
-                            CommandArgument='<%# Eval("Id") %>'
-                            CssClass="btn btn-sm btn-outline-danger"
-                            OnClientClick="return confirm('¿Seguro que querés eliminar este paciente?');">
-                            Eliminar
-                        </asp:LinkButton>
-                            <asp:LinkButton runat="server"
-                            CommandName="Modificar"
-                            CommandArgument='<%# Eval("Id") %>'
-                            CssClass="btn btn-sm btn-outline-primary me-1">
-                            Modificar
-                            </asp:LinkButton>
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                </Columns>
-            </asp:GridView>
-            </div>
-        </div>
-    <asp:Panel ID="pnlNuevaObraSocial" runat="server" Visible="false" CssClass="container my-4">
+        <asp:Panel ID="pnlNuevaObraSocial" runat="server" Visible="false" CssClass="container my-4">
     <div class="row justify-content-center">
         <div class="col-md-7">
             <div class="card shadow-sm border-0 p-4 text-start">
@@ -176,6 +144,49 @@
         </div>
     </div>
 </asp:Panel>
+    <div class="container my-5">
+        <div class="row g-4 justify-content-center">
+            <asp:GridView runat="server" ID="dgvPacientes" CssClass="table table-hover table-responsive" AutoGenerateColumns="False"  OnRowCommand="dgvPacientes_RowCommand">
+                <Columns>
+                    <asp:BoundField HeaderText="DNI" DataField="DNI" />
+                    <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                    <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
+                    <asp:BoundField HeaderText="Obra Social" DataField="ObraSocial" />
+                    <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
+                    <asp:BoundField HeaderText="Usuario" DataField="Perfil.NombreUsuario" />
+                    <asp:BoundField HeaderText="Contraseña" DataField="Perfil.Contraseña" />
+
+                    <asp:TemplateField HeaderText="Fecha de Nacimiento">
+                        <ItemTemplate><%# ((DateTime)Eval("FechaNacimiento")).ToString("dd/MM/yyyy") %></ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server"
+                            CommandName="Eliminar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            CssClass="btn btn-sm btn-outline-danger">
+                            Eliminar
+                        </asp:LinkButton>
+                            <asp:LinkButton runat="server"
+                            CommandName="Modificar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            CssClass="btn btn-sm btn-outline-primary me-1">
+                            Modificar
+                            </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                </Columns>
+            </asp:GridView>
+
+            <asp:Panel ID="pnlConfirmarEliminarPac" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                <asp:HiddenField ID="hfIdEliminarPac" runat="server" />
+                <p class="fw-semibold mb-2">¿Seguro que querés eliminar este paciente?</p>
+                <asp:Button ID="btnConfirmarEliminarPac" runat="server" Text="Sí, eliminar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarPac_Click" />
+                <asp:Button ID="btnCancelarEliminarPac" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarPac_Click" />
+            </asp:Panel>
+            </div>
+        </div>
             <%-- Tabla modificarsss --%>
             <asp:Panel ID="pnlEditarPaciente" runat="server" Visible="false" CssClass="container my-4">
         <div class="row justify-content-center">
@@ -257,4 +268,42 @@
         </div>
     </div>
                 </asp:Panel>
+    <div class="row g-3 justify-content-center mt-5 mb-4 border-top pt-4">
+        <div class="col-md-3">
+            <asp:Button ID="btnRecuperarPacientes" runat="server" Text="Recuperar Pacientes" CssClass="btn btn-secondary w-100 py-2" OnClick="btnRecuperarPacientes_Click" CausesValidation="false" />
+        </div>
+        <div class="col-md-3">
+            <asp:Button ID="btnRecuperarObraSocial" runat="server" Text="Recuperar Obras Sociales" CssClass="btn btn-outline-secondary w-100 py-2" OnClick="btnRecuperarObraSocial_Click" CausesValidation="false" />
+        </div>
+    </div>
+
+    <asp:Panel ID="pnlPacientesInactivos" runat="server" Visible="false" CssClass="container my-4 bg-light p-4 rounded shadow-sm">
+        <h5 class="fw-bold mb-3 text-secondary">Pacientes Dados de Baja</h5>
+        <asp:GridView runat="server" ID="dgvPacientesInactivos" CssClass="table table-secondary table-hover" AutoGenerateColumns="False" OnRowCommand="dgvPacientesInactivos_RowCommand" EmptyDataText="No hay pacientes inactivos.">
+            <Columns>
+                <asp:BoundField HeaderText="DNI" DataField="DNI" />
+                <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" CommandName="Reactivar" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-success">Reactivar</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+    </asp:Panel>
+
+    <asp:Panel ID="pnlObrasSocialesInactivas" runat="server" Visible="false" CssClass="container my-4 bg-light p-4 rounded shadow-sm">
+        <h5 class="fw-bold mb-3 text-secondary">Obras Sociales Dadas de Baja</h5>
+        <asp:GridView runat="server" ID="dgvObrasSocialesInactivas" CssClass="table table-secondary table-hover" AutoGenerateColumns="False" OnRowCommand="dgvObrasSocialesInactivas_RowCommand" EmptyDataText="No hay obras sociales inactivas.">
+            <Columns>
+                <asp:BoundField HeaderText="Obra Social" DataField="Value" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" CommandName="ReactivarOS" CommandArgument='<%# Eval("Key") %>' CssClass="btn btn-sm btn-success">Reactivar</asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+    </asp:Panel>
 </asp:Content>

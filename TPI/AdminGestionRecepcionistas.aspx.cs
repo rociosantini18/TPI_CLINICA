@@ -35,17 +35,11 @@ namespace TPI
 
             if (e.CommandName == "Eliminar")
             {
-                try
-                {
-                    negocio.eliminar(id);
-                    lblError.Text = "";
-                    pnlEditarRecepcionista.Visible = false;
-                    cargarRecepcionistas();
-                }
-                catch (Exception ex)
-                {
-                    lblError.Text = "Ocurrió un error al eliminar: " + ex.Message;
-                }
+                hfIdEliminarRecep.Value = id.ToString();
+                pnlConfirmarEliminarRecep.Visible = true;
+
+                lblError.Text = "";
+                pnlEditarRecepcionista.Visible = false;
             }
             else if (e.CommandName == "Modificar")
             {
@@ -69,7 +63,30 @@ namespace TPI
                 }
             }
         }
+        protected void btnConfirmarEliminarRecep_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int id = int.Parse(hfIdEliminarRecep.Value);
+                EmpleadoNegocio negocio = new EmpleadoNegocio();
+                negocio.eliminar(id);
 
+                lblError.Text = "";
+                pnlConfirmarEliminarRecep.Visible = false;
+                pnlEditarRecepcionista.Visible = false;
+
+                cargarRecepcionistas();
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Ocurrió un error al dar de baja: " + ex.Message;
+            }
+        }
+
+        protected void btnCancelarEliminarRecep_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarRecep.Visible = false;
+        }
         protected void btnGuardarRecep_Click(object sender, EventArgs e)
         {
             EmpleadoNegocio negocio = new EmpleadoNegocio();
@@ -104,6 +121,38 @@ namespace TPI
         {
             pnlEditarRecepcionista.Visible = false;
             lblError.Text = "";
+        }
+
+        protected void btnRecuperarRecep_Click(object sender, EventArgs e)
+        {
+            pnlRecepInactivas.Visible = !pnlRecepInactivas.Visible;
+
+            if (pnlRecepInactivas.Visible)
+            {
+                CargarRecepcionistasInactivas();
+            }
+        }
+
+        private void CargarRecepcionistasInactivas()
+        {
+            EmpleadoNegocio negocio = new EmpleadoNegocio();
+            dgvRecepInactivas.DataSource = negocio.listarInactivos(3);
+            dgvRecepInactivas.DataBind();
+        }
+
+        protected void dgvRecepInactivas_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ReactivarRecep")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+                EmpleadoNegocio negocio = new EmpleadoNegocio();
+                negocio.reactivar(id);
+
+                CargarRecepcionistasInactivas();
+
+                dgvRecepcionistas.DataSource = negocio.listarRecepcionista();
+                dgvRecepcionistas.DataBind();
+            }
         }
     }
 }
