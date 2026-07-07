@@ -69,15 +69,6 @@ namespace TPI
         protected global::System.Web.UI.WebControls.TextBox txtNombreEsp;
 
         /// <summary>
-        /// Control txtDescripcionEsp.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcionEsp;
-
-        /// <summary>
         /// Control lblMensajeEsp.
         /// </summary>
         /// <remarks>
@@ -85,24 +76,6 @@ namespace TPI
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMensajeEsp;
-
-        /// <summary>
-        /// Control btnGuardarEsp.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGuardarEsp;
-
-        /// <summary>
-        /// Control btnCancelarEsp.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelarEsp;
 
         /// <summary>
         /// Control pnlListaEspecialidades.
@@ -382,6 +355,15 @@ namespace TPI
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEditEspecialidad;
+
+        /// <summary>
+        /// Control cblEditDias.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblEditDias;
 
         /// <summary>
         /// Control lblMensajeMed.

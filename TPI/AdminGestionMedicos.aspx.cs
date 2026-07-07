@@ -123,7 +123,21 @@ namespace TPI
                     txtEditMedFechaNac.Text = med.FechaNacimiento.ToString("yyyy-MM-dd");
                     txtEditMatri.Text = med.Matricula;
                     txtEditFoto.Text = med.imagenURL;
+
+                    cblEditDias.ClearSelection();
                     ddlEditEspecialidad.ClearSelection();
+                    if (med.DiasAtencion != null)
+                    {
+                        foreach (DayOfWeek dia in med.DiasAtencion)
+                        {
+                            ListItem item = cblEditDias.Items.FindByValue(((int)dia).ToString());
+                            if (item != null)
+                            {
+                                item.Selected = true;
+                            }
+                        }
+                    }
+
                     if (med.Especialidad != null)
                     {
                         ddlEditEspecialidad.SelectedValue = med.Especialidad.Id.ToString();
@@ -165,6 +179,14 @@ namespace TPI
             med.FechaNacimiento = DateTime.Parse(txtEditMedFechaNac.Text);
             med.Matricula = txtEditMatri.Text.Trim();
             med.imagenURL = txtEditFoto.Text.Trim();
+            med.DiasAtencion = new List<DayOfWeek>();
+            foreach (ListItem item in cblEditDias.Items)
+            {
+                if (item.Selected)
+                {
+                    med.DiasAtencion.Add((DayOfWeek)int.Parse(item.Value));
+                }
+            }
             med.Especialidad = new Especialidad();
             med.Especialidad.Id = int.Parse(ddlEditEspecialidad.SelectedValue);
 

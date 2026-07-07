@@ -114,6 +114,15 @@ namespace TPI
         protected global::System.Web.UI.WebControls.TextBox txtMatricula;
 
         /// <summary>
+        /// Control cblDias.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblDias;
+
+        /// <summary>
         /// Control txtImagenURL.
         /// </summary>
         /// <remarks>

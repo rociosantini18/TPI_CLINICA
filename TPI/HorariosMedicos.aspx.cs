@@ -20,8 +20,6 @@ namespace TPI
 
             if (!IsPostBack)
                 cargarMedicos();
-            txtFecha.Attributes["min"] = DateTime.Now.ToString("yyyy-MM-dd");
-            txtFecha.Attributes["max"] = DateTime.Now.AddYears(2).ToString("yyyy-MM-dd");
         }
 
         private void cargarMedicos()
@@ -33,7 +31,20 @@ namespace TPI
             ddlMedico.DataBind();
             ddlMedico.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Seleccione un médico", "0"));
         }
-
+        protected string TraducirDia(DayOfWeek dia)
+        {
+            switch (dia)
+            {
+                case DayOfWeek.Sunday: return "Domingo";
+                case DayOfWeek.Monday: return "Lunes";
+                case DayOfWeek.Tuesday: return "Martes";
+                case DayOfWeek.Wednesday: return "Miércoles";
+                case DayOfWeek.Thursday: return "Jueves";
+                case DayOfWeek.Friday: return "Viernes";
+                case DayOfWeek.Saturday: return "Sábado";
+                default: return "";
+            }
+        }
         private void cargarHorarios()
         {
             if (ddlMedico.SelectedValue == "0") return;
@@ -47,6 +58,37 @@ namespace TPI
 
         protected void ddlMedico_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (ddlMedico.SelectedValue == "0")
+            {
+                lblDiaAtencionVista.Visible = false;
+                ddlDiaTurno.Items.Clear();
+                return;
+            }
+
+            MedicoNegocio medNegocio = new MedicoNegocio();
+            Medico medico = medNegocio.listar().FirstOrDefault(m => m.Id == int.Parse(ddlMedico.SelectedValue));
+
+            if (medico != null)
+            {
+                ddlDiaTurno.Items.Clear();
+
+                if (medico.DiasAtencion != null && medico.DiasAtencion.Count > 0)
+                {
+                    foreach (DayOfWeek dia in medico.DiasAtencion)
+                    {
+                        ddlDiaTurno.Items.Add(new ListItem(TraducirDia(dia), ((int)dia).ToString()));
+                    }
+                    var nombresDias = medico.DiasAtencion.Select(d => TraducirDia(d));
+                    lblDiaAtencionVista.Text = "Días de atención: " + string.Join(", ", nombresDias);
+                    lblDiaAtencionVista.Visible = true;
+                }
+                else
+                {
+                    lblDiaAtencionVista.Text = "Sin días asignados";
+                    lblDiaAtencionVista.Visible = true;
+                }
+            }
+
             cargarHorarios();
         }
 
@@ -55,37 +97,27 @@ namespace TPI
             if (ddlMedico.SelectedValue == "0") return;
             try
             {
-                DateTime fecha = DateTime.Parse(txtFecha.Text);
                 TimeSpan horaInicio = TimeSpan.Parse(txtHoraInicio.Text);
                 TimeSpan horaFin = TimeSpan.Parse(txtHoraFin.Text);
 
-                if (fecha.Date < DateTime.Today || fecha.Date > DateTime.Today.AddYears(1))
-                {
-                    lblMensaje.Visible = true;
-                    lblMensaje.CssClass = "text-danger mb-2 d-block";
-                    lblMensaje.Text = "La fecha debe ser a partir de hoy y dentro del próximo año.";
-                    return;
-                }
                 if (horaInicio >= horaFin)
                 {
                     lblMensaje.Visible = true;
                     lblMensaje.CssClass = "text-danger mb-2 d-block";
-                    lblMensaje.Text = "La hora de fin debe ser posterior a la hora de inicio.";
+                    lblMensaje.Text = "La hora de fin debe ser posterior a la de inicio.";
                     return;
                 }
 
-
                 HorarioMedicoNegocio negocio = new HorarioMedicoNegocio();
-                negocio.agregar(int.Parse(ddlMedico.SelectedValue), fecha, TimeSpan.Parse(txtHoraInicio.Text), TimeSpan.Parse(txtHoraFin.Text));
+                DayOfWeek diaSeleccionado = (DayOfWeek)int.Parse(ddlDiaTurno.SelectedValue);
+                negocio.agregar(int.Parse(ddlMedico.SelectedValue), diaSeleccionado, horaInicio, horaFin);
                 lblMensaje.Visible = true;
                 lblMensaje.CssClass = "text-success mb-2 d-block";
                 lblMensaje.Text = "Horario agregado correctamente.";
                 cargarHorarios();
 
-                txtFecha.Text = "";
                 txtHoraInicio.Text = "";
                 txtHoraFin.Text = "";
-                ddlMedico.SelectedValue = "0";
             }
             catch (Exception ex)
             {
@@ -103,6 +135,66 @@ namespace TPI
                 negocio.eliminar(int.Parse(e.CommandArgument.ToString()));
                 cargarHorarios();
             }
+        }
+        protected void btnAbrirPanelDias_Click(object sender, EventArgs e)
+        {
+            if (ddlMedico.SelectedValue == "0") return;
+
+            MedicoNegocio medNegocio = new MedicoNegocio();
+            Medico medico = medNegocio.listar().FirstOrDefault(m => m.Id == int.Parse(ddlMedico.SelectedValue));
+
+            if (medico != null)
+            {
+                cblDiasRecepcionista.ClearSelection();
+
+                if (medico.DiasAtencion != null)
+                {
+                    foreach (DayOfWeek dia in medico.DiasAtencion)
+                    {
+                        ListItem item = cblDiasRecepcionista.Items.FindByValue(((int)dia).ToString());
+                        if (item != null) item.Selected = true;
+                    }
+                }
+                pnlModificarDias.Visible = true;
+                lblMensajeDias.Text = "";
+            }
+        }
+
+        protected void btnGuardarDias_Click(object sender, EventArgs e)
+        {
+            if (ddlMedico.SelectedValue == "0") return;
+
+            try
+            {
+                List<DayOfWeek> nuevosDias = new List<DayOfWeek>();
+                foreach (ListItem item in cblDiasRecepcionista.Items)
+                {
+                    if (item.Selected)
+                    {
+                        nuevosDias.Add((DayOfWeek)int.Parse(item.Value));
+                    }
+                }
+
+                MedicoNegocio negocio = new MedicoNegocio();
+                negocio.modificarDiasAtencion(int.Parse(ddlMedico.SelectedValue), nuevosDias);
+
+                pnlModificarDias.Visible = false;
+
+                ddlMedico_SelectedIndexChanged(null, null);
+
+                lblMensaje.Visible = true;
+                lblMensaje.CssClass = "text-success mb-2 d-block";
+                lblMensaje.Text = "¡Días de atención del médico actualizados correctamente!";
+            }
+            catch (Exception ex)
+            {
+                lblMensajeDias.Text = "Error: " + ex.Message;
+                lblMensajeDias.CssClass = "text-danger mb-2 d-block small fw-bold";
+            }
+        }
+        protected void btnCancelarDias_Click(object sender, EventArgs e)
+        {
+            pnlModificarDias.Visible = false;
         }
     }
 }

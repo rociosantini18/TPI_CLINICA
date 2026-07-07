@@ -15,10 +15,10 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    SELECT Id_Horario, Fecha, HoraInicio, HoraFin
-                    FROM HorarioMedico
-                    WHERE Id_Medico = @idMedico
-                    ORDER BY Fecha, HoraInicio");
+            SELECT Id_Horario, DiaSemana, HoraInicio, HoraFin
+            FROM HorarioMedico
+            WHERE Id_Medico = @idMedico
+            ORDER BY DiaSemana, HoraInicio");
                 datos.setearParametro("@idMedico", idMedico);
                 datos.ejecutarLectura();
 
@@ -26,7 +26,7 @@ namespace TPI.Negocio
                 {
                     HorarioMedico h = new HorarioMedico();
                     h.Id = (int)datos.Lector["Id_Horario"];
-                    h.Fecha = (DateTime)datos.Lector["Fecha"];
+                    h.DiaSemana = datos.Lector["DiaSemana"] != DBNull.Value ? (DayOfWeek)Convert.ToInt32(datos.Lector["DiaSemana"]) : DayOfWeek.Monday;
                     h.HoraInicio = (TimeSpan)datos.Lector["HoraInicio"];
                     h.HoraFin = (TimeSpan)datos.Lector["HoraFin"];
                     lista.Add(h);
@@ -47,17 +47,14 @@ namespace TPI.Negocio
                     SELECT h.HoraInicio
                     FROM HorarioMedico h
                     WHERE h.Id_Medico = @idMedico
-                    AND h.Fecha = @fecha
                     AND h.HoraInicio NOT IN (
                         SELECT t.HoraInicio FROM Turno t
                         WHERE t.Id_Medico = @idMedico
-                        AND t.Fecha = @fecha
                         AND t.Estado NOT IN ('Cancelado')
                     )
                     ORDER BY h.HoraInicio");
 
                 datos.setearParametro("@idMedico", idMedico);
-                datos.setearParametro("@fecha", fecha.Date);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -69,16 +66,16 @@ namespace TPI.Negocio
             finally { datos.CerrarConexion(); }
         }
 
-        public void agregar(int idMedico, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin)
+        public void agregar(int idMedico, DayOfWeek diaSemana, TimeSpan horaInicio, TimeSpan horaFin)
         {
             AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearConsulta(@"
-                    INSERT INTO HorarioMedico (Id_Medico, Fecha, HoraInicio, HoraFin)
-                    VALUES (@idMedico, @fecha, @horaInicio, @horaFin)");
+            INSERT INTO HorarioMedico (Id_Medico, DiaSemana, HoraInicio, HoraFin)
+            VALUES (@idMedico, @diaSemana, @horaInicio, @horaFin)");
                 datos.setearParametro("@idMedico", idMedico);
-                datos.setearParametro("@fecha", fecha.Date);
+                datos.setearParametro("@diaSemana", (int)diaSemana);
                 datos.setearParametro("@horaInicio", horaInicio);
                 datos.setearParametro("@horaFin", horaFin);
                 datos.ejecutarAccion();
@@ -117,7 +114,7 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    select distinct hm.Fecha, m.Id_Medico
+                    select distinct m.Id_Medico
                     from HorarioMedico hm
                     inner join Medico m on hm.Id_Medico = m.Id_Medico
                     where m.Id_Medico = @id");
@@ -127,7 +124,6 @@ namespace TPI.Negocio
                 while (datos.Lector.Read())
                 {
                     HorarioMedico h = new HorarioMedico();
-                    h.Fecha = (DateTime)datos.Lector["Fecha"];
                     lista.Add(h);
                 }
                 return lista;

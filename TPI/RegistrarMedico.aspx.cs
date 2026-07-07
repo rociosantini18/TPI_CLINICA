@@ -21,7 +21,6 @@ namespace TPI
                 ddlEspecialidad.DataTextField = "Nombre";
                 ddlEspecialidad.DataValueField = "Id";
                 ddlEspecialidad.DataBind();
-
             }
         }
 
@@ -43,7 +42,14 @@ namespace TPI
                 med.imagenURL = txtImagenURL.Text.Trim();
                 med.Matricula = txtMatricula.Text.Trim();
 
-
+                med.DiasAtencion = new List<DayOfWeek>();
+                foreach (ListItem item in cblDias.Items)
+                {
+                    if (item.Selected)
+                    {
+                        med.DiasAtencion.Add((DayOfWeek)int.Parse(item.Value));
+                    }
+                }
 
                 MedicoNegocio negocio = new MedicoNegocio();
                 negocio.agregar(med);
@@ -77,6 +83,5 @@ namespace TPI
                 args.IsValid = false;
             }
         }
-
     }
 }
