@@ -326,3 +326,12 @@ WHERE m.Id_Medico = @id
 select HoraInicio 
 from HorarioMedico
 where Fecha = 2026-07-01
+
+ALTER TABLE HorarioMedico DROP COLUMN Fecha;
+ALTER TABLE HorarioMedico ADD DiaSemana INT NOT NULL DEFAULT 1;
+
+CREATE TABLE MedicoDiaAtencion (
+    Id_Medico INT FOREIGN KEY REFERENCES Medico(Id_Medico),
+    DiaSemana INT NOT NULL,
+    PRIMARY KEY (Id_Medico, DiaSemana)
+);
