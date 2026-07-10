@@ -59,14 +59,14 @@
 
                 <div class="mb-3">
                     <asp:Label runat="server" Text="Descripción:" CssClass="form-label fw-semibold" />
-                    <asp:TextBox ID="txtDescripcionEsp" runat="server" CssClass="form-control"TextMode="MultiLine" Rows="3"placeholder="Descripción breve de la especialidad" />
+                    <asp:TextBox ID="txtDescripcionEsp" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Descripción breve de la especialidad" />
                 </div>
 
                 <asp:Label ID="lblMensajeEsp" runat="server" CssClass="text-success fw-semibold" />
 
                 <div class="d-flex gap-2 mt-2">
-                    <asp:Button ID="btnGuardarEsp" runat="server" Text="Guardar"CssClass="btn btn-success"ValidationGroup="vgEspecialidad"OnClick="btnGuardarEsp_Click" />
-                    <asp:Button ID="btnCancelarEsp" runat="server" Text="Cancelar"CssClass="btn btn-outline-secondary"CausesValidation="false"OnClick="btnCancelarEsp_Click" />
+                    <asp:Button ID="btnGuardarEsp" runat="server" Text="Guardar" CssClass="btn btn-success" ValidationGroup="vgEspecialidad" OnClick="btnGuardarEsp_Click" />
+                    <asp:Button ID="btnCancelarEsp" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary" CausesValidation="false" OnClick="btnCancelarEsp_Click" />
                 </div>
             </div>
         </div>

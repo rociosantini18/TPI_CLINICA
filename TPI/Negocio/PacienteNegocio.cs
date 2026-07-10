@@ -167,14 +167,14 @@ namespace TPI.Negocio
                 Telefono = @telefono, 
                 Direccion = @direccion, 
                 FechaNacimiento= @fechaNac 
-            WHERE Id_Persona = (SELECT Id_Persona FROM Paciente WHERE Id_Paciente = @id);
+            WHERE Id_Persona = @idPersona;
             UPDATE Paciente SET 
                 Id_ObraSocial = @obraSocial 
-            WHERE Id_Paciente = @id;
+            WHERE Id_Paciente = @idPaciente;
             UPDATE Perfil SET
                 Contraseña = @contrasena,
                 NombreUsuario = @email
-            WHERE Id_Perfil = (SELECT Id_Perfil FROM Paciente WHERE Id_Paciente = @id);
+            WHERE Id_Perfil = (SELECT Id_Perfil FROM Paciente WHERE Id_Paciente = @idPaciente);
         ");
 
                 datos.setearParametro("@dni", pac.Dni);
@@ -184,9 +184,10 @@ namespace TPI.Negocio
                 datos.setearParametro("@telefono", pac.Telefono);
                 datos.setearParametro("@direccion", pac.Direccion);
                 datos.setearParametro("@fechaNac", pac.FechaNacimiento);
-                datos.setearParametro("@obraSocial", pac.IdObraSocial);
+                datos.setearParametro("@idPersona", pac.Id);
+                datos.setearParametro("@idPaciente", pac.IdPaciente);
+                datos.setearParametro("@obraSocial", pac.IdObraSocial == 0 ? (object)DBNull.Value : pac.IdObraSocial);
                 datos.setearParametro("@contrasena", pac.Perfil.Contraseña);
-                datos.setearParametro("@id", pac.Id);
 
                 datos.ejecutarAccion();
             }
@@ -216,32 +217,30 @@ namespace TPI.Negocio
             finally { datos.CerrarConexion(); }
         }
 
-
         public Paciente RelacionPerfilPersona(int id)
         {
             AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearConsulta(@"
-                select p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, ob.Id_ObraSocial, ob.Nombre_ObraSocial 
+                select pac.Id_Paciente, p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, ob.Id_ObraSocial, ob.Nombre_ObraSocial, perf.Contraseña
                         from Paciente pac
                         inner join Perfil perf on pac.Id_Perfil = perf.Id_Perfil 
                         inner join Persona p on pac.Id_Persona = p.Id_Persona
-                        inner join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
+                        left join ObraSocial ob on pac.Id_ObraSocial = ob.Id_ObraSocial
                     where perf.Id_Perfil = @id");
 
                 datos.setearParametro("@id", id);
-
                 datos.ejecutarLectura();
 
                 Paciente p = null;
 
                 if (datos.Lector.Read())
                 {
-
                     p = new Paciente();
-
+                    p.IdPaciente = (int)datos.Lector["Id_Paciente"];
                     p.Id = (int)datos.Lector["Id_Persona"];
+
                     p.Dni = datos.Lector["Dni"].ToString();
                     p.Nombre = datos.Lector["Nombre"].ToString();
                     p.Apellido = datos.Lector["Apellido"].ToString();
@@ -249,14 +248,15 @@ namespace TPI.Negocio
                     p.Email = datos.Lector["Email"].ToString();
                     p.Direccion = datos.Lector["Direccion"].ToString();
                     p.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
-                    p.ObraSocial = datos.Lector["Nombre_ObraSocial"].ToString();
-                    p.IdObraSocial = (int)datos.Lector["Id_ObraSocial"];
 
+                    p.ObraSocial = datos.Lector["Nombre_ObraSocial"] != DBNull.Value ? datos.Lector["Nombre_ObraSocial"].ToString() : "Particular";
+                    p.IdObraSocial = datos.Lector["Id_ObraSocial"] != DBNull.Value ? (int)datos.Lector["Id_ObraSocial"] : 0;
+                    p.Perfil = new Perfil();
+                    p.Perfil.Contraseña = datos.Lector["Contraseña"].ToString();
                 }
 
                 return p;
             }
-
             catch (Exception ex)
             {
                 throw ex;

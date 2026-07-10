@@ -36,37 +36,37 @@ namespace TPI
                     PacienteNegocio negocio = new PacienteNegocio();
                     Paciente paciente = negocio.RelacionPerfilPersona(id);
 
-                    txtDNI.Text = paciente.Dni;
-                    txtNombre.Text = paciente.Nombre;
-                    txtApellido.Text = paciente.Apellido;
-                    txtTelefono.Text = paciente.Telefono;
-                    txtFechaNacimiento.Text = paciente.FechaNacimiento.ToString("yyyy-MM-dd");
+                    if (paciente != null)
+                    {
+                        txtDNI.Text = paciente.Dni;
+                        txtNombre.Text = paciente.Nombre;
+                        txtApellido.Text = paciente.Apellido;
+                        txtTelefono.Text = paciente.Telefono;
+                        txtFechaNacimiento.Text = paciente.FechaNacimiento.ToString("yyyy-MM-dd");
 
-                    ddlObraSocial.DataSource = negocio.listarObrasSociales();
-                    ddlObraSocial.DataTextField = "Value";
-                    ddlObraSocial.DataValueField = "Key";
-                    ddlObraSocial.DataBind();
-                    ddlObraSocial.SelectedValue = paciente.IdObraSocial.ToString();
+                        ddlObraSocial.DataSource = negocio.listarObrasSociales();
+                        ddlObraSocial.DataTextField = "Value";
+                        ddlObraSocial.DataValueField = "Key";
+                        ddlObraSocial.DataBind();
+                        ddlObraSocial.SelectedValue = paciente.IdObraSocial.ToString();
 
-                    txtEmail.Text = paciente.Email;
-                    txtDireccion.Text = paciente.Direccion;
+                        txtEmail.Text = paciente.Email;
+                        txtDireccion.Text = paciente.Direccion;
+                    }
                 }
             }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-
             try
             {
-
                 if (Request.QueryString["id"] != null)
                 {
                     int id = int.Parse(Request.QueryString["id"].ToString());
 
                     PacienteNegocio negocio = new PacienteNegocio();
-                    Paciente paciente = new Paciente();
-                    paciente = negocio.RelacionPerfilPersona(id);
+                    Paciente paciente = negocio.RelacionPerfilPersona(id);
 
                     if (paciente == null)
                     {
@@ -77,14 +77,30 @@ namespace TPI
                     paciente.Nombre = txtNombre.Text;
                     paciente.Apellido = txtApellido.Text;
                     paciente.Telefono = txtTelefono.Text;
-                    paciente.FechaNacimiento = Convert.ToDateTime(txtFechaNacimiento.Text); ;
+                    paciente.FechaNacimiento = Convert.ToDateTime(txtFechaNacimiento.Text);
                     paciente.IdObraSocial = int.Parse(ddlObraSocial.SelectedValue);
                     paciente.Email = txtEmail.Text;
                     paciente.Direccion = txtDireccion.Text;
 
+                    if (!string.IsNullOrEmpty(txtPassword.Text))
+                    {
+                        if (txtPassword.Text == txtPasswordConfirm.Text)
+                        {
+                            paciente.Perfil.Contraseña = txtPassword.Text;
+                        }
+                        else
+                        {
+                            lblError.Text = "Las contraseñas no coinciden.";
+                            lblError.Visible = true;
+                            lblExito.Visible = false;
+                            return;
+                        }
+                    }
+
                     negocio.modificar(paciente);
 
-                    lblExito.Text = "¡Datos guardados con éxito!";
+                    lblExito.Text = "¡Datos actualizados con éxito!";
+                    lblExito.CssClass = "alert alert-success fw-bold mb-3 d-block text-center fs-5";
                     lblExito.Visible = true;
                     lblError.Visible = false;
                 }
@@ -94,21 +110,17 @@ namespace TPI
                 lblError.Visible = true;
                 lblError.CssClass = "text-danger mb-3 d-block";
                 lblError.Text = "Error: " + ex.Message;
-                throw;
             }
-
         }
 
         protected void btnVolver_Click(object sender, EventArgs e)
         {
+            Perfil perfil = (Perfil)Session["perfil"];
 
-            if (Request.QueryString["id"] != null)
+            if (perfil != null)
             {
-                int id = int.Parse(Request.QueryString["id"].ToString());
-                Response.Redirect("UsuarioLogeado.aspx?id=" + id);
-
+                Response.Redirect("UsuarioLogeado.aspx?id=" + perfil.Id);
             }
-
         }
     }
 }

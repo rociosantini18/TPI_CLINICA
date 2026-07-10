@@ -65,6 +65,9 @@
                     <div class="d-grid">
                         <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar Turno"
                             CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnConfirmar_Click" />
+                                               <asp:Button ID="btnVolver" runat="server" Text="Cancelar" 
+                                    CssClass="btn btn-lg btn-outline-secondary" 
+                                    OnClick="btnVolver_Click" />
                     </div>
                 </div>
             </div>

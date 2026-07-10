@@ -36,36 +36,6 @@ namespace TPI.Negocio
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
-
-        public List<TimeSpan> listarHorariosDisponibles(int idMedico, DateTime fecha)
-        {
-            List<TimeSpan> disponibles = new List<TimeSpan>();
-            AccesoDatos datos = new AccesoDatos();
-            try
-            {
-                datos.setearConsulta(@"
-                    SELECT h.HoraInicio
-                    FROM HorarioMedico h
-                    WHERE h.Id_Medico = @idMedico
-                    AND h.HoraInicio NOT IN (
-                        SELECT t.HoraInicio FROM Turno t
-                        WHERE t.Id_Medico = @idMedico
-                        AND t.Estado NOT IN ('Cancelado')
-                    )
-                    ORDER BY h.HoraInicio");
-
-                datos.setearParametro("@idMedico", idMedico);
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
-                    disponibles.Add((TimeSpan)datos.Lector["HoraInicio"]);
-
-                return disponibles;
-            }
-            catch (Exception ex) { throw ex; }
-            finally { datos.CerrarConexion(); }
-        }
-
         public void agregar(int idMedico, DayOfWeek diaSemana, TimeSpan horaInicio, TimeSpan horaFin)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -107,53 +77,71 @@ namespace TPI.Negocio
 
             return medico;
         }
-        public List<HorarioMedico> listarFechasDisponiblesPorMedico(int idMedico)
+        public List<DateTime> listarFechasDisponiblesPorMedico(int idMedico)
         {
+            List<DayOfWeek> diasQueAtiende = new List<DayOfWeek>();
             AccesoDatos datos = new AccesoDatos();
-            List<HorarioMedico> lista = new List<HorarioMedico>();
             try
             {
-                datos.setearConsulta(@"
-                    select distinct m.Id_Medico
-                    from HorarioMedico hm
-                    inner join Medico m on hm.Id_Medico = m.Id_Medico
-                    where m.Id_Medico = @id");
+                datos.setearConsulta("SELECT DISTINCT DiaSemana FROM HorarioMedico WHERE Id_Medico = @id");
                 datos.setearParametro("@id", idMedico);
                 datos.ejecutarLectura();
-
                 while (datos.Lector.Read())
                 {
-                    HorarioMedico h = new HorarioMedico();
-                    lista.Add(h);
+                    diasQueAtiende.Add((DayOfWeek)Convert.ToInt32(datos.Lector["DiaSemana"]));
                 }
-                return lista;
             }
-            catch (Exception) { throw; }
+            catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
+
+            List<DateTime> fechasDisponibles = new List<DateTime>();
+            if (diasQueAtiende.Count > 0)
+            {
+                DateTime fechaActual = DateTime.Today;
+                for (int i = 0; i < 30; i++)
+                {
+                    if (diasQueAtiende.Contains(fechaActual.DayOfWeek))
+                    {
+                        fechasDisponibles.Add(fechaActual);
+                    }
+                    fechaActual = fechaActual.AddDays(1);
+                }
+            }
+            return fechasDisponibles;
         }
 
-        public List<HorarioMedico> listarHorarioDisponiblesPorFecha(DateTime fecha)
+        public List<TimeSpan> listarHorariosDisponibles(int idMedico, DateTime fecha)
         {
+            List<TimeSpan> disponibles = new List<TimeSpan>();
             AccesoDatos datos = new AccesoDatos();
-            List<HorarioMedico> lista = new List<HorarioMedico>();
             try
             {
+                int diaSemana = (int)fecha.DayOfWeek;
                 datos.setearConsulta(@"
-                    select HoraInicio 
-                    from HorarioMedico
-                    where Fecha = @fecha");
+            SELECT h.HoraInicio
+            FROM HorarioMedico h
+            WHERE h.Id_Medico = @idMedico 
+            AND h.DiaSemana = @dia
+            AND h.HoraInicio NOT IN (
+                SELECT t.HoraInicio FROM Turno t
+                WHERE t.Id_Medico = @idMedico
+                AND CAST(t.Fecha AS DATE) = CAST(@fecha AS DATE)
+                AND t.Estado NOT IN ('Cancelado', 'Reprogramado')
+            )
+            ORDER BY h.HoraInicio");
+
+                datos.setearParametro("@idMedico", idMedico);
+                datos.setearParametro("@dia", diaSemana);
                 datos.setearParametro("@fecha", fecha);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    HorarioMedico h = new HorarioMedico();
-                    h.HoraInicio = (TimeSpan)datos.Lector["HoraInicio"];
-                    lista.Add(h);
+                    disponibles.Add((TimeSpan)datos.Lector["HoraInicio"]);
                 }
-                return lista;
+                return disponibles;
             }
-            catch (Exception) { throw; }
+            catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
     }

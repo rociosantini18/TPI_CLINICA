@@ -115,5 +115,15 @@ namespace TPI
             int idPaciente = (int)ViewState["idPaciente"];
             cargarTurnos(idPaciente);
         }
+
+        protected void btnVolver_Click(object sender, EventArgs e)
+        {
+            Perfil perfil = (Perfil)Session["perfil"];
+
+            if (perfil != null)
+            {
+                Response.Redirect("UsuarioLogeado.aspx?id=" + perfil.Id);
+            }
+        }
     }
 }

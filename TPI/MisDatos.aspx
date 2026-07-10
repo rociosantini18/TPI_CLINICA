@@ -6,10 +6,6 @@
 
     <div class="container-fluid text-center py-5" style="background-color: #f8fff8;">
         <div class="row justify-content-center">
-            <div class="text-start mb-3">
-                <asp:Button ID="btnVolver" runat="server" Text="VOLVER" OnClick="btnVolver_Click"
-                    CssClass="btn btn-primary w-15 py-3 fs-5" />
-            </div>
             <div class="col-md-8">
                 <h1 class="display-4 fw-bold">Mis Datos</h1>
                 <p class="lead text-muted mt-2">Revisá y actualizá tu información personal.</p>
@@ -128,6 +124,9 @@
                     <div class="d-grid">
                         <asp:Button ID="btnGuardar" runat="server" Text="Guardar cambios"
                             CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnGuardar_Click" />
+                       <asp:Button ID="btnVolver" runat="server" Text="Cancelar" 
+                                    CssClass="btn btn-lg btn-outline-secondary" 
+                                    OnClick="btnVolver_Click" />
                     </div>
 
                 </div>

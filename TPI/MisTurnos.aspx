@@ -96,9 +96,13 @@
             </div>
 
             <div class="text-end mt-3">
+                <div class="d-flex justify-content-end gap-2 mt-3">
                 <asp:Button ID="btnNuevoTurno" runat="server" Text="+ Tomar nuevo turno"
                     CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen"
                     PostBackUrl="~/SacarTurno.aspx" />
+                                <asp:Button ID="btnVolver" runat="server" Text="Cancelar" 
+                                    CssClass="btn btn-lg btn-outline-secondary" 
+                                    OnClick="btnVolver_Click" />
             </div>
 
         </div>

@@ -20,12 +20,10 @@ namespace TPI
                 ddlObraSocial.DataTextField = "Value";
                 ddlObraSocial.DataValueField = "Key";
                 ddlObraSocial.DataBind();
-
-                ddlObraSocial.Items.Insert(0, new ListItem("-- Sin obra social --", "0"));
             }
         }
 
-        protected void btn_registrarse_click(object sender, EventArgs a)
+        protected void btn_registrarse_click(object sender, EventArgs e)
         {
             if (!Page.IsValid) return;
 
@@ -39,28 +37,27 @@ namespace TPI
                 pac.Telefono = txtTelefono.Text.Trim();
                 pac.Direccion = txtDireccion.Text.Trim();
                 pac.Email = txtEmail.Text.Trim();
-
-                int idObraSocial = int.Parse(ddlObraSocial.SelectedValue);
-                pac.IdObraSocial = idObraSocial;
+                pac.IdObraSocial = int.Parse(ddlObraSocial.SelectedValue);
 
                 pac.Perfil = new Perfil();
                 pac.Perfil.NombreUsuario = txtEmail.Text.Trim();
                 pac.Perfil.Contraseña = txtPassword.Text;
-                pac.Perfil.Activo = true;
-                pac.Perfil.Id = 2;
 
                 PacienteNegocio negocio = new PacienteNegocio();
                 negocio.agregar(pac);
 
-                lblError.Visible = true;
-                lblError.CssClass = "text-success mb-3 d-block";
-                lblError.Text = "¡Registro exitoso!";
+                lblExito.Text = "¡Cuenta creada con éxito! Ya podés iniciar sesión.";
+                lblExito.CssClass = "alert alert-success fw-bold mb-4 d-block text-center fs-5";
+                lblExito.Visible = true;
+                lblError.Visible = false;
+
+                pnlRegistro.Visible = false;
             }
             catch (Exception ex)
             {
+                lblError.Text = "Error al registrarse: " + ex.Message;
+                lblError.CssClass = "alert alert-danger fw-bold mb-4 d-block";
                 lblError.Visible = true;
-                lblError.CssClass = "text-danger mb-3 d-block";
-                lblError.Text = "Error: " + ex.Message;
             }
         }
 

@@ -78,12 +78,12 @@ namespace TPI
 
             Especialidad esp = new Especialidad();
             esp.Nombre = nombreEsp;
-            esp.Descripcion = string.IsNullOrWhiteSpace(txtDescripcionEsp.Text) ? null : txtDescripcionEsp.Text.Trim();
+            esp.Descripcion = string.IsNullOrWhiteSpace(txtEditDescripcionEsp.Text) ? null : txtEditDescripcionEsp.Text.Trim();
 
             negocio.agregar(esp);
 
             txtNombreEsp.Text = "";
-            txtDescripcionEsp.Text = "";
+            txtEditDescripcionEsp.Text = "";
             lblMensajeEsp.Text = "Especialidad guardada correctamente.";
             lblMensajeEsp.CssClass = "text-success fw-semibold mt-3 d-block";
 
@@ -94,7 +94,7 @@ namespace TPI
         protected void btnCancelarEsp_Click(object sender, EventArgs e)
         {
             txtNombreEsp.Text = "";
-            txtDescripcionEsp.Text = "";
+            txtEditDescripcionEsp.Text = "";
             lblMensajeEsp.Text = "";
             pnlNuevaEspecialidad.Visible = false;
         }
