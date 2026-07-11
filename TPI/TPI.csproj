@@ -69,9 +69,11 @@
     <Content Include="AdminGestionMedicos.aspx" />
     <Content Include="AdminGestionRecepcionistas.aspx" />
     <Content Include="DatosEmpleado.aspx" />
+    <Content Include="DatosMedico.aspx" />
     <Content Include="Especialidades.aspx" />
     <Content Include="AdminGestionPacientes.aspx" />
     <Content Include="GestionarTurnos.aspx" />
+    <Content Include="GestionTurnosMedico.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
     <Content Include="HorariosMedicos.aspx" />
@@ -87,6 +89,7 @@
     <Content Include="MisDatos.aspx" />
     <Content Include="MisTurnos.aspx" />
     <Content Include="NuevoTurnoRecepcionista.aspx" />
+    <Content Include="PanelMedico.aspx" />
     <Content Include="PanelRecepcionista.aspx" />
     <Content Include="PruebaBD.aspx" />
     <Content Include="RegistrarEmpleado.aspx" />
@@ -126,6 +129,13 @@
     <Compile Include="DatosEmpleado.aspx.designer.cs">
       <DependentUpon>DatosEmpleado.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DatosMedico.aspx.cs">
+      <DependentUpon>DatosMedico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DatosMedico.aspx.designer.cs">
+      <DependentUpon>DatosMedico.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Dominio\Empleado.cs" />
     <Compile Include="Dominio\HorarioMedico.cs" />
     <Compile Include="Dominio\Perfil.cs" />
@@ -154,6 +164,13 @@
     </Compile>
     <Compile Include="GestionarTurnos.aspx.designer.cs">
       <DependentUpon>GestionarTurnos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionTurnosMedico.aspx.cs">
+      <DependentUpon>GestionTurnosMedico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionTurnosMedico.aspx.designer.cs">
+      <DependentUpon>GestionTurnosMedico.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -214,6 +231,13 @@
     </Compile>
     <Compile Include="NuevoTurnoRecepcionista.aspx.designer.cs">
       <DependentUpon>NuevoTurnoRecepcionista.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PanelMedico.aspx.cs">
+      <DependentUpon>PanelMedico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PanelMedico.aspx.designer.cs">
+      <DependentUpon>PanelMedico.aspx</DependentUpon>
     </Compile>
     <Compile Include="PanelRecepcionista.aspx.cs">
       <DependentUpon>PanelRecepcionista.aspx</DependentUpon>

@@ -45,6 +45,9 @@ namespace TPI
                     case "Administrador":
                         Response.Redirect("AdminGestionPacientes.aspx?id=" + perfil.Id);
                         break;
+                    case "Medico":
+                        Response.Redirect("PanelMedico.aspx?id=" + perfil.Id);
+                        break;
                     default:
                         lblError.Visible = true;
                         lblError.Text = "Rol no reconocido.";

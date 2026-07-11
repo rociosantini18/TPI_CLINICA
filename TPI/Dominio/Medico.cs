@@ -5,7 +5,8 @@ namespace TPI.Dominio
 {
     public class Medico : Persona
     {
-
+        public int IdMedico { get; set; }
+        public Perfil Perfil { get; set; }
         public string Matricula { get; set; }
 
         public Especialidad Especialidad { get; set; }

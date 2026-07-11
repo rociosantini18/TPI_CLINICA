@@ -48,7 +48,7 @@ namespace TPI.Negocio
                     t.Observaciones = datos.Lector["Observaciones"] as string;
                     t.Diagnostico = datos.Lector["Diagnostico"] as string;
                     t.FechaCreacion = (DateTime)datos.Lector["FechaCreacion"];
-                    t.FechaModificacion = datos.Lector["FechaModificación"] == DBNull.Value ? DateTime.MinValue: (DateTime)datos.Lector["FechaModificación"];
+                    t.FechaModificacion = datos.Lector["FechaModificación"] == DBNull.Value ? DateTime.MinValue : (DateTime)datos.Lector["FechaModificación"];
                     t.Estado = datos.Lector["Estado"] as string;
 
                     t.Paciente = new Paciente();
@@ -118,7 +118,7 @@ namespace TPI.Negocio
                     t.Observaciones = datos.Lector["Observaciones"] as string;
                     t.Diagnostico = datos.Lector["Diagnostico"] as string;
                     t.FechaCreacion = (DateTime)datos.Lector["FechaCreacion"];
-                    t.FechaModificacion = datos.Lector["FechaModificación"] == DBNull.Value? DateTime.MinValue: (DateTime)datos.Lector["FechaModificación"];
+                    t.FechaModificacion = datos.Lector["FechaModificación"] == DBNull.Value ? DateTime.MinValue : (DateTime)datos.Lector["FechaModificación"];
                     t.Estado = datos.Lector["Estado"] as string;
 
                     t.Paciente = new Paciente();
@@ -236,6 +236,71 @@ namespace TPI.Negocio
             }
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
+        }
+
+        public List<Turno> listarPorMedico(int IdMedico)
+        {
+
+            List<Turno> lista = new List<Turno>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT 
+                        t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
+                        t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
+                        t.Estado,
+                        p.Id_Paciente,
+                        pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
+                        pp.Dni AS DniPaciente,
+                        m.Id_Medico,
+                        e.Id_Especialidad, e.Nombre_Especialidad
+                    FROM Turno t
+                    INNER JOIN Paciente p ON t.Id_Paciente = p.Id_Paciente
+                    INNER JOIN Persona pp ON p.Id_Persona = pp.Id_Persona
+                    INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
+                    INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
+                    INNER JOIN Especialidad e ON m.Id_Especialidad = e.Id_Especialidad
+                    where m.Id_Medico = @id
+                    ORDER BY t.Fecha, t.HoraInicio");
+
+                datos.setearParametro("@id", IdMedico);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Turno t = new Turno();
+
+                    t.Id = (int)datos.Lector["Id_Turno"];
+                    t.Numero = (string)datos.Lector["NumeroTurno"];
+                    t.Fecha = (DateTime)datos.Lector["Fecha"];
+                    t.HoraInicio = (TimeSpan)datos.Lector["HoraInicio"];
+                    t.HoraFin = (TimeSpan)datos.Lector["HoraFin"];
+                    t.Observaciones = datos.Lector["Observaciones"] as string;
+                    t.Diagnostico = datos.Lector["Diagnostico"] as string;
+                    t.FechaCreacion = (DateTime)datos.Lector["FechaCreacion"];
+                    t.FechaModificacion = datos.Lector["FechaModificación"] == DBNull.Value ? DateTime.MinValue : (DateTime)datos.Lector["FechaModificación"];
+                    t.Estado = datos.Lector["Estado"] as string;
+
+                    t.Paciente = new Paciente();
+                    t.Paciente.Id = (int)datos.Lector["Id_Paciente"];
+                    t.Paciente.Nombre = (string)datos.Lector["NombrePaciente"];
+                    t.Paciente.Apellido = (string)datos.Lector["ApellidoPaciente"];
+                    t.Paciente.Dni = (string)datos.Lector["DniPaciente"];
+
+                    t.Especialidad = new Especialidad();
+                    t.Especialidad.Id = (int)datos.Lector["Id_Especialidad"];
+                    t.Especialidad.Nombre = (string)datos.Lector["Nombre_Especialidad"];
+
+                    lista.Add(t);
+                }
+
+                return lista;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+
         }
     }
 }

@@ -11,17 +11,8 @@ namespace TPI
 {
 
 
-    public partial class GestionarTurnos
+    public partial class GestionTurnosMedico
     {
-
-        /// <summary>
-        /// ddlFiltroMedico control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroMedico;
 
         /// <summary>
         /// ddlFiltroEspecialidad control.
@@ -85,14 +76,5 @@ namespace TPI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptTurnos;
-
-        /// <summary>
-        /// btnNuevoTurno control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNuevoTurno;
     }
 }

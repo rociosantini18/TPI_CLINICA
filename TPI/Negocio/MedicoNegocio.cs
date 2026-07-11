@@ -171,7 +171,7 @@ namespace TPI.Negocio
                 datos.setearParametro("@idEspecialidad", med.Especialidad.Id);
 
                 datos.ejecutarAccion();
-                datos.CerrarConexion(); 
+                datos.CerrarConexion();
 
                 if (med.DiasAtencion != null)
                 {
@@ -288,6 +288,57 @@ namespace TPI.Negocio
             }
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
+        }
+
+        public Medico RelacionPerfilPersona(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                select med.Id_Medico, med.Matricula, p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, perf.Contraseña, esp.Nombre_Especialidad, esp.Id_Especialidad
+                        from Medico med
+                        inner join Perfil perf on med.Id_Perfil = perf.Id_Perfil 
+                        inner join Persona p on med.Id_Persona = p.Id_Persona
+                        left join Especialidad esp on med.Id_Especialidad = esp.Id_Especialidad
+                    where perf.Id_Perfil = @id");
+
+                datos.setearParametro("@id", id);
+                datos.ejecutarLectura();
+
+                Medico m = null;
+
+                if (datos.Lector.Read())
+                {
+                    m = new Medico();
+                    m.IdMedico = (int)datos.Lector["Id_Medico"];
+                    m.Id = (int)datos.Lector["Id_Persona"];
+
+                    m.Dni = datos.Lector["Dni"].ToString();
+                    m.Nombre = datos.Lector["Nombre"].ToString();
+                    m.Apellido = datos.Lector["Apellido"].ToString();
+                    m.Telefono = datos.Lector["Telefono"].ToString();
+                    m.Email = datos.Lector["Email"].ToString();
+                    m.Direccion = datos.Lector["Direccion"].ToString();
+                    m.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+                    m.Matricula = (string)datos.Lector["Matricula"];
+                    m.Especialidad.Nombre = datos.Lector["Nombre_Especialidad"].ToString();
+                    m.Especialidad.Id = (int)datos.Lector["Id_Especialidad"];
+
+                    m.Perfil = new Perfil();
+                    m.Perfil.Contraseña = datos.Lector["Contraseña"].ToString();
+                }
+
+                return m;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
     }
 }

@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using TPI.Dominio;
+using TPI.Negocio;
+
+namespace TPI
+{
+    public partial class GestionTurnosMedico : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["perfil"] == null)
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+
+            Perfil perfil = (Perfil)Session["perfil"];
+
+            if (perfil.Rol != "Medico")
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+
+            cargarTurnos();
+
+        }
+
+        public string ObtenerCssBadge(string estado)
+        {
+            switch (estado)
+            {
+                case "Nuevo": return "badge text-bg-success";
+                case "Reprogramado": return "badge text-bg-warning text-dark";
+                case "Cancelado": return "badge text-bg-danger";
+                case "Atendido": return "badge text-bg-secondary";
+                default: return "badge text-bg-light text-dark";
+            }
+        }
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void rptTurnos_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            lblWarningAtendido.Visible = false;
+            TurnoNegocio negocio = new TurnoNegocio();
+            int idTurno = int.Parse(e.CommandArgument.ToString());
+
+            if (e.CommandName == "Cancelar")
+            {
+                negocio.cancelar(idTurno);
+            }
+            else if (e.CommandName == "Reprogramar")
+            {
+                negocio.modificarEstado(idTurno, "Reprogramado");
+            }
+            else if (e.CommandName == "MarcarAtendido")
+            {
+                Turno turno = negocio.listar().FirstOrDefault(t => t.Id == idTurno);
+
+                if (turno != null)
+                {
+                    if (turno.Fecha.Date == DateTime.Today)
+                    {
+                        negocio.modificarEstado(idTurno, "Atendido");
+                    }
+                    else
+                    {
+                        lblWarningAtendido.Text = "Solo se puede marcar como atendido a los turnos que tengan fecha de hoy.";
+                        lblWarningAtendido.Visible = true;
+                    }
+                }
+            }
+        }
+
+        private void cargarTurnos()
+        {
+            TurnoNegocio negocio = new TurnoNegocio();
+
+
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+
+                MedicoNegocio negocioMedico = new MedicoNegocio();
+                Medico medico = negocioMedico.RelacionPerfilPersona(id);
+
+                TurnoNegocio negocioTurnos = new TurnoNegocio();
+                List<Turno> turnos = negocioTurnos.listarPorMedico(medico.IdMedico);
+
+                if (!string.IsNullOrEmpty(ddlFiltroEspecialidad.SelectedValue))
+                    turnos = turnos.Where(t => t.Especialidad.Id == int.Parse(ddlFiltroEspecialidad.SelectedValue)).ToList();
+
+                if (!string.IsNullOrEmpty(ddlFiltroEstado.SelectedValue))
+                    turnos = turnos.Where(t => t.Estado == ddlFiltroEstado.SelectedValue).ToList();
+
+                if (!string.IsNullOrEmpty(txtFiltroFecha.Text))
+                    turnos = turnos.Where(t => t.Fecha.Date == DateTime.Parse(txtFiltroFecha.Text).Date).ToList();
+
+                rptTurnos.DataSource = turnos;
+                rptTurnos.DataBind();
+            }
+
+
+        }
+    }
+}
