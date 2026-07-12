@@ -114,16 +114,6 @@ namespace TPI
             pnlConfirmarEliminarEsp.Visible = false;
         }
 
-        protected void btnCancelarEspEdit_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnGuardarEspEdit_Click(object sender, EventArgs e)
-        {
-
-        }
-
         protected void btnAgregarEspecialidad_Click(object sender, EventArgs e)
         {
             EspecialidadNegocio negocio = new EspecialidadNegocio();
@@ -146,11 +136,29 @@ namespace TPI
 
                 MedicoNegocio negocioMed = new MedicoNegocio();
                 Medico medico = negocioMed.RelacionPerfilPersona(id);
-                negocio.agregarEspecialidadMedico(int.Parse(ddlEspecialidadesDisponibles.SelectedValue), medico.IdMedico);
 
-                pnlAgregarEspecialidad.Visible = false;
-                dgvEspecialidades.DataSource = negocio.listarEscpecialidadesPorMedico(medico.IdMedico);
-                dgvEspecialidades.DataBind();
+                bool existe = false;
+
+                foreach (Especialidad esp in negocio.listarEscpecialidadesPorMedico(medico.IdMedico))
+                {
+                    if (esp.Id == int.Parse(ddlEspecialidadesDisponibles.SelectedValue))
+                    {
+                        existe = true;
+                        lblEspecialidadRepetida.Visible = true;
+                        lblEspecialidadRepetida.Text = "El médico ya tiene esa especialidad.";
+                    }
+                }
+
+                if (!existe)
+                {
+                    negocio.agregarEspecialidadMedico(int.Parse(ddlEspecialidadesDisponibles.SelectedValue), medico.IdMedico);
+
+                    pnlAgregarEspecialidad.Visible = false;
+                    dgvEspecialidades.DataSource = negocio.listarEscpecialidadesPorMedico(medico.IdMedico);
+                    dgvEspecialidades.DataBind();
+
+                }
+
             }
 
         }

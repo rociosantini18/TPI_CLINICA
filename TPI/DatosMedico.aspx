@@ -127,6 +127,7 @@
                                         <p class="fw-semibold mb-2">¿Seguro que querés agregar esta especialidad?</p>
                                         <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnAgregar_Click" />
                                         <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelar_Click" />
+                                        <asp:Label ID="lblEspecialidadRepetida" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text="" Visible ="false"/>
                                     </asp:Panel>
 
                                     <asp:Panel ID="pnlConfirmarEliminarEsp" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
