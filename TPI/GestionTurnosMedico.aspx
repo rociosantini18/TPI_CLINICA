@@ -52,6 +52,8 @@
                         <th>Especialidad</th>
                         <th>Fecha</th>
                         <th>Horario</th>
+                        <th>Observaciones previas</th>
+                        <th>Diagnostico</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -68,22 +70,24 @@
                                     <%# ((TimeSpan)Eval("HoraInicio")).ToString(@"hh\:mm") %> -
                                     <%# ((TimeSpan)Eval("HoraFin")).ToString(@"hh\:mm") %>
                                 </td>
+                                <td><%# Eval("Observaciones") %></td>
+                                <td><%# Eval("Diagnostico") %></td>
                                 <td>
                                     <span class='<%# ObtenerCssBadge((string)Eval("Estado")) %>'>
                                         <%# Eval("Estado") %>
                                     </span>
                                 </td>
                                 <td>
-                                    <asp:Button CommandName="Cancelar"
+                                    <asp:Button CommandName="CargarDiagnostico"
                                         CommandArgument='<%# Eval("Id") %>'
-                                        runat="server" Text="Cancelar"
-                                        CssClass="btn btn-sm btn-outline-danger"
-                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Atendido" %>' />
-                                    <asp:Button CommandName="MarcarAtendido"
-                                        CommandArgument='<%# Eval("Id") %>'
-                                        runat="server" Text="Atendido"
+                                        runat="server" Text="Cargar Diagnóstico"
                                         CssClass="btn btn-sm btn-outline-primary"
-                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Atendido" %>' />
+                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Nuevo" && (string)Eval("Estado") != "Reprogramado"  && (string)Eval("Diagnostico") == null  %>' />
+                                    <asp:Button CommandName="EditarDiagnostico"
+                                        CommandArgument='<%# Eval("Id") %>'
+                                        runat="server" Text="Editar Diagnóstico"
+                                        CssClass="btn btn-sm btn-outline-primary"
+                                        Visible='<%# (string)Eval("Estado") != "Cancelado" && (string)Eval("Estado") != "Nuevo" && (string)Eval("Estado") != "Reprogramado" %>'  />
                                 </td>
                             </tr>
                         </ItemTemplate>
@@ -94,6 +98,7 @@
                                     <td colspan="8" class="text-center text-muted py-4">No se encontraron turnos con los filtros aplicados.
                                     </td>
                                 </tr>
+                                s
                             </asp:Panel>
                         </FooterTemplate>
                     </asp:Repeater>
@@ -101,4 +106,21 @@
             </table>
         </div>
     </div>
+    <asp:Panel ID="pnlDiagnostico" runat="server" Visible="false" CssClass="card border-primary my-4">
+        <div class="card-header bg-primary text-white">
+            Cargar Diagnóstico - Turno N°
+            <asp:Label ID="lblNumeroTurnoSeleccionado" runat="server" />
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Diagnóstico</label>
+                <asp:TextBox ID="txtDiagnostico" runat="server" TextMode="MultiLine" Rows="4" CssClass="form-control" />
+            </div>
+            <asp:Button ID="btnGuardarDiagnostico" runat="server" Text="Guardar"
+                CssClass="btn btn-primary" OnClick="btnGuardarDiagnostico_Click" />
+            <asp:Button ID="btnCancelarDiagnostico" runat="server" Text="Cancelar"
+                CssClass="btn btn-outline-secondary" CausesValidation="false"
+                OnClick="btnCancelarDiagnostico_Click" />
+        </div>
+    </asp:Panel>
 </asp:Content>

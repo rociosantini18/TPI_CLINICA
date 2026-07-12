@@ -27,7 +27,10 @@ namespace TPI
                 return;
             }
 
-            cargarTurnos();
+            if (!IsPostBack)
+            {
+                cargarTurnos();
+            }
 
         }
 
@@ -53,37 +56,28 @@ namespace TPI
 
         }
 
+        private int IdTurnoSeleccionado
+        {
+            get { return ViewState["IdTurnoSeleccionado"] == null ? 0 : (int)ViewState["IdTurnoSeleccionado"]; }
+            set { ViewState["IdTurnoSeleccionado"] = value; }
+        }
+
         protected void rptTurnos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             lblWarningAtendido.Visible = false;
             TurnoNegocio negocio = new TurnoNegocio();
             int idTurno = int.Parse(e.CommandArgument.ToString());
 
-            if (e.CommandName == "Cancelar")
-            {
-                negocio.cancelar(idTurno);
-            }
-            else if (e.CommandName == "Reprogramar")
-            {
-                negocio.modificarEstado(idTurno, "Reprogramado");
-            }
-            else if (e.CommandName == "MarcarAtendido")
+            if (e.CommandName == "CargarDiagnostico")
             {
                 Turno turno = negocio.listar().FirstOrDefault(t => t.Id == idTurno);
-
-                if (turno != null)
-                {
-                    if (turno.Fecha.Date == DateTime.Today)
-                    {
-                        negocio.modificarEstado(idTurno, "Atendido");
-                    }
-                    else
-                    {
-                        lblWarningAtendido.Text = "Solo se puede marcar como atendido a los turnos que tengan fecha de hoy.";
-                        lblWarningAtendido.Visible = true;
-                    }
-                }
+                IdTurnoSeleccionado = idTurno;
+                lblNumeroTurnoSeleccionado.Text = turno != null ? turno.Numero : idTurno.ToString();
+                txtDiagnostico.Text = turno.Diagnostico;
+                pnlDiagnostico.Visible = true;
             }
+
+            cargarTurnos();
         }
 
         private void cargarTurnos()
@@ -115,6 +109,20 @@ namespace TPI
             }
 
 
+        }
+
+        protected void btnGuardarDiagnostico_Click(object sender, EventArgs e)
+        {
+            TurnoNegocio negocio = new TurnoNegocio();
+            negocio.cargarDiagnostico(IdTurnoSeleccionado, txtDiagnostico.Text);
+
+            pnlDiagnostico.Visible = false;
+            cargarTurnos();
+        }
+
+        protected void btnCancelarDiagnostico_Click(object sender, EventArgs e)
+        {
+            pnlDiagnostico.Visible = false;
         }
     }
 }
