@@ -46,6 +46,11 @@ namespace TPI
                         txtFechaNacimiento.Text = medico.FechaNacimiento.ToString("yyyy-MM-dd");
                         txtMatricula.Text = medico.Matricula;
                         txtDireccion.Text = medico.Direccion;
+                        txtEmail.Text = medico.Email;
+                        txtURL.Text = medico.imagenURL;
+
+                        txtPassword.Text = medico.Perfil.Contraseña;
+                        txtUsuario.Text = medico.Perfil.NombreUsuario;
 
                         dgvEspecialidades.DataSource = negocioEsp.listarEscpecialidadesPorMedico(medico.IdMedico);
                         dgvEspecialidades.DataBind();
@@ -70,7 +75,48 @@ namespace TPI
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            try
+            {
 
+                if (Request.QueryString["id"] != null)
+                {
+                    int id = int.Parse(Request.QueryString["id"].ToString());
+
+                    MedicoNegocio negocio = new MedicoNegocio();
+                    Medico medico = new Medico();
+                    medico = negocio.RelacionPerfilPersona(id);
+
+                    if (medico == null)
+                    {
+                        throw new Exception("No se encontró al medico.");
+                    }
+
+                    medico.Dni = txtDNI.Text;
+                    medico.Nombre = txtNombre.Text;
+                    medico.Apellido = txtApellido.Text;
+                    medico.Telefono = txtTelefono.Text;
+                    medico.FechaNacimiento = Convert.ToDateTime(txtFechaNacimiento.Text); ;
+                    medico.Email = txtEmail.Text;
+                    medico.Direccion = txtDireccion.Text;
+                    medico.Matricula = txtMatricula.Text;
+                    medico.imagenURL = txtURL.Text;
+                    medico.Perfil.Contraseña = txtPassword.Text;
+                    medico.Perfil.NombreUsuario = txtUsuario.Text;
+
+                    negocio.modificar(medico);
+
+                    lblExito.Text = "¡Datos guardados con éxito!";
+                    lblExito.Visible = true;
+                    lblError.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblError.Visible = true;
+                lblError.CssClass = "text-danger mb-3 d-block";
+                lblError.Text = "Error: " + ex.Message;
+                throw;
+            }
         }
 
         protected void dgvEspecialidades_RowCommand(object sender, GridViewCommandEventArgs e)

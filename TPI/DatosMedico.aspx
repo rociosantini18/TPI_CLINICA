@@ -24,12 +24,6 @@
                     <h5 class="fw-bold mb-4 text-center">Datos personales</h5>
 
                     <div class="row mb-3">
-                        <img src='<%# Eval("imagenURL") %>' alt='<%# Eval("Especialidad.Nombre") %>'
-                            class="rounded-circle mx-auto mb-3"
-                            style="width: 120px; height: 120px; object-fit: cover;" />
-                    </div>
-
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold"></asp:Label>
                             <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control"></asp:TextBox>
@@ -88,6 +82,19 @@
                     </div>
 
                     <div class="mb-3">
+                        <asp:Label runat="server" Text="Email:" CssClass="form-label fw-semibold"></asp:Label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
+                        <asp:RequiredFieldValidator
+                            ID="RequiredFieldValidator1"
+                            runat="server"
+                            ControlToValidate="txtEmail"
+                            ErrorMessage="El email es obligatorio."
+                            ForeColor="Red"
+                            Display="Dynamic">
+                        </asp:RequiredFieldValidator>
+                    </div>
+
+                    <div class="mb-3">
                         <asp:Label runat="server" Text="Dirección:" CssClass="form-label fw-semibold"></asp:Label>
                         <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control"></asp:TextBox>
                         <asp:RequiredFieldValidator
@@ -95,6 +102,19 @@
                             runat="server"
                             ControlToValidate="txtDireccion"
                             ErrorMessage="La direccion es obligatoria."
+                            ForeColor="Red"
+                            Display="Dynamic">
+                        </asp:RequiredFieldValidator>
+                    </div>
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" Text="URL Imagen:" CssClass="form-label fw-semibold"></asp:Label>
+                        <asp:TextBox ID="txtURL" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:RequiredFieldValidator
+                            ID="rfvURL"
+                            runat="server"
+                            ControlToValidate="txtURL"
+                            ErrorMessage="La URL es obligatoria."
                             ForeColor="Red"
                             Display="Dynamic">
                         </asp:RequiredFieldValidator>
@@ -127,7 +147,7 @@
                                         <p class="fw-semibold mb-2">¿Seguro que querés agregar esta especialidad?</p>
                                         <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnAgregar_Click" />
                                         <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelar_Click" />
-                                        <asp:Label ID="lblEspecialidadRepetida" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text="" Visible ="false"/>
+                                        <asp:Label ID="lblEspecialidadRepetida" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text="" Visible="false" />
                                     </asp:Panel>
 
                                     <asp:Panel ID="pnlConfirmarEliminarEsp" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
@@ -143,14 +163,17 @@
 
                     <hr class="my-4" />
 
+                    <p class="lead text-muted mt-2">Datos de Inicio de Sesión</p>
+
+
                     <div class="mb-3">
-                        <asp:Label runat="server" Text="Email:" CssClass="form-label fw-semibold" Visible="false"></asp:Label>
-                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" Visible="false"></asp:TextBox>
+                        <asp:Label runat="server" Text="Usuario:" CssClass="form-label fw-semibold"></asp:Label>
+                        <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
 
                     <div class="mb-3">
-                        <asp:Label runat="server" Text="Nueva contraseña:" CssClass="form-label fw-semibold" Visible="false"></asp:Label>
-                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" ReadOnly="true" Visible="false"></asp:TextBox>
+                        <asp:Label runat="server" Text="Nueva contraseña:" CssClass="form-label fw-semibold"></asp:Label>
+                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
 
 

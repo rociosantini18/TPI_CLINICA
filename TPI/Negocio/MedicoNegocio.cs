@@ -156,7 +156,14 @@ namespace TPI.Negocio
 
             UPDATE Medico SET
                 Matricula = @matricula,Imagen_URL = @imagenUrl,Id_Especialidad = @idEspecialidad
-            WHERE Id_Medico = @id");
+            WHERE Id_Medico = @id
+
+            UPDATE Perfil SET
+                NombreUsuario = @nombreUsuario, Contraseña = @contraseña
+            FROM Perfil perf
+            INNER JOIN Medico m ON perf.Id_Perfil = m.Id_Perfil
+            WHERE Id_Medico = @id"
+                );
 
                 datos.setearParametro("@dni", med.Dni);
                 datos.setearParametro("@nombre", med.Nombre);
@@ -165,17 +172,20 @@ namespace TPI.Negocio
                 datos.setearParametro("@telefono", med.Telefono);
                 datos.setearParametro("@direccion", med.Direccion);
                 datos.setearParametro("@fechaNac", med.FechaNacimiento);
-                datos.setearParametro("@id", med.Id);
+                datos.setearParametro("@id", med.IdMedico);
                 datos.setearParametro("@matricula", med.Matricula);
                 datos.setearParametro("@imagenUrl", med.imagenURL);
                 datos.setearParametro("@idEspecialidad", med.Especialidad.Id);
+                datos.setearParametro("@nombreUsuario", med.Perfil.NombreUsuario);
+                datos.setearParametro("@contraseña", med.Perfil.Contraseña);
+
 
                 datos.ejecutarAccion();
                 datos.CerrarConexion();
 
                 if (med.DiasAtencion != null)
                 {
-                    modificarDiasAtencion(med.Id, med.DiasAtencion);
+                    modificarDiasAtencion(med.IdMedico, med.DiasAtencion);
                 }
             }
             catch (Exception ex) { throw ex; }
@@ -296,7 +306,7 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                select med.Id_Medico, med.Matricula, p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, perf.Contraseña, esp.Nombre_Especialidad, esp.Id_Especialidad
+                select med.Id_Medico, med.Matricula, med.Imagen_URL, p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, perf.Contraseña, perf.NombreUsuario, esp.Nombre_Especialidad, esp.Id_Especialidad
                         from Medico med
                         inner join Perfil perf on med.Id_Perfil = perf.Id_Perfil 
                         inner join Persona p on med.Id_Persona = p.Id_Persona
@@ -321,12 +331,15 @@ namespace TPI.Negocio
                     m.Email = datos.Lector["Email"].ToString();
                     m.Direccion = datos.Lector["Direccion"].ToString();
                     m.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+                    m.imagenURL = datos.Lector["Imagen_URL"].ToString();
                     m.Matricula = (string)datos.Lector["Matricula"];
                     m.Especialidad.Nombre = datos.Lector["Nombre_Especialidad"].ToString();
                     m.Especialidad.Id = (int)datos.Lector["Id_Especialidad"];
 
                     m.Perfil = new Perfil();
                     m.Perfil.Contraseña = datos.Lector["Contraseña"].ToString();
+                    m.Perfil.NombreUsuario = datos.Lector["NombreUsuario"].ToString();
+
                 }
 
                 return m;
