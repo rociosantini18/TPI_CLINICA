@@ -29,6 +29,7 @@ namespace TPI
 
             if (!IsPostBack)
             {
+                cargarFiltroEspecialidades();
                 cargarTurnos();
             }
 
@@ -48,12 +49,15 @@ namespace TPI
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-
+            cargarTurnos();
         }
 
         protected void btnLimpiar_Click(object sender, EventArgs e)
         {
-
+            ddlFiltroEspecialidad.SelectedIndex = 0;
+            ddlFiltroEstado.SelectedIndex = 0;
+            txtFiltroFecha.Text = "";
+            cargarTurnos();
         }
 
         private int IdTurnoSeleccionado
@@ -69,6 +73,13 @@ namespace TPI
             int idTurno = int.Parse(e.CommandArgument.ToString());
 
             if (e.CommandName == "CargarDiagnostico")
+            {
+                Turno turno = negocio.listar().FirstOrDefault(t => t.Id == idTurno);
+                IdTurnoSeleccionado = idTurno;
+                lblNumeroTurnoSeleccionado.Text = turno != null ? turno.Numero : idTurno.ToString();
+                pnlDiagnostico.Visible = true;
+            }
+            else if (e.CommandName == "EditarDiagnostico")
             {
                 Turno turno = negocio.listar().FirstOrDefault(t => t.Id == idTurno);
                 IdTurnoSeleccionado = idTurno;
@@ -123,6 +134,27 @@ namespace TPI
         protected void btnCancelarDiagnostico_Click(object sender, EventArgs e)
         {
             pnlDiagnostico.Visible = false;
+        }
+
+        private void cargarFiltroEspecialidades()
+        {
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+
+                MedicoNegocio negocioMedico = new MedicoNegocio();
+                Medico medico = negocioMedico.RelacionPerfilPersona(id);
+
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                ddlFiltroEspecialidad.DataSource = negocio.listarEscpecialidadesPorMedico(medico.IdMedico);
+                ddlFiltroEspecialidad.DataTextField = "Nombre";
+                ddlFiltroEspecialidad.DataValueField = "Id";
+                ddlFiltroEspecialidad.DataBind();
+                ddlFiltroEspecialidad.Items.Insert(0, new ListItem("Todas las especialidades", ""));
+
+
+            }
+
         }
     }
 }

@@ -94,15 +94,50 @@
                             ID="rfvDireccion"
                             runat="server"
                             ControlToValidate="txtDireccion"
-                            ErrorMessage="La direccion es obligatorio."
+                            ErrorMessage="La direccion es obligatoria."
                             ForeColor="Red"
                             Display="Dynamic">
                         </asp:RequiredFieldValidator>
                     </div>
 
                     <div class="mb-4">
-                        <asp:Label runat="server" Text="Expecialidad:" CssClass="form-label fw-semibold"></asp:Label>
-                        <asp:DropDownList ID="ddlEspecialidades" runat="server"></asp:DropDownList>
+                        <asp:Panel ID="pnlListaEspecialidades" runat="server">
+                            <div class="container my-5">
+                                <div class="row g-4 justify-content-center">
+                                    <h5 class="fw-bold mb-3 text-start">Especialidades</h5>
+                                    <asp:Label ID="lblErrorGrillaEsp" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text=""></asp:Label>
+
+                                    <asp:GridView runat="server" ID="dgvEspecialidades" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" OnRowCommand="dgvEspecialidades_RowCommand">
+                                        <Columns>
+                                            <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                                            <asp:BoundField HeaderText="Descripción" DataField="Descripcion" />
+                                            <asp:TemplateField HeaderText="">
+                                                <ItemTemplate>
+                                                    <asp:LinkButton runat="server" CommandName="EliminarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger">Eliminar</asp:LinkButton>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+
+                                    <asp:Button ID="btnAgregarEspecialidad" Text="Agregar Especialidad" runat="server" CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnAgregarEspecialidad_Click" />
+
+                                    <asp:Panel ID="pnlAgregarEspecialidad" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                                        <asp:DropDownList ID="ddlEspecialidadesDisponibles" runat="server" CssClass="form-select" />
+                                        <asp:HiddenField ID="hdfAgregarEspecialidad" runat="server" />
+                                        <p class="fw-semibold mb-2">¿Seguro que querés agregar esta especialidad?</p>
+                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnAgregar_Click" />
+                                        <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelar_Click" />
+                                    </asp:Panel>
+
+                                    <asp:Panel ID="pnlConfirmarEliminarEsp" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                                        <asp:HiddenField ID="hfIdEliminarEsp" runat="server" />
+                                        <p class="fw-semibold mb-2">¿Seguro que querés dar de baja esta especialidad?</p>
+                                        <asp:Button ID="btnConfirmarEliminarEsp" runat="server" Text="Sí, eliminar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarEsp_Click" />
+                                        <asp:Button ID="btnCancelarEliminarEsp" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarEsp_Click" />
+                                    </asp:Panel>
+                                </div>
+                            </div>
+                        </asp:Panel>
                     </div>
 
                     <hr class="my-4" />

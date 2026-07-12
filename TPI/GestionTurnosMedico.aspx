@@ -23,7 +23,7 @@
                 <asp:Label runat="server" Text="Estado:" CssClass="form-label fw-semibold" />
                 <asp:DropDownList ID="ddlFiltroEstado" runat="server" CssClass="form-select">
                     <asp:ListItem Text="Todos los estados" Value="" />
-                    <asp:ListItem Text="Nuevo" Value="Nuevo" />
+                    <asp:ListItem Text="Nuevo" 2Value="Nuevo" />
                     <asp:ListItem Text="Cancelado" Value="Cancelado" />
                     <asp:ListItem Text="Atendido" Value="Atendido" />
                 </asp:DropDownList>
@@ -98,7 +98,6 @@
                                     <td colspan="8" class="text-center text-muted py-4">No se encontraron turnos con los filtros aplicados.
                                     </td>
                                 </tr>
-                                s
                             </asp:Panel>
                         </FooterTemplate>
                     </asp:Repeater>

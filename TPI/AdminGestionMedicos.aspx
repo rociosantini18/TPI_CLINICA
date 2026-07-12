@@ -50,7 +50,7 @@
         <div class="col-md-6">
             <div class="card shadow-sm border-0 p-4 text-start">
                 <h5 class="fw-bold mb-3">Nueva Especialidad</h5>
-                
+
                 <div class="mb-3">
                     <asp:Label runat="server" Text="Nombre:" CssClass="form-label fw-semibold" />
                     <asp:TextBox ID="txtNombreEsp" runat="server" CssClass="form-control" placeholder="Ej: Cardiología" />
@@ -88,7 +88,7 @@
                                 <asp:LinkButton runat="server" CommandName="ModificarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-primary me-1">Modificar</asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
-                   </Columns>
+                    </Columns>
                 </asp:GridView>
 
                 <asp:Panel ID="pnlConfirmarEliminarEsp" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
@@ -132,7 +132,7 @@
 
     <div class="container my-5">
         <div class="row g-4 justify-content-center">
-            <asp:GridView runat="server" ID="dgvMedicos" CssClass="table table-hover table-responsive" AutoGenerateColumns="False"  OnRowCommand="dgvMedicos_RowCommand">
+            <asp:GridView runat="server" ID="dgvMedicos" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" OnRowCommand="dgvMedicos_RowCommand">
                 <Columns>
                     <asp:BoundField HeaderText="DNI" DataField="DNI" />
                     <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
@@ -146,11 +146,11 @@
                         <ItemTemplate><%# ((DateTime)Eval("FechaNacimiento")).ToString("dd/MM/yyyy") %></ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="">
-                    <ItemTemplate>
-                        <asp:LinkButton runat="server" CommandName="Eliminar" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger">Eliminar</asp:LinkButton>
-                        <asp:LinkButton runat="server" CommandName="Modificar" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-primary me-1">Modificar</asp:LinkButton>
-                    </ItemTemplate>
-                 </asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:LinkButton runat="server" CommandName="Eliminar" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger">Eliminar</asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Modificar" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-primary me-1">Modificar</asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
 
@@ -233,7 +233,7 @@
                                 </asp:CheckBoxList>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <asp:Label ID="lblMensajeMed" runat="server" CssClass="text-success fw-semibold mt-3 d-block" />
 
                     <div class="d-flex gap-2 mt-3">

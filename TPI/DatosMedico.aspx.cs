@@ -45,14 +45,11 @@ namespace TPI
                         txtTelefono.Text = medico.Telefono;
                         txtFechaNacimiento.Text = medico.FechaNacimiento.ToString("yyyy-MM-dd");
                         txtMatricula.Text = medico.Matricula;
-
-                        ddlEspecialidades.DataSource = negocioEsp.listar();
-                        ddlEspecialidades.DataTextField = "Nombre";
-                        ddlEspecialidades.DataValueField = "Id";
-                        ddlEspecialidades.DataBind();
-                        ddlEspecialidades.SelectedValue = medico.Especialidad.Id.ToString();
-                        txtEmail.Text = medico.Email;
                         txtDireccion.Text = medico.Direccion;
+
+                        dgvEspecialidades.DataSource = negocioEsp.listarEscpecialidadesPorMedico(medico.IdMedico);
+                        dgvEspecialidades.DataBind();
+
                     }
                 }
             }
@@ -74,6 +71,93 @@ namespace TPI
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void dgvEspecialidades_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+
+            int id = int.Parse(e.CommandArgument.ToString());
+            MedicoNegocio negocio = new MedicoNegocio();
+
+            if (e.CommandName == "EliminarEsp")
+            {
+                hfIdEliminarEsp.Value = id.ToString();
+                pnlConfirmarEliminarEsp.Visible = true;
+            }
+        }
+
+        protected void btnConfirmarEliminarEsp_Click(object sender, EventArgs e)
+        {
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+
+                MedicoNegocio negocioMed = new MedicoNegocio();
+                Medico medico = negocioMed.RelacionPerfilPersona(id);
+
+                int idEspecialidad = int.Parse(hfIdEliminarEsp.Value);
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                negocio.bajaEspecialidadMedico(idEspecialidad, medico.IdMedico);
+
+                pnlConfirmarEliminarEsp.Visible = false;
+
+
+                dgvEspecialidades.DataSource = negocio.listarEscpecialidadesPorMedico(medico.IdMedico);
+                dgvEspecialidades.DataBind();
+            }
+
+
+        }
+
+        protected void btnCancelarEliminarEsp_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarEsp.Visible = false;
+        }
+
+        protected void btnCancelarEspEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnGuardarEspEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnAgregarEspecialidad_Click(object sender, EventArgs e)
+        {
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+
+            pnlAgregarEspecialidad.Visible = true;
+            ddlEspecialidadesDisponibles.DataSource = negocio.listar();
+            ddlEspecialidadesDisponibles.DataTextField = "Nombre";
+            ddlEspecialidadesDisponibles.DataValueField = "Id";
+            ddlEspecialidadesDisponibles.DataBind();
+
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+
+            if (Request.QueryString["id"] != null)
+            {
+                int id = int.Parse(Request.QueryString["id"].ToString());
+
+                MedicoNegocio negocioMed = new MedicoNegocio();
+                Medico medico = negocioMed.RelacionPerfilPersona(id);
+                negocio.agregarEspecialidadMedico(int.Parse(ddlEspecialidadesDisponibles.SelectedValue), medico.IdMedico);
+
+                pnlAgregarEspecialidad.Visible = false;
+                dgvEspecialidades.DataSource = negocio.listarEscpecialidadesPorMedico(medico.IdMedico);
+                dgvEspecialidades.DataBind();
+            }
+
+        }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            pnlAgregarEspecialidad.Visible = false;
         }
     }
 }

@@ -145,5 +145,71 @@ namespace TPI.Negocio
             catch (Exception ex) { throw ex; }
             finally { datos.CerrarConexion(); }
         }
+
+        public List<Especialidad> listarEscpecialidadesPorMedico(int id)
+        {
+            List<Especialidad> lista = new List<Especialidad>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT mesp.Id_Especialidad, mesp.Id_Medico, mesp.Estado, e.Nombre_Especialidad, e.Descripcion
+                        FROM MedicoEspecialidad mesp 
+                        INNER JOIN Especialidad e ON mesp.Id_Especialidad = e.Id_Especialidad
+                        WHERE mesp.Estado = 1 AND mesp.Id_Medico = @id");
+
+                datos.setearParametro("@id", id);
+                datos.ejecutarLectura();
+
+
+                while (datos.Lector.Read())
+                {
+                    Especialidad esp = new Especialidad();
+                    esp.Id = (int)datos.Lector["Id_Especialidad"];
+                    esp.Nombre = (string)datos.Lector["Nombre_Especialidad"];
+                    esp.Descripcion = datos.Lector["Descripcion"] as string;
+                    lista.Add(esp);
+                }
+                return lista;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void agregarEspecialidadMedico(int intEspecialidad, int idMedico)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    INSERT INTO MedicoEspecialidad (Id_Especialidad, Id_Medico, Estado)
+                    VALUES (@idEspecialidad, @idMedico, @Estado)");
+                datos.setearParametro("@idEspecialidad", intEspecialidad);
+                datos.setearParametro("@idMedico", idMedico);
+                datos.setearParametro("@Estado", 1);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
+        public void bajaEspecialidadMedico(int intEspecialidad, int idMedico)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    UPDATE MedicoEspecialidad 
+                        SET Estado = 0
+                        WHERE Id_Medico = @idMedico AND Id_Especialidad = @idEspecialidad");
+                datos.setearParametro("@idEspecialidad", intEspecialidad);
+                datos.setearParametro("@idMedico", idMedico);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex) { throw ex; }
+            finally { datos.CerrarConexion(); }
+        }
+
     }
 }
