@@ -189,7 +189,7 @@ namespace TPI.Negocio
                     INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
                     INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
                     INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol
-                    WHERE r.Id_Rol = 3 AND pf.Activo = 1");
+                    WHERE r.Id_Rol = 2 AND pf.Activo = 1");
 
                 datos.ejecutarLectura();
 

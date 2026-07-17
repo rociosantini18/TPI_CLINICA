@@ -52,6 +52,8 @@ CREATE TABLE Medico (
     Matricula VARCHAR (20) NOT NULL,
     Id_Especialidad INT NOT NULL,
     Imagen_URL VARCHAR(200) NOT NULL,
+    Id_Perfil INT NOT NULL UNIQUE,
+    FOREIGN KEY (Id_Perfil) REFERENCES Perfil(Id_Perfil),
     FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona),
     FOREIGN KEY (Id_Especialidad) REFERENCES Especialidad(Id_Especialidad)
 );
@@ -90,6 +92,7 @@ CREATE TABLE Turno (
     Estado VARCHAR(50),
     Id_Paciente INT NOT NULL,
     Id_Medico INT NOT NULL,
+    Id_Especialidad INT NOT NULL,
     FOREIGN KEY (Id_Paciente) REFERENCES Paciente(Id_Paciente),
     FOREIGN KEY (Id_Medico) REFERENCES Medico(Id_Medico)
 );
@@ -268,8 +271,13 @@ SELECT * FROM HorarioMedico;
 Select * from turno;
 select * from Especialidad;
 
+update turno 
+set Estado = 'Atendido'
+where Estado = 'Cerrado'
+
 INSERT INTO ObraSocial (Nombre_ObraSocial, Activo) 
 VALUES ('Sin Obra Social', 1);
+
 select 
 e.Id_Empleado,
 e.Id_Persona,
@@ -335,3 +343,186 @@ CREATE TABLE MedicoDiaAtencion (
     DiaSemana INT NOT NULL,
     PRIMARY KEY (Id_Medico, DiaSemana)
 );
+
+--Agregar Perfil a Medico
+--1°
+ALTER TABLE Medico
+ADD Id_Perfil INT NULL;
+go
+--2°
+ALTER TABLE Medico
+ADD CONSTRAINT FK_Medico_Perfil
+FOREIGN KEY (Id_Perfil)
+REFERENCES Perfil(Id_Perfil);
+go
+--3°
+ALTER TABLE Medico
+ADD CONSTRAINT UQ_Medico_Id_Perfil
+UNIQUE (Id_Perfil);
+go
+--4°
+DELETE FROM Medico
+go
+--5°
+INSERT INTO Rol(NombreRol)
+VALUES ('Medico')
+go
+--6°
+INSERT INTO Perfil(Id_Rol, NombreUsuario, Contraseña, Activo)
+VALUES
+(4, 'mariag', '123', 1),
+(4, 'carlosl', '123', 1),
+(4, 'perdros', '123', 1);
+go
+
+--7°
+UPDATE Medico 
+SET Id_Perfil = 8
+WHERE Id_Medico = 1
+go
+UPDATE Medico 
+SET Id_Perfil = 9
+WHERE Id_Medico = 2
+go
+UPDATE Medico 
+SET Id_Perfil = 10
+WHERE Id_Medico = 3
+go
+--8°
+ALTER TABLE Medico
+ALTER COLUMN Id_Perfil INT NOT NULL;
+----------------------------------------------------------------------------------------------
+
+select med.Id_Medico, med.Matricula, p.Id_Persona, p.Dni, p.Nombre, p.Apellido, p.Telefono, p.Email, p.Direccion, p.FechaNacimiento, perf.Contraseña, esp.Nombre_Especialidad, esp.Id_Especialidad
+                        from Medico med
+                        inner join Perfil perf on med.Id_Perfil = perf.Id_Perfil 
+                        inner join Persona p on med.Id_Persona = p.Id_Persona
+                        left join Especialidad esp on med.Id_Especialidad = esp.Id_Especialidad
+                    where perf.Id_Perfil = 8
+
+delete from Medico where Id_Medico = 4
+select * from medico
+---------------------------------------------------------------------------------------------
+SELECT 
+                        t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
+                        t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
+                        t.Estado,
+                        p.Id_Paciente,
+                        pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
+                        pp.Dni AS DniPaciente,
+                        m.Id_Medico,
+                        e.Id_Especialidad, e.Nombre_Especialidad
+                    FROM Turno t
+                    INNER JOIN Paciente p ON t.Id_Paciente = p.Id_Paciente
+                    INNER JOIN Persona pp ON p.Id_Persona = pp.Id_Persona
+                    INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
+                    INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
+                    INNER JOIN Especialidad e ON m.Id_Especialidad = e.Id_Especialidad
+                    where m.Id_Medico = @id
+                    ORDER BY t.Fecha, t.HoraInicio
+
+
+---------------------------------------------------------------------------------------------
+--Relacion especialidad con medico para que un medico pueda tener 1 o mas especialidades
+CREATE TABLE MedicoEspecialidad(
+    Id_MedicoEspecialidad int identity(1,1) primary key,
+    Id_Medico int not null,
+    Id_Especialidad int not null,
+    Estado bit not null
+FOREIGN KEY (Id_Especialidad) REFERENCES Especialidad(Id_Especialidad),
+FOREIGN KEY (Id_Medico) REFERENCES Medico(Id_Medico)
+)
+
+INSERT INTO MedicoEspecialidad (Id_Medico, Id_Especialidad, Estado)
+VALUES
+(1, 3, 1),
+(1, 1, 1),
+(2, 4, 1),
+(3, 4, 1);
+
+
+SELECT * FROM Medico
+SELECT * FROM MedicoEspecialidad
+SELECT * FROM Especialidad
+
+---Especialidades por id medico
+SELECT mesp.Id_Especialidad, mesp.Id_Medico, mesp.Estado, e.Nombre_Especialidad, e.Descripcion
+FROM MedicoEspecialidad mesp 
+INNER JOIN Especialidad e ON mesp.Id_Especialidad = e.Id_Especialidad
+WHERE mesp.Estado = 1 AND mesp.Id_Medico = 1
+
+UPDATE MedicoEspecialidad 
+SET Estado = 0
+WHERE Id_Medico = 1 AND Id_Especialidad = 6
+
+select * from Medico
+select * from Perfil
+
+UPDATE Perfil 
+SET NombreUsuario = 'mgomez', Contraseña = '123'
+FROM Perfil perf
+INNER JOIN Medico m ON perf.Id_Perfil = m.Id_Perfil
+WHERE Id_Medico = 1
+ 
+
+ ---
+ select distinct m.Id_Medico, e.Id_Especialidad, p.Nombre + ' ' + p.Apellido as Nombre 
+                    from Medico m 
+                    inner join Persona p on m.Id_Persona = p.Id_Persona
+                    inner join MedicoEspecialidad medEsp on m.Id_Medico = medEsp.Id_Medico
+                    inner join Especialidad e on medEsp.Id_Especialidad = e.Id_Especialidad
+                    where m.Activo = 1 AND e.Id_Especialidad = @id AND medEsp.Estado = 1
+
+--AGREGAR 
+ALTER TABLE Turno
+ADD Id_Especialidad INT  NULL;
+go
+
+SELECT * FROM Turno
+
+UPDATE Turno 
+SET Especialidad = 3
+WHERE Id_Medico = 2
+
+
+ALTER TABLE Turno
+ALTER COLUMN Especialidad INT NOT NULL;
+
+select t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
+                        t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
+                        t.Estado,
+                        p.Id_Paciente,
+                        pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
+                        pp.Dni AS DniPaciente,
+                        m.Id_Medico, m.Matricula,
+                        mp.Nombre AS NombreMedico, mp.Apellido AS ApellidoMedico,
+                        e.Id_Especialidad, e.Nombre_Especialidad
+                    FROM Turno t
+                    INNER JOIN Paciente p ON t.Id_Paciente = p.Id_Paciente
+                    INNER JOIN Persona pp ON p.Id_Persona= pp.Id_Persona
+                    INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
+                    INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
+                    INNER JOIN Especialidad e ON m.Id_Especialidad= e.Id_Especialidad
+                    WHERE t.Id_Paciente = 1
+                    ORDER BY t.Fecha, t.HoraInicio
+
+
+--
+select t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
+                        t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
+                        t.Estado,t.Id_Especialidad,
+                        e.Nombre_Especialidad,
+                        p.Id_Paciente,
+                        pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
+                        pp.Dni AS DniPaciente,
+                        m.Id_Medico, m.Matricula,
+                        mp.Nombre AS NombreMedico, mp.Apellido AS ApellidoMedico
+                    FROM Turno t
+                    INNER JOIN Paciente p ON t.Id_Paciente = p.Id_Paciente
+                    INNER JOIN Persona pp ON p.Id_Persona= pp.Id_Persona
+                    INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
+                    INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
+                    INNER JOIN Especialidad e ON t.Id_Especialidad= e.Id_Especialidad
+                    WHERE t.Id_Paciente = @id
+                    ORDER BY t.Fecha, t.HoraInicio
+

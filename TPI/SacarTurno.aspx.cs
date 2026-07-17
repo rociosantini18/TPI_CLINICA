@@ -106,7 +106,8 @@ namespace TPI
         {
             if (ddlMedico.SelectedValue == "0" ||
                 ddlFechasDisponibles.SelectedValue == "0" ||
-                ddlHorario.SelectedValue == "0")
+                ddlHorario.SelectedValue == "0" ||
+                ddlEspecialidad.SelectedValue == "0")
             {
                 lblError.Text = "Por favor, complete todos los campos obligatorios.";
                 lblError.Visible = true;
@@ -137,6 +138,8 @@ namespace TPI
                 turno.HoraFin = turno.HoraInicio.Add(TimeSpan.FromMinutes(30));
                 turno.Numero = "T-" + Guid.NewGuid().ToString().Substring(0, 6).ToUpper();
                 turno.Observaciones = txtObservaciones.Text;
+                turno.Especialidad = new Especialidad();
+                turno.Especialidad.Id = int.Parse(ddlEspecialidad.SelectedValue);
 
                 negocio.agregar(turno);
 

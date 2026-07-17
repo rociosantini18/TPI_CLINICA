@@ -228,11 +228,13 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                select m.Id_Medico, e.Id_Especialidad, p.Nombre + ' ' + p.Apellido as Nombre
+                
+                select distinct m.Id_Medico, e.Id_Especialidad, p.Nombre + ' ' + p.Apellido as Nombre 
                     from Medico m 
                     inner join Persona p on m.Id_Persona = p.Id_Persona
-                    inner join Especialidad e on m.Id_Especialidad = e.Id_Especialidad
-                    where m.Activo = 1 AND e.Activo = 1 and m.Id_Especialidad = @id");
+                    inner join MedicoEspecialidad medEsp on m.Id_Medico = medEsp.Id_Medico
+                    inner join Especialidad e on medEsp.Id_Especialidad = e.Id_Especialidad
+                    where m.Activo = 1 AND e.Id_Especialidad = @id AND medEsp.Estado = 1");
 
                 datos.setearParametro("@id", idEspecialidad);
                 datos.ejecutarLectura();

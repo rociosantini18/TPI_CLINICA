@@ -158,6 +158,8 @@ namespace TPI
                 turno.HoraFin = turno.HoraInicio.Add(TimeSpan.FromMinutes(30));
                 turno.Numero = "T-" + Guid.NewGuid().ToString().Substring(0, 6).ToUpper();
                 turno.Observaciones = txtObservaciones.Text;
+                turno.Especialidad = new Especialidad();
+                turno.Especialidad.Id = int.Parse(ddlEspecialidad.SelectedValue);
 
                 negocio.agregar(turno);
 

@@ -19,7 +19,7 @@ namespace TPI.Negocio
                     SELECT 
                         t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
                         t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
-                        t.Estado,
+                        t.Estado, t.Id_Especialidad,
                         p.Id_Paciente,
                         pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
                         pp.Dni AS DniPaciente,
@@ -31,7 +31,7 @@ namespace TPI.Negocio
                     INNER JOIN Persona pp ON p.Id_Persona = pp.Id_Persona
                     INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
                     INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
-                    INNER JOIN Especialidad e ON m.Id_Especialidad = e.Id_Especialidad
+                    INNER JOIN Especialidad e ON t.Id_Especialidad = e.Id_Especialidad
                     ORDER BY t.Fecha, t.HoraInicio");
 
                 datos.ejecutarLectura();
@@ -87,21 +87,20 @@ namespace TPI.Negocio
                     SELECT 
                         t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
                         t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
-                        t.Estado,
+                        t.Estado,t.Id_Especialidad,
+                        e.Nombre_Especialidad,
                         p.Id_Paciente,
                         pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
                         pp.Dni AS DniPaciente,
                         m.Id_Medico, m.Matricula,
-                        mp.Nombre AS NombreMedico, mp.Apellido AS ApellidoMedico,
-                        e.Id_Especialidad, e.Nombre_Especialidad
+                        mp.Nombre AS NombreMedico, mp.Apellido AS ApellidoMedico
                     FROM Turno t
                     INNER JOIN Paciente p ON t.Id_Paciente = p.Id_Paciente
                     INNER JOIN Persona pp ON p.Id_Persona= pp.Id_Persona
                     INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
                     INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
-                    INNER JOIN Especialidad e ON m.Id_Especialidad= e.Id_Especialidad
-                    WHERE t.Id_Paciente = @idPaciente
-                    ORDER BY t.Fecha, t.HoraInicio");
+                    INNER JOIN Especialidad e ON t.Id_Especialidad= e.Id_Especialidad
+                    WHERE t.Id_Paciente = @idPaciente");
 
                 datos.setearParametro("@idPaciente", idPaciente);
                 datos.ejecutarLectura();
@@ -154,10 +153,10 @@ namespace TPI.Negocio
                 datos.setearConsulta(@"
                     INSERT INTO Turno 
                         (NumeroTurno, Fecha, HoraInicio, HoraFin, Observaciones, 
-                         Diagnostico, FechaCreacion, FechaModificación, Estado, Id_Paciente, Id_Medico)
+                         Diagnostico, FechaCreacion, FechaModificación, Estado, Id_Paciente, Id_Medico, Id_Especialidad)
                     VALUES 
                         (@numero, @fecha, @horaInicio, @horaFin, @observaciones,
-                         @diagnostico, @fechaCreacion, NULL, @estado, @idPaciente, @idMedico)");
+                         @diagnostico, @fechaCreacion, NULL, @estado, @idPaciente, @idMedico, @idEspecialidad)");
 
                 datos.setearParametro("@numero", turno.Numero);
                 datos.setearParametro("@fecha", turno.Fecha);
@@ -169,6 +168,8 @@ namespace TPI.Negocio
                 datos.setearParametro("@estado", "Nuevo");
                 datos.setearParametro("@idPaciente", turno.Paciente.Id);
                 datos.setearParametro("@idMedico", turno.Medico.Id);
+                datos.setearParametro("@idEspecialidad", turno.Especialidad.Id);
+
 
                 datos.ejecutarAccion();
             }
