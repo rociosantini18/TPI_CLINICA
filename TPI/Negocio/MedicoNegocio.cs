@@ -39,10 +39,12 @@ namespace TPI.Negocio
                     SELECT m.Id_Medico, per.Dni, per.Nombre, per.Apellido,
                            per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
                            m.Matricula, m.Imagen_URL,
-                           esp.Id_Especialidad, esp.Nombre_Especialidad, esp.Descripcion
+                           esp.Id_Especialidad, esp.Nombre_Especialidad, esp.Descripcion,
+                            perf.Id_Perfil, perf.NombreUsuario, perf.Contraseña
                     FROM Medico m
                     INNER JOIN Persona per ON m.Id_Persona = per.Id_Persona
                     LEFT JOIN Especialidad esp ON m.Id_Especialidad = esp.Id_Especialidad
+                    LEFT JOIN Perfil perf ON m.Id_Perfil = perf.Id_Perfil
                     WHERE m.Activo = 1");
 
                 datos.ejecutarLectura();
@@ -66,6 +68,10 @@ namespace TPI.Negocio
                     aux.Especialidad.Id = datos.Lector["Id_Especialidad"] != DBNull.Value ? (int)datos.Lector["Id_Especialidad"] : 0;
                     aux.Especialidad.Nombre = datos.Lector["Nombre_Especialidad"] as string;
                     aux.Especialidad.Descripcion = datos.Lector["Descripcion"] as string;
+                    aux.Perfil = new Perfil();
+                    aux.Perfil.Id = (int)datos.Lector["Id_Perfil"];
+                    aux.Perfil.NombreUsuario = (string)datos.Lector["NombreUsuario"];
+                    aux.Perfil.Contraseña = (string)datos.Lector["Contraseña"];
 
                     lista.Add(aux);
                 }

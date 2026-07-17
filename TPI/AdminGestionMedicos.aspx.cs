@@ -123,6 +123,8 @@ namespace TPI
                     txtEditMedFechaNac.Text = med.FechaNacimiento.ToString("yyyy-MM-dd");
                     txtEditMatri.Text = med.Matricula;
                     txtEditFoto.Text = med.imagenURL;
+                    txtEditContraseña.Text = med.Perfil.Contraseña;
+                    txtEditUsuario.Text = med.Perfil.NombreUsuario;
 
                     cblEditDias.ClearSelection();
                     ddlEditEspecialidad.ClearSelection();
@@ -169,7 +171,7 @@ namespace TPI
             MedicoNegocio negocio = new MedicoNegocio();
 
             Medico med = new Medico();
-            med.Id = int.Parse(hfIdMedico.Value);
+            med.IdMedico = int.Parse(hfIdMedico.Value);
             med.Dni = txtEditMedDni.Text.Trim();
             med.Nombre = txtEditMedNombre.Text.Trim();
             med.Apellido = txtEditMedApellido.Text.Trim();
@@ -180,6 +182,9 @@ namespace TPI
             med.Matricula = txtEditMatri.Text.Trim();
             med.imagenURL = txtEditFoto.Text.Trim();
             med.DiasAtencion = new List<DayOfWeek>();
+            med.Perfil.Contraseña = txtEditContraseña.Text.Trim();
+            med.Perfil.NombreUsuario = txtEditUsuario.Text.Trim();
+
             foreach (ListItem item in cblEditDias.Items)
             {
                 if (item.Selected)

@@ -16,6 +16,7 @@ namespace TPI.Dominio
 
         public Medico()
         {
+            Perfil = new Perfil();
             Especialidad = new Especialidad();
             Horarios = new List<HorarioMedico>();
             DiasAtencion = new List<DayOfWeek>();

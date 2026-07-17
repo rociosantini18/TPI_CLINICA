@@ -148,7 +148,9 @@ namespace TPI.Negocio
                         Telefono = @telefono,
                         Direccion = @direccion,
                         FechaNacimiento= @fechaNac
-                    WHERE Id_Persona = @id");
+                    FROM Persona p
+                    INNER JOIN Empleado e ON p.Id_Persona = e.Id_Persona
+                    WHERE e.Id_Empleado = @id");
 
 
                 datos.setearParametro("@dni", emp.Dni);
