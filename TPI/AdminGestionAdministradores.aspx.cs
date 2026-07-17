@@ -13,6 +13,18 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["perfil"] == null)
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+            Perfil perfil = (Perfil)Session["perfil"];
+            if (perfil.Rol != "Administrador")
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+
             if (!IsPostBack)
                 cargarAdmins();
         }
@@ -58,6 +70,7 @@ namespace TPI
                     txtEditDireccion.Text = emp.Direccion;
                     txtEditFechaNac.Text = emp.FechaNacimiento.ToString("yyyy-MM-dd");
                     txtEditContraseña.Text = emp.Perfil.Contraseña;
+                    txtEditUsuario.Text = emp.Perfil.NombreUsuario;
 
                     lblMensajeAdmin.Text = "";
                     lblError.Text = "";
@@ -96,7 +109,9 @@ namespace TPI
             emp.Telefono = txtEditTelefono.Text.Trim();
             emp.Direccion = txtEditDireccion.Text.Trim();
             emp.FechaNacimiento = DateTime.Parse(txtEditFechaNac.Text);
-            emp.Perfil = new Perfil { Contraseña = txtEditContraseña.Text.Trim() };
+            emp.Perfil = new Perfil();
+            emp.Perfil.Contraseña = txtEditContraseña.Text.Trim();
+            emp.Perfil.NombreUsuario = txtEditUsuario.Text.Trim();
 
 
             negocio.modificar(emp);

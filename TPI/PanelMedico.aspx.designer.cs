@@ -15,15 +15,6 @@ namespace TPI
     {
 
         /// <summary>
-        /// btnMisDatos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMisDatos;
-
-        /// <summary>
         /// lblNombre control.
         /// </summary>
         /// <remarks>
@@ -42,12 +33,12 @@ namespace TPI
         protected global::System.Web.UI.WebControls.Button btnGestionTurnos;
 
         /// <summary>
-        /// btnHorarios control.
+        /// btnMisDatos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnHorarios;
+        protected global::System.Web.UI.WebControls.Button btnMisDatos;
     }
 }

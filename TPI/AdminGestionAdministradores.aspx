@@ -34,7 +34,7 @@
         </div>
     </div>
 
-<div class="container my-5">
+    <div class="container my-5">
         <div class="row g-4 justify-content-center">
             <asp:Label ID="lblError" runat="server" CssClass="text-danger fw-semibold" />
             <asp:GridView runat="server" ID="dgvAdmins"
@@ -116,6 +116,20 @@
                             <asp:TextBox ID="txtEditEmail" runat="server" CssClass="form-control" TextMode="Email" />
                         </div>
                         <div class="col-md-6">
+                            <asp:Label runat="server" Text="Usuario:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditUsuario" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditUsuario"
+                                ValidationGroup="vgEditAdmin" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
+                            <asp:Label runat="server" Text="Contraseña:" CssClass="form-label fw-semibold" />
+                            <asp:TextBox ID="txtEditContraseña" runat="server" CssClass="form-control" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditContraseña"
+                                ValidationGroup="vgEditAdmin" ErrorMessage="Requerido."
+                                CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
                             <asp:Label runat="server" Text="Teléfono:" CssClass="form-label fw-semibold" />
                             <asp:TextBox ID="txtEditTelefono" runat="server" CssClass="form-control" />
                         </div>
@@ -127,13 +141,6 @@
                             <asp:Label runat="server" Text="Fecha de Nacimiento:" CssClass="form-label fw-semibold" />
                             <asp:TextBox ID="txtEditFechaNac" runat="server" CssClass="form-control" TextMode="Date" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditFechaNac"
-                                ValidationGroup="vgEditAdmin" ErrorMessage="Requerido."
-                                CssClass="text-danger small" Display="Dynamic" />
-                        </div>
-                          <div class="col-md-6">
-                            <asp:Label runat="server" Text="Contraseña:" CssClass="form-label fw-semibold" />
-                            <asp:TextBox ID="txtEditContraseña" runat="server" CssClass="form-control" />
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditContraseña"
                                 ValidationGroup="vgEditAdmin" ErrorMessage="Requerido."
                                 CssClass="text-danger small" Display="Dynamic" />
                         </div>

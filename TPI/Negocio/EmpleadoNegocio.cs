@@ -150,7 +150,14 @@ namespace TPI.Negocio
                         FechaNacimiento= @fechaNac
                     FROM Persona p
                     INNER JOIN Empleado e ON p.Id_Persona = e.Id_Persona
-                    WHERE e.Id_Empleado = @id");
+                    WHERE e.Id_Empleado = @id;
+
+                    UPDATE Perfil SET
+                        NombreUsuario = @nombreUsuario, Contraseña = @contraseña
+                    FROM Perfil perf
+                    INNER JOIN Empleado e ON perf.Id_Perfil = e.Id_Perfil
+                    WHERE e.Id_Empleado = @id
+                    ");
 
 
                 datos.setearParametro("@dni", emp.Dni);
@@ -161,6 +168,9 @@ namespace TPI.Negocio
                 datos.setearParametro("@direccion", emp.Direccion);
                 datos.setearParametro("@fechaNac", emp.FechaNacimiento);
                 datos.setearParametro("@id", emp.Id);
+                datos.setearParametro("@nombreUsuario", emp.Perfil.NombreUsuario);
+                datos.setearParametro("@contraseña", emp.Perfil.Contraseña);
+
 
                 datos.ejecutarAccion();
             }

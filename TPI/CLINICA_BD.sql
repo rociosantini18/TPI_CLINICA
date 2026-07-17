@@ -526,3 +526,17 @@ select t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
                     WHERE t.Id_Paciente = @id
                     ORDER BY t.Fecha, t.HoraInicio
 
+SELECT e.Id_Empleado, per.Dni, per.Nombre, per.Apellido,
+                           per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
+                           pf.Id_Perfil, pf.NombreUsuario, pf.Contraseña, pf.Activo,
+                           r.NombreRol
+                    FROM Empleado e
+                    INNER JOIN Persona per ON e.Id_Persona = per.Id_Persona
+                    INNER JOIN Perfil pf ON e.Id_Perfil = pf.Id_Perfil
+                    INNER JOIN Rol r ON pf.Id_Rol = r.Id_Rol
+                    WHERE r.Id_Rol =  AND pf.Activo = 1
+
+select * from Empleado
+select * from Perfil
+select * from Rol
+

@@ -20,7 +20,7 @@ namespace TPI.Negocio
             try
             {
                 datos.setearConsulta(@"
-                    SELECT p.Id_Paciente, per.Dni, per.Nombre, per.Apellido,
+                    SELECT p.Id_Paciente, p.Id_Persona, per.Dni, per.Nombre, per.Apellido,
                            per.Email, per.Telefono, per.Direccion, per.FechaNacimiento,
                            os.Nombre_ObraSocial, os.Id_ObraSocial,
                            pf.Id_Perfil, pf.NombreUsuario, pf.Contraseña, pf.Activo,
@@ -38,7 +38,8 @@ namespace TPI.Negocio
                 {
                     Paciente aux = new Paciente();
 
-                    aux.Id = (int)datos.Lector["Id_Paciente"];
+                    aux.Id = (int)datos.Lector["Id_Persona"];
+                    aux.IdPaciente = (int)datos.Lector["Id_Paciente"];
                     aux.Dni = (string)datos.Lector["Dni"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Apellido = (string)datos.Lector["Apellido"];
@@ -121,7 +122,7 @@ namespace TPI.Negocio
                 OUTPUT INSERTED.Id_Perfil
                 VALUES (@idRol, @usuario, @contrasena, @activo)");
 
-                datos.setearParametro("@idRol", 2);
+                datos.setearParametro("@idRol", 3);
                 datos.setearParametro("@usuario", pac.Perfil.NombreUsuario);
                 datos.setearParametro("@contrasena", pac.Perfil.Contraseña);
                 datos.setearParametro("@activo", true);

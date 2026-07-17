@@ -13,6 +13,18 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["perfil"] == null)
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+            Perfil perfil = (Perfil)Session["perfil"];
+            if (perfil.Rol != "Administrador")
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+
             if (!IsPostBack)
             {
                 cargarPacientes();
@@ -68,6 +80,7 @@ namespace TPI
                     txtEditFechaNac.Text = pac.FechaNacimiento.ToString("yyyy-MM-dd");
                     lblMensajePac.Text = "";
                     txtEditContraseña.Text = pac.Perfil.Contraseña;
+                    txtEditUsuario.Text = pac.Perfil.NombreUsuario;
                     pnlEditarPaciente.Visible = true;
                     ddlEditObraSocial.ClearSelection();
                     ddlEditObraSocial.SelectedValue = pac.IdObraSocial.ToString();
@@ -105,7 +118,9 @@ namespace TPI
             pac.Direccion = txtEditDireccion.Text.Trim();
             pac.FechaNacimiento = DateTime.Parse(txtEditFechaNac.Text);
             pac.IdObraSocial = int.Parse(ddlEditObraSocial.SelectedValue);
-            pac.Perfil = new Perfil { Contraseña = txtEditContraseña.Text.Trim() };
+            pac.Perfil = new Perfil();
+            pac.Perfil.Contraseña = txtEditContraseña.Text.Trim();
+            pac.Perfil.NombreUsuario = txtEditUsuario.Text.Trim();
 
             negocio.modificar(pac);
 

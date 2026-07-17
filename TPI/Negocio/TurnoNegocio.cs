@@ -262,7 +262,7 @@ namespace TPI.Negocio
                     INNER JOIN Persona pp ON p.Id_Persona = pp.Id_Persona
                     INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
                     INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
-                    INNER JOIN Especialidad e ON m.Id_Especialidad = e.Id_Especialidad
+                    INNER JOIN Especialidad e ON t.Id_Especialidad = e.Id_Especialidad
                     where m.Id_Medico = @id
                     ORDER BY t.Fecha, t.HoraInicio");
 

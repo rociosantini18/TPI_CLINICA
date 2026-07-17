@@ -13,6 +13,18 @@ namespace TPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["perfil"] == null)
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+            Perfil perfil = (Perfil)Session["perfil"];
+            if (perfil.Rol != "Administrador")
+            {
+                Response.Redirect("~/InicioSesion.aspx");
+                return;
+            }
+
             if (!IsPostBack)
             {
                 cargarMedicos();

@@ -40,8 +40,8 @@ namespace TPI
                 pac.IdObraSocial = int.Parse(ddlObraSocial.SelectedValue);
 
                 pac.Perfil = new Perfil();
-                pac.Perfil.NombreUsuario = txtEmail.Text.Trim();
-                pac.Perfil.Contraseña = txtPassword.Text;
+                pac.Perfil.NombreUsuario = txtUsuario.Text.Trim();
+                pac.Perfil.Contraseña = txtPassword.Text.Trim();
 
                 PacienteNegocio negocio = new PacienteNegocio();
                 negocio.agregar(pac);
