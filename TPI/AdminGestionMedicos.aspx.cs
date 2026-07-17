@@ -40,11 +40,11 @@ namespace TPI
         }
         private void cargarDesplegableEspecialidades()
         {
-            EspecialidadNegocio negocio = new EspecialidadNegocio();
-            ddlEditEspecialidad.DataSource = negocio.listar();
-            ddlEditEspecialidad.DataTextField = "Nombre";
-            ddlEditEspecialidad.DataValueField = "Id";
-            ddlEditEspecialidad.DataBind();
+            //EspecialidadNegocio negocio = new EspecialidadNegocio();
+            //ddlEditEspecialidad.DataSource = negocio.listar();
+            //ddlEditEspecialidad.DataTextField = "Nombre";
+            //ddlEditEspecialidad.DataValueField = "Id";
+            //ddlEditEspecialidad.DataBind();
         }
         private void cargarEspecialidades()
         {
@@ -126,6 +126,7 @@ namespace TPI
                 if (med != null)
                 {
                     hfIdMedico.Value = med.Id.ToString();
+                    hfIdPerfilMedico.Value = med.Perfil.Id.ToString();
                     txtEditMedDni.Text = med.Dni;
                     txtEditMedNombre.Text = med.Nombre;
                     txtEditMedApellido.Text = med.Apellido;
@@ -139,7 +140,6 @@ namespace TPI
                     txtEditUsuario.Text = med.Perfil.NombreUsuario;
 
                     cblEditDias.ClearSelection();
-                    ddlEditEspecialidad.ClearSelection();
                     if (med.DiasAtencion != null)
                     {
                         foreach (DayOfWeek dia in med.DiasAtencion)
@@ -152,10 +152,10 @@ namespace TPI
                         }
                     }
 
-                    if (med.Especialidad != null)
-                    {
-                        ddlEditEspecialidad.SelectedValue = med.Especialidad.Id.ToString();
-                    }
+                    EspecialidadNegocio negocioEsp = new EspecialidadNegocio();
+                    dgvEspecialidadesMedicos.DataSource = negocioEsp.listarEscpecialidadesPorMedico(med.IdMedico);
+                    dgvEspecialidadesMedicos.DataBind();
+
                     lblMensajeMed.Text = "";
                     pnlEditarMedico.Visible = true;
                 }
@@ -184,6 +184,7 @@ namespace TPI
 
             Medico med = new Medico();
             med.IdMedico = int.Parse(hfIdMedico.Value);
+            med.Perfil.Id = int.Parse(hfIdPerfilMedico.Value);
             med.Dni = txtEditMedDni.Text.Trim();
             med.Nombre = txtEditMedNombre.Text.Trim();
             med.Apellido = txtEditMedApellido.Text.Trim();
@@ -204,8 +205,6 @@ namespace TPI
                     med.DiasAtencion.Add((DayOfWeek)int.Parse(item.Value));
                 }
             }
-            med.Especialidad = new Especialidad();
-            med.Especialidad.Id = int.Parse(ddlEditEspecialidad.SelectedValue);
 
             negocio.modificar(med);
 
@@ -366,5 +365,89 @@ namespace TPI
             }
         }
 
+        protected void dgvEspecialidadesMedicos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int id = int.Parse(e.CommandArgument.ToString());
+            MedicoNegocio negocio = new MedicoNegocio();
+
+            if (e.CommandName == "EliminarEsp")
+            {
+                hfIdEliminarEsp.Value = id.ToString();
+                pnlConfirmarEliminarEsp.Visible = true;
+            }
+        }
+
+        protected void btnAgregarEspecialidad_Click(object sender, EventArgs e)
+        {
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+
+            pnlAgregarEspecialidad.Visible = true;
+            ddlEspecialidadesDisponibles.DataSource = negocio.listar();
+            ddlEspecialidadesDisponibles.DataTextField = "Nombre";
+            ddlEspecialidadesDisponibles.DataValueField = "Id";
+            ddlEspecialidadesDisponibles.DataBind();
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+            MedicoNegocio negocioMed = new MedicoNegocio();
+
+            Medico med = negocioMed.RelacionPerfilPersona(int.Parse(hfIdPerfilMedico.Value));
+
+            bool existe = false;
+
+            foreach (Especialidad esp in negocio.listarEscpecialidadesPorMedico(med.IdMedico))
+            {
+                if (esp.Id == int.Parse(ddlEspecialidadesDisponibles.SelectedValue))
+                {
+                    existe = true;
+                    lblEspecialidadRepetida.Visible = true;
+                    lblEspecialidadRepetida.Text = "El médico ya tiene esa especialidad.";
+                }
+            }
+
+            if (!existe)
+            {
+                negocio.agregarEspecialidadMedico(int.Parse(ddlEspecialidadesDisponibles.SelectedValue), med.IdMedico);
+
+                pnlAgregarEspecialidad.Visible = false;
+                dgvEspecialidadesMedicos.DataSource = negocio.listarEscpecialidadesPorMedico(med.IdMedico);
+                dgvEspecialidadesMedicos.DataBind();
+
+            }
+        }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            pnlAgregarEspecialidad.Visible = false;
+
+        }
+
+        protected void btnConfirmarEliminarEspMed_Click(object sender, EventArgs e)
+        {
+
+            Medico med = new Medico();
+            med.IdMedico = int.Parse(hfIdPerfilMedico.Value);
+
+            MedicoNegocio negocioMed = new MedicoNegocio();
+            Medico medico = negocioMed.RelacionPerfilPersona(med.IdMedico);
+
+            int idEspecialidad = int.Parse(hfIdEliminarEsp.Value);
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+            negocio.bajaEspecialidadMedico(idEspecialidad, medico.IdMedico);
+
+            pnlConfirmarEliminarEspMed.Visible = false;
+
+
+            dgvEspecialidades.DataSource = negocio.listarEscpecialidadesPorMedico(medico.IdMedico);
+            dgvEspecialidades.DataBind();
+        }
+
+        protected void btnCancelarEliminarEspMed_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarEspMed.Visible = false;
+
+        }
     }
 }

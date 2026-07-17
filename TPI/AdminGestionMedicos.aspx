@@ -138,7 +138,6 @@
                     <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
                     <asp:BoundField HeaderText="Apellido" DataField="Apellido" />
                     <asp:BoundField HeaderText="Matricula" DataField="Matricula" />
-                    <asp:BoundField HeaderText="Especialidad" DataField="Especialidad.Nombre" />
                     <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
                     <asp:BoundField HeaderText="Email" DataField="Email" />
                     <asp:BoundField HeaderText="Telefono" DataField="Telefono" />
@@ -170,6 +169,7 @@
                 <div class="card shadow-sm border-0 p-4 text-start">
                     <h5 class="fw-bold mb-3">Modificar Médico</h5>
                     <asp:HiddenField ID="hfIdMedico" runat="server" />
+                    <asp:HiddenField ID="hfIdPerfilMedico" runat="server" />
 
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -224,10 +224,45 @@
                             <asp:TextBox ID="txtEditFoto" runat="server" CssClass="form-control" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEditFoto" ValidationGroup="vgEditMedico" ErrorMessage="Requerido." CssClass="text-danger small" Display="Dynamic" />
                         </div>
-                        <div class="col-md-6">
-                            <asp:Label runat="server" Text="Especialidad:" CssClass="form-label fw-semibold" />
-                            <asp:DropDownList ID="ddlEditEspecialidad" runat="server" CssClass="form-select" />
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlEditEspecialidad" ValidationGroup="vgEditMedico" ErrorMessage="Requerido." CssClass="text-danger small" Display="Dynamic" InitialValue="" />
+                        <div class="mb-4">
+                            <asp:Panel ID="pnlListaEspecialidadMedicos" runat="server">
+                                <div class="container my-5">
+                                    <div class="row g-4 justify-content-center">
+                                        <h5 class="fw-bold mb-3 text-start">Especialidades</h5>
+                                        <asp:Label ID="lblErrorGrillaEspMed" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text=""></asp:Label>
+
+                                        <asp:GridView runat="server" ID="dgvEspecialidadesMedicos" CssClass="table table-hover table-responsive" AutoGenerateColumns="False" OnRowCommand="dgvEspecialidadesMedicos_RowCommand">
+                                            <Columns>
+                                                <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                                                <asp:BoundField HeaderText="Descripción" DataField="Descripcion" />
+                                                <asp:TemplateField HeaderText="">
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton runat="server" CommandName="EliminarEsp" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-outline-danger">Eliminar</asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+
+                                        <asp:Button ID="btnAgregarEspecialidad" Text="Agregar Especialidad" runat="server" CssClass="btn btn-lg" BackColor="LightGreen" BorderColor="LightGreen" OnClick="btnAgregarEspecialidad_Click" />
+
+                                        <asp:Panel ID="pnlAgregarEspecialidad" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                                            <asp:DropDownList ID="ddlEspecialidadesDisponibles" runat="server" CssClass="form-select" />
+                                            <asp:HiddenField ID="hdfAgregarEspecialidad" runat="server" />
+                                            <p class="fw-semibold mb-2">¿Seguro que querés agregar esta especialidad?</p>
+                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnAgregar_Click" />
+                                            <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelar_Click" />
+                                            <asp:Label ID="lblEspecialidadRepetida" runat="server" CssClass="text-danger fw-semibold mb-3 d-block" Text="" Visible="false" />
+                                        </asp:Panel>
+
+                                        <asp:Panel ID="pnlConfirmarEliminarEspMed" runat="server" Visible="false" CssClass="alert alert-warning mt-3">
+                                            <asp:HiddenField ID="hfIdEliminarEspMed" runat="server" />
+                                            <p class="fw-semibold mb-2">¿Seguro que querés dar de baja esta especialidad?</p>
+                                            <asp:Button ID="btnConfirmarEliminarEspMed" runat="server" Text="Sí, eliminar" CssClass="btn btn-danger btn-sm me-2" CausesValidation="false" OnClick="btnConfirmarEliminarEspMed_Click" />
+                                            <asp:Button ID="btnCancelarEliminarEspMed" runat="server" Text="Cancelar" CssClass="btn btn-outline-secondary btn-sm" CausesValidation="false" OnClick="btnCancelarEliminarEspMed_Click" />
+                                        </asp:Panel>
+                                    </div>
+                                </div>
+                            </asp:Panel>
                         </div>
                         <div class="col-md-12 mt-3">
                             <asp:Label runat="server" Text="Días de Atención:" CssClass="form-label fw-semibold" />

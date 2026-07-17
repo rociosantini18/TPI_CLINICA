@@ -53,6 +53,7 @@ namespace TPI.Negocio
                 {
                     Medico aux = new Medico();
 
+                    aux.IdMedico = (int)datos.Lector["Id_Medico"];
                     aux.Id = (int)datos.Lector["Id_Medico"];
                     aux.DiasAtencion = listarDiasPorMedico(aux.Id);
                     aux.Dni = (string)datos.Lector["Dni"];

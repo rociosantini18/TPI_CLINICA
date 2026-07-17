@@ -271,6 +271,10 @@ SELECT * FROM HorarioMedico;
 Select * from turno;
 select * from Especialidad;
 
+update Perfil
+set Id_Rol = '3'
+where Id_Perfil = 2
+
 update turno 
 set Estado = 'Atendido'
 where Estado = 'Cerrado'
@@ -539,4 +543,24 @@ SELECT e.Id_Empleado, per.Dni, per.Nombre, per.Apellido,
 select * from Empleado
 select * from Perfil
 select * from Rol
+select * from Turno
 
+select t.Id_Turno, t.NumeroTurno, t.Fecha, t.HoraInicio, t.HoraFin,
+                        t.Observaciones, t.Diagnostico, t.FechaCreacion, t.FechaModificación,
+                        t.Estado,
+                        p.Id_Paciente,
+                        pp.Nombre AS NombrePaciente, pp.Apellido AS ApellidoPaciente,
+                        pp.Dni AS DniPaciente,
+                        m.Id_Medico,
+                        e.Id_Especialidad, e.Nombre_Especialidad
+                    FROM Turno t
+                    INNER JOIN Paciente p ON t.Id_Paciente = p.Id_Paciente
+                    INNER JOIN Persona pp ON p.Id_Persona = pp.Id_Persona
+                    INNER JOIN Medico m ON t.Id_Medico = m.Id_Medico
+                    INNER JOIN Persona mp ON m.Id_Persona = mp.Id_Persona
+                    INNER JOIN Especialidad e ON t.Id_Especialidad = e.Id_Especialidad
+                    where m.Id_Medico = 2
+                    ORDER BY t.Fecha, t.HoraInicio
+
+select * from medico
+select * from Persona
